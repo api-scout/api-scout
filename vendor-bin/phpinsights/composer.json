@@ -1,0 +1,13 @@
+{
+    "require": {
+        "nunomaduro/phpinsights": "^2.8",
+        "friendsofphp/php-cs-fixer": "3.9.5",
+        "sebastian/version": "^3.0",
+        "phpunit/php-file-iterator": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

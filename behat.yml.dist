@@ -1,0 +1,28 @@
+default:
+    suites:
+        core_http:
+            paths:
+                - '%paths.base%/features'
+            filters:
+                tags: '@http'
+            contexts:
+                - tests/Behat/Core/Http
+        swagger_http:
+            paths:
+                - '%paths.base%/features'
+            filters:
+                tags: '@swagger'
+            contexts:
+                - tests/Behat/Core/Swagger
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+#            bootstrap: tests/bootstrap.php
+            bootstrap: tests/Fixtures/app/bootstrap.php
+            kernel:
+                environment: test
+                debug: true
+                class: ApiScout\Tests\Fixtures\app\AppKernel
+                path: 'tests/Fixtures/app/AppKernel.php'
+
+        ApiScout\Tests\Behat\ContextPathExtension: ~

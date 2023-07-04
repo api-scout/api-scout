@@ -1,0 +1,66 @@
+# GetCollection
+
+```php
+final class GetCollectionDummyController extends AbstractController
+{
+    #[GetCollection(
+        path: '/dummies',
+        name: 'app_get_dummy_collection',
+        class: Dummy::class,
+    )]
+    public function __invoke(
+        #[MapQueryString] ?DummyQueryInput $query,
+        PaginatorRequestFactoryInterface $paginatorRequestFactory
+    ): DummyCollectionOutput {
+        // Your code here
+        $pinkFloydCollection = $getFromDataSourceOrService;
+        
+        return new DummyCollectionOutput(
+            $pinkFloydCollection,
+            $paginatorRequestFactory->getCurrentPage(),
+            $paginatorRequestFactory->getItemsPerPage()
+        );
+    }
+```
+The following parameters are mandatory:
+
+- `path` is the path of your route
+- `name` is the unique name your route need to have
+- `class` can also be a string and non class-string, this is the section of your api documentation
+
+Your DummyQueryInput and DummyCollectionOutput will automatically be mapped.
+But you could override those or add more information using the following parameters
+
+```php
+    #[GetCollection(
+        path: '/dummies',
+        name: 'app_get_dummy_collection',
+        class: Dummy::class,
+        filters: [],// Work In Progress
+        input: YourInput::class,
+        output: YourOutput::class,
+        statusCode: 200,
+        paginationEnable: false or true, // If you want to enable or disable the pagination
+        paginationItemsPerPage: 20, // The number of item you want per pages
+        deprecationReason: 'Do not use this route anymore', // If you want to deprecate this route
+        // You could also add all the parameters you would need to add from a normal #[Route] attribute
+    )]
+    public function getDummyAttributeCollection(): Response
+    {}
+```
+
+If `input` and `output` are specified your parameters and return type will be ignored.
+
+```php
+final class DummyCollectionOutput extends Paginator implements PaginatorInterface
+{
+    public function __construct(iterable $items, int $currentPage, int $itemsPerPage)
+    {
+        $this->type = DummyOutput::class;
+
+        parent::__construct($items, $currentPage, $itemsPerPage);
+    }
+}
+```
+
+If you want your page to be paginated you need to extends from `Paginator` and implement the `PaginatorInterface` 

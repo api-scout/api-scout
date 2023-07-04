@@ -1,0 +1,31 @@
+
+###> symfony/framework-bundle ###
+/public/
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/src/Core/Infrastructure/Symfony/Bundle/Resources/public/bundles/
+/var/
+/tests/Fixtures/app/var/cache
+/vendor/
+###< symfony/framework-bundle ###
+
+###> friends-of-behat/symfony-extension ###
+/behat.yml
+###< friends-of-behat/symfony-extension ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###< squizlabs/php_codesniffer ###
+.php-cs-fixer.cache
+###< squizlabs/php_codesniffer ###
+
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
