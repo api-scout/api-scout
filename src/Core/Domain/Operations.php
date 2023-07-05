@@ -52,6 +52,11 @@ final class Operations implements IteratorAggregate, Countable
         return $this;
     }
 
+    public function getOperation(string $routeName): Operation
+    {
+        return $this->operations[$routeName];
+    }
+
     public function getIterator(): Traversable
     {
         return (function (): Generator {

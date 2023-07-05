@@ -15,7 +15,7 @@ namespace ApiScout\Core\Domain\Pagination\Factory;
 
 use ApiScout\Core\Domain\OpenApi\Model\PaginationOptions;
 use ApiScout\Core\Domain\Operation;
-use ApiScout\Core\Domain\Resource\Factory\ResourceFactoryInterface;
+use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -26,7 +26,7 @@ final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
     private readonly Operation $operation;
 
     public function __construct(
-        private readonly ResourceFactoryInterface $resourceFactory,
+        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
         private readonly PaginationOptions $paginationOptions,
         RequestStack $requestStack,
     ) {
@@ -72,9 +72,11 @@ final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
             throw new LogicException('Cannot get Operation when using non declared route with api loader annotation');
         }
 
-        return $this->resourceFactory->initializeOperation(
-            $this->request->attributes->get('_controller_class'), /** @phpstan-ignore-line this value will always be a string */
-            $this->request->attributes->get('_route_name') /** @phpstan-ignore-line this value will always be a string */
-        );
+        return $this->resourceCollectionFactory->create()
+            ->getOperation(
+                /** @phpstan-ignore-next-line this value will always be a string */
+                $this->request->attributes->get('_route_name')
+            )
+        ;
     }
 }

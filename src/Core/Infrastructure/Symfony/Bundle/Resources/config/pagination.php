@@ -20,7 +20,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 use ApiScout\Core\Domain\Pagination\Factory\PaginatorRequestFactory;
 use ApiScout\Core\Domain\Pagination\Factory\PaginatorRequestFactoryInterface;
-use ApiScout\Core\Domain\Resource\Factory\ResourceFactoryInterface;
+use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 return static function (ContainerConfigurator $container): void {
@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set('api_scout.pagination.paginator_request_factory', PaginatorRequestFactory::class)
-        ->arg('$resourceFactory', service(ResourceFactoryInterface::class))
+        ->arg('$resourceCollectionFactory', service(ResourceCollectionFactoryInterface::class))
         ->arg(
             '$paginationOptions',
             expr("service('ApiScout\\\\Core\\\\Domain\\\\OpenApi\\\\PaginationOptionsConfigurator').getPaginationOptions()")

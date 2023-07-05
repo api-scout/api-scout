@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Core\Infrastructure\Symfony\EventListener;
 
 use ApiScout\Core\Domain\Pagination\Factory\PaginatorRequestFactoryInterface;
-use ApiScout\Core\Domain\Resource\Factory\ResourceFactoryInterface;
+use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
 use ApiScout\Core\Infrastructure\Symfony\EventListener\SerializeResponseListener;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -29,12 +29,12 @@ final class SerializeResponseListenerTest extends TestCase
 {
     public function testDoNotHandleResponse(): void
     {
-        $resourceFactory = $this->createStub(ResourceFactoryInterface::class);
+        $resourceCollectionFactory = $this->createStub(ResourceCollectionFactoryInterface::class);
         $paginatorRequestFactory = $this->createStub(PaginatorRequestFactoryInterface::class);
         $normalizer = $this->createStub(NormalizerInterface::class);
 
         $listener = new SerializeResponseListener(
-            $resourceFactory,
+            $resourceCollectionFactory,
             $paginatorRequestFactory,
             $normalizer
         );
@@ -48,6 +48,6 @@ final class SerializeResponseListenerTest extends TestCase
 
         $listener->onKernelView($event);
 
-		Assert::assertNull($event->getResponse());
+        Assert::assertNull($event->getResponse());
     }
 }

@@ -16,7 +16,7 @@ namespace ApiScout\Core\Infrastructure\Symfony\EventListener;
 use ApiScout\Core\Domain\Attribute\CollectionOperationInterface;
 use ApiScout\Core\Domain\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Core\Domain\Pagination\Paginator;
-use ApiScout\Core\Domain\Resource\Factory\ResourceFactoryInterface;
+use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class SerializeResponseListener
 {
     public function __construct(
-        private readonly ResourceFactoryInterface $resourceFactory,
+        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
         private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
         private readonly NormalizerInterface $apiNormalizer
     ) {
@@ -39,14 +39,11 @@ final class SerializeResponseListener
         $controllerResult = $event->getControllerResult();
         $request = $event->getRequest();
 
-        if (!$request->attributes->has('_controller_class')
-            && !$request->attributes->has('_route_name')
-        ) {
+        if (!$request->attributes->has('_route_name')) {
             return;
         }
 
-        $operation = $this->resourceFactory->initializeOperation(
-            $request->attributes->get('_controller_class'), /** @phpstan-ignore-line this value will always be a string */
+        $operation = $this->resourceCollectionFactory->create()->getOperation(
             $request->attributes->get('_route_name') /** @phpstan-ignore-line this value will always be a string */
         );
 

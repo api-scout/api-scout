@@ -20,8 +20,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 use ApiScout\Core\Domain\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
-use ApiScout\Core\Domain\Resource\Factory\ResourceFactory;
-use ApiScout\Core\Domain\Resource\Factory\ResourceFactoryInterface;
 use ApiScout\Core\Infrastructure\Symfony\EventListener\AddFormatListener;
 use ApiScout\Core\Infrastructure\Symfony\EventListener\ApiLoaderResponseListener;
 use ApiScout\Core\Infrastructure\Symfony\EventListener\EmptyPayloadExceptionListener;
@@ -36,9 +34,6 @@ return static function (ContainerConfigurator $container): void {
         ->defaults()
     ;
 
-    $services->set('api_scout.symfony.resource_factory', ResourceFactory::class);
-    $services->alias(ResourceFactoryInterface::class, 'api_scout.symfony.resource_factory');
-
     $services
         ->set(ApiLoader::class)
         ->private()
@@ -51,7 +46,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set(AddFormatListener::class)
         ->private()
-        ->arg('$resourceFactory', service(ResourceFactoryInterface::class))
+        ->arg('$resourceCollectionFactory', service(ResourceCollectionFactoryInterface::class))
         ->arg('$negotiator', service('api_scout.infrastructure.negotiator'))
         ->tag('kernel.event_listener', ['event' => 'kernel.request', 'method' => 'onKernelRequest', 'priority' => 27])
     ;
@@ -64,7 +59,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(SerializeResponseListener::class)
-        ->arg('$resourceFactory', service(ResourceFactoryInterface::class))
+        ->arg('$resourceCollectionFactory', service(ResourceCollectionFactoryInterface::class))
         ->arg('$paginatorRequestFactory', service(PaginatorRequestFactoryInterface::class))
         ->arg('$apiNormalizer', service('api_scout.openapi.normalizer'))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 15])

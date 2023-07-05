@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Core\Infrastructure\Symfony\EventListener;
 
 use ApiScout\Core\Domain\Api\FormatMatcher;
-use ApiScout\Core\Domain\Resource\Factory\ResourceFactoryInterface;
+use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
 use Negotiation\Negotiator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -29,7 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class AddFormatListener
 {
     public function __construct(
-        private readonly ResourceFactoryInterface $resourceFactory,
+        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
         private readonly Negotiator $negotiator
     ) {
     }
@@ -44,20 +44,18 @@ final class AddFormatListener
     {
         $request = $event->getRequest();
 
-        if (!$request->attributes->has('_controller_class')
-            && !$request->attributes->has('_route_name')
+        if (!$request->attributes->has('_route_name')
+            && $request->attributes->get('_route_name') === null
         ) {
             return;
         }
 
-        if ($request->attributes->get('_route_name') === null) {
-            return;
-        }
-
-        $operation = $this->resourceFactory->initializeOperation(
-            $request->attributes->get('_controller_class'), /** @phpstan-ignore-line this value will always be a string */
-            $request->attributes->get('_route_name') /** @phpstan-ignore-line this value will always be a string */
-        );
+        $operation = $this->resourceCollectionFactory->create()
+            ->getOperation(
+                /** @phpstan-ignore-next-line this value will always be a string */
+                $request->attributes->get('_route_name')
+            )
+        ;
 
         $formats = $operation->getOutputFormats();
 
