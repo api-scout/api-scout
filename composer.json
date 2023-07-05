@@ -1,6 +1,6 @@
 {
     "name": "digital-source/api-scout",
-    "description": "Help you document your api and serialize your output",
+    "description": "A library with a few tools, to auto document your api",
     "type": "library",
     "license": "proprietary",
     "authors": [
@@ -32,7 +32,7 @@
         "friends-of-behat/mink-browserkit-driver": "^1.6",
         "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.4",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^9.3",
         "ramsey/uuid": "^4.7",
         "symfony/asset": "6.3.*",
         "symfony/console": "6.3.*",

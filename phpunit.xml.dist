@@ -25,14 +25,23 @@
 
     <coverage processUncoveredFiles="true">
         <include>
+<!--            <directory>.</directory>-->
             <directory suffix=".php">src</directory>
         </include>
+
+        <exclude>
+            <directory>docs</directory>
+            <directory>features</directory>
+            <directory>tests</directory>
+            <directory>vendor</directory>
+            <file>.php-cs-fixer.php</file>
+        </exclude>
     </coverage>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
 
-    <extensions>
-    </extensions>
+<!--    <extensions>-->
+<!--    </extensions>-->
 </phpunit>
