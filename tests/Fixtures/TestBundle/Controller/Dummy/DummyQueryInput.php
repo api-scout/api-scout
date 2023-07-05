@@ -20,6 +20,7 @@ final class DummyQueryInput
     public function __construct(
         #[ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion')]
         public readonly ?string $name = '',
+        public readonly ?string $city = '',
         #[ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate')]
         public readonly int $page = 1,
     ) {
