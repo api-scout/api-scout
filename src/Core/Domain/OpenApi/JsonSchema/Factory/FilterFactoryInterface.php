@@ -13,20 +13,15 @@ declare(strict_types=1);
 
 namespace ApiScout\Core\Domain\OpenApi\JsonSchema\Factory;
 
+use ApiScout\Core\Domain\Attribute\ApiProperty;
 use ApiScout\Core\Domain\OpenApi\Model;
-use ApiScout\Core\Domain\Operation;
 
 interface FilterFactoryInterface
 {
     public function buildPathFilter(array $uriVariables, Model\Operation $openapiOperation): Model\Operation;
 
     /**
-     * @param class-string $className
+     * @param array<ApiProperty> $operationFilters
      */
-    public function buildQueryFilters(string $className, Model\Operation $openapiOperation): Model\Operation;
-
-    public function buildPaginationParameters(
-        Operation $operation,
-        Model\Operation $openApiOperation,
-    ): Model\Operation;
+    public function buildQueryFilters(array $operationFilters, Model\Operation $openapiOperation): Model\Operation;
 }

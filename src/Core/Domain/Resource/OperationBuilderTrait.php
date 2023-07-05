@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace ApiScout\Core\Domain\Resource;
 
+use ApiScout\Core\Domain\Attribute\ApiProperty;
 use ApiScout\Core\Domain\Operation;
 use ReflectionAttribute;
+use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -37,6 +40,9 @@ trait OperationBuilderTrait
 
         if ($operation->getFilters() === []
             && ($payload = $this->isPayloadResource($method->getParameters())) !== null) {
+            $operation->setFilters(
+                $this->buildParameterFilters($payload)
+            );
             /** @phpstan-ignore-next-line MapRequestPayload type should never be null */
             $operation->setInput($payload->getType()->getName());
         }
@@ -56,6 +62,40 @@ trait OperationBuilderTrait
         $operation->setControllerMethod($method->getName());
 
         return $operation;
+    }
+
+    /**
+     * @return array<ApiProperty>
+     */
+    private function buildParameterFilters(ReflectionParameter $parameter): array
+    {
+        $apiProperties = [];
+        $inputClassName = $parameter->getType();
+
+        if (!$inputClassName instanceof ReflectionNamedType) {
+            return $apiProperties;
+        }
+
+        /** @phpstan-ignore-next-line parameter 1 is a class-string */
+        $queryClass = new ReflectionClass($inputClassName->getName());
+
+        foreach ($queryClass->getProperties() as $property) {
+            $apiProperty = $this->buildApiProperty(
+                $property->getAttributes()
+            );
+            if ($apiProperty === null) {
+                $apiProperty = new ApiProperty(
+                    name: $property->getName(),
+                    /** @phpstan-ignore-next-line getName will exist if getType is a ReflectionNamedType */
+                    type: !$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string',
+                    required: $property->getType() !== null ? $property->getType()->allowsNull() : true
+                );
+            }
+
+            $apiProperties[$property->getName()] = $apiProperty;
+        }
+
+        return $apiProperties;
     }
 
     private function buildMethodOperation(ReflectionMethod $method): Operation
@@ -81,6 +121,23 @@ trait OperationBuilderTrait
 
             if ($reflectionParameter->getAttributes(MapRequestPayload::class, ReflectionAttribute::IS_INSTANCEOF) !== []) {
                 return $reflectionParameter;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array<ReflectionAttribute> $propertyAttributes
+     */
+    private function buildApiProperty(array $propertyAttributes): ?ApiProperty
+    {
+        foreach ($propertyAttributes as $attribute) {
+            if ($attribute->getName() === ApiProperty::class) {
+                /**
+                 * @var ApiProperty
+                 */
+                return $attribute->newInstance();
             }
         }
 

@@ -43,8 +43,6 @@ final class SchemaFactory implements SchemaFactoryInterface
             ...$this->buildOpenApiPropertiesFromClass($className),
         ];
 
-        // TODO Add here the pagination build
-
         $schema->offsetSet(
             $this->buildDefinitionName($className, $entityName),
             $schemaProperties

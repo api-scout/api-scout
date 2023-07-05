@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy;
 
+use ApiScout\Core\Domain\Attribute\ApiProperty;
+
 final class DummyQueryInput
 {
     public function __construct(
+        #[ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion')]
         public readonly ?string $name = '',
+        #[ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate')]
         public readonly int $page = 1,
     ) {
     }

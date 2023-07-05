@@ -158,4 +158,9 @@ Feature: Get Dummy Collection resource
     }
     """
 
+  @swagger
+  Scenario: Build a dummy operation
+    When one get the swagger json
+    Then get collection dummy filters should be configured
+    And get collection dummy should be configured
 

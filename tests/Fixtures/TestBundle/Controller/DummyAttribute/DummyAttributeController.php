@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyAttribute;
 
+use ApiScout\Core\Domain\Attribute\ApiProperty;
 use ApiScout\Core\Domain\Attribute\Delete;
 use ApiScout\Core\Domain\Attribute\Get;
 use ApiScout\Core\Domain\Attribute\GetCollection;
 use ApiScout\Core\Domain\Attribute\Patch;
 use ApiScout\Core\Domain\Attribute\Post;
 use ApiScout\Core\Domain\Attribute\Put;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyQueryInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 final class DummyAttributeController extends AbstractController
 {
@@ -31,10 +29,13 @@ final class DummyAttributeController extends AbstractController
         path: '/dummies_attribute',
         name: 'app_get_dummy_attribute_collection',
         output: DummyAttributeCollectionOutput::class,
-        class: Dummy::class,
+        class: DummyAttribute::class,
+        filters: [
+            new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
+            new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
+        ]
     )]
     public function getDummyAttributeCollection(
-        #[MapQueryString] ?DummyQueryInput $query
     ): Response {
         return new Response();
     }

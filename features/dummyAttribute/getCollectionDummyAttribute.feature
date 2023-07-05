@@ -9,4 +9,5 @@ Feature: Get a DummyAttribute Collection resource
   @swagger
   Scenario: Build a dummy attribute operation
     When one get the swagger json
-#    Then get collection dummy attribute should be configured
+    Then get collection dummy attribute filters should be configured
+    And get collection dummy attribute should be configured

@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace ApiScout\Tests\Behat\Core\Swagger\DummyAttribute;
+namespace ApiScout\Tests\Behat\Core\Swagger\Dummy;
 
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
-final class GetCollectionDummyAttributeContext extends BaseContext
+final class GetCollectionDummyContext extends BaseContext
 {
     /**
-     * @Then get collection dummy attribute filters should be configured
+     * @Then get collection dummy filters should be configured
      */
-    public function thenAttributeFiltersShouldBeConfigured(): void
+    public function thenDummyFiltersShouldBeConfigured(): void
     {
         $response = $this->getResponse()->toArray();
 
-        Assert::assertNotEmpty($response['paths']['/dummies_attribute']['get']);
+        Assert::assertNotEmpty($response['paths']['/dummies']['get']);
 
-        $parameters = $response['paths']['/dummies_attribute']['get']['parameters'];
+        $parameters = $response['paths']['/dummies']['get']['parameters'];
         Assert::assertCount(2, $parameters);
 
         Assert::assertSame('name', $parameters[0]['name']);
@@ -46,13 +46,13 @@ final class GetCollectionDummyAttributeContext extends BaseContext
     }
 
     /**
-     * @Then get collection dummy attribute should be configured
+     * @Then get collection dummy should be configured
      */
     public function then(): void
     {
         $response = $this->getResponse()->toArray();
 
-        Assert::assertNotEmpty($response['paths']['/dummies_attribute']['get']);
-        Assert::assertNotEmpty($response['components']['schemas']['DummyAttribute.DummyAttributeCollectionOutput']);
+        Assert::assertNotEmpty($response['paths']['/dummies']['get']);
+        Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyCollectionOutput']);
     }
 }

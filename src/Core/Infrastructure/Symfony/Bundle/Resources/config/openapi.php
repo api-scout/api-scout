@@ -45,9 +45,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set('api_scout.openapi.filter_factory', FilterFactory::class)
-        ->arg('$paginationOptions',
-            expr("service('ApiScout\\\\Core\\\\Domain\\\\OpenApi\\\\PaginationOptionsConfigurator').getPaginationOptions()")
-        )
     ;
 
     $services->alias(FilterFactoryInterface::class, 'api_scout.openapi.filter_factory');
