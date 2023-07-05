@@ -28,7 +28,7 @@ The following parameters are mandatory:
 - `name` is the unique name your route need to have
 - `class` can also be a string and non class-string, this is the section of your api documentation
 
-Your DummyQueryInput and DummyCollectionOutput will automatically be mapped.
+Your DummyQueryInput and DummyCollectionOutput classes will automatically be mapped.
 But you could override those or add more information using the following parameters
 
 ```php
@@ -36,11 +36,14 @@ But you could override those or add more information using the following paramet
         path: '/dummies',
         name: 'app_get_dummy_collection',
         class: Dummy::class,
-        filters: [],// Work In Progress
+        filters: [
+            new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
+            new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
+        ],
         input: YourInput::class,
         output: YourOutput::class,
         statusCode: 200,
-        paginationEnable: false or true, // If you want to enable or disable the pagination
+        paginationEnable: true, // If you want to enable or disable the pagination
         paginationItemsPerPage: 20, // The number of item you want per pages
         deprecationReason: 'Do not use this route anymore', // If you want to deprecate this route
         // You could also add all the parameters you would need to add from a normal #[Route] attribute
