@@ -26,7 +26,7 @@ final class Get extends HttpOperation
         ?string $output = null,
         int $statusCode = 200,
         string $class = '',
-        ?array $filters = [],
+        array $filters = [],
         bool $openApi = true,
         array $formats = [],
         array $inputFormats = [

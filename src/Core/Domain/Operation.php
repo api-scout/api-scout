@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ApiScout\Core\Domain;
 
+use ApiScout\Core\Domain\Attribute\ApiProperty;
+use ApiScout\Core\Domain\Exception\FiltersShouldBeAnArrayOfApiPropertyException;
 use ApiScout\Core\Domain\Exception\ResourceClassNotFoundException;
 use LogicException;
 use RuntimeException;
@@ -23,8 +25,9 @@ abstract class Operation
     private ?string $controllerMethod = null;
 
     /**
-     * @param class-string|null $input
-     * @param class-string|null $output
+     * @param class-string|null  $input
+     * @param class-string|null  $output
+     * @param array<ApiProperty> $filters
      */
     /** @phpstan-ignore-next-line It's okay to have some unused parameters */
     public function __construct(
@@ -35,7 +38,7 @@ abstract class Operation
         protected string|null $output,
         protected readonly int $statusCode,
         protected string $class,
-        protected ?array $filters,
+        protected array $filters,
         protected readonly bool $openApi,
         protected array $formats,
         protected array $inputFormats,
@@ -139,9 +142,32 @@ abstract class Operation
         return $this->class;
     }
 
-    public function getFilters(): ?array
+    /**
+     * @return array<ApiProperty>
+     */
+    public function getFilters(): array
     {
+        foreach ($this->filters as $filter) {
+            if (!$filter instanceof ApiProperty) {
+                throw new FiltersShouldBeAnArrayOfApiPropertyException($filter);
+            }
+        }
+
         return $this->filters;
+    }
+
+    /**
+     * @param array<ApiProperty|mixed> $filters
+     */
+    public function setFilters(array $filters): void
+    {
+        foreach ($filters as $filter) {
+            if (!$filter instanceof ApiProperty) {
+                throw new FiltersShouldBeAnArrayOfApiPropertyException($filter);
+            }
+        }
+
+        $this->filters = $filters;
     }
 
     public function getOpenApi(): bool

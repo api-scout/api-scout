@@ -140,10 +140,11 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 );
             }
 
-            if ($operation->getInput() !== null && $operation instanceof CollectionOperationInterface) {
-                // TODO apply pagination response here
-                $openapiOperation = $this->filterFactory->buildQueryFilters($operation->getInput(), $openapiOperation);
-                //                $openapiOperation = $this->filterFactory->buildPaginationParameters($operation, $openapiOperation);
+            if ($operation instanceof CollectionOperationInterface) {
+                $openapiOperation = $this->filterFactory->buildQueryFilters(
+                    $operation->getFilters(),
+                    $openapiOperation
+                );
             }
 
             $openapiOperation = $this->buildOpenApiResponse($openapiOperation, $operation, $schemas);

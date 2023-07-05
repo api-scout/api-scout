@@ -32,7 +32,7 @@ abstract class HttpOperation extends Operation
         string|null $output,
         int $statusCode,
         string $class,
-        ?array $filters,
+        array $filters,
         bool $openApi,
         array $formats,
         array $inputFormats,
