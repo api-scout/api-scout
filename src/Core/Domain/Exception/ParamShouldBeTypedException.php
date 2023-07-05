@@ -15,19 +15,17 @@ namespace ApiScout\Core\Domain\Exception;
 
 use Exception;
 
-use function gettype;
-
 /**
- * Resource class not found exception.
+ * UriVariables should be an array of api property exception.
  *
  * @author Marvin Courcier <courciermarvin@gmail.com>
  */
-final class FiltersShouldBeAnArrayOfApiPropertyException extends Exception implements DomainExceptionInterface
+final class ParamShouldBeTypedException extends Exception implements DomainExceptionInterface
 {
-    public function __construct(mixed $filter)
+    public function __construct(string $param)
     {
         parent::__construct(
-            sprintf('filters should be an array of ApiProperty, "%s" given.', gettype($filter))
+            sprintf('param "%s" should be typed.', $param)
         );
     }
 }

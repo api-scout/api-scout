@@ -45,7 +45,9 @@ final class DummyAttributeController extends AbstractController
         name: 'app_get_dummy_attribute',
         output: DummyAttributeOutput::class,
         class: DummyAttribute::class,
-        uriVariables: ['id' => 'string']
+        uriVariables: [
+            new ApiProperty('id', 'string'),
+        ]
     )]
     public function getDummyAttribute(): Response
     {
@@ -92,7 +94,9 @@ final class DummyAttributeController extends AbstractController
         path: '/dummies_attribute/{id}',
         name: 'app_delete_dummy_attribute',
         class: DummyAttribute::class,
-        uriVariables: ['id' => 'int']
+        uriVariables: [
+            new ApiProperty('id', 'int'),
+        ]
     )]
     public function deleteDummyAttribute(
     ): Response {

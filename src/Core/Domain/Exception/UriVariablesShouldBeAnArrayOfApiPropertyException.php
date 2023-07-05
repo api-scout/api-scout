@@ -18,16 +18,16 @@ use Exception;
 use function gettype;
 
 /**
- * Resource class not found exception.
+ * UriVariables should be an array of api property exception.
  *
  * @author Marvin Courcier <courciermarvin@gmail.com>
  */
-final class FiltersShouldBeAnArrayOfApiPropertyException extends Exception implements DomainExceptionInterface
+final class UriVariablesShouldBeAnArrayOfApiPropertyException extends Exception implements DomainExceptionInterface
 {
-    public function __construct(mixed $filter)
+    public function __construct(mixed $uriVariable)
     {
         parent::__construct(
-            sprintf('filters should be an array of ApiProperty, "%s" given.', gettype($filter))
+            sprintf('uriVariables should be an array of ApiProperty, "%s" given.', gettype($uriVariable))
         );
     }
 }

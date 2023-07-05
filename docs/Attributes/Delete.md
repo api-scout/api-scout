@@ -28,7 +28,9 @@ You could specify more attribute in case you would need to customize your respon
         path: '/dummies_attribute/{id}',
         name: 'app_delete_dummy_attribute',
         class: DummyAttribute::class,
-        uriVariables: ['id' => 'int'],
+        uriVariables: [
+            new ApiProperty('id', 'int'),
+        ],
         deprecationReason: 'Do not use this route anymore', // If you want to deprecate this route
     )]
     public function deleteDummyAttribute():

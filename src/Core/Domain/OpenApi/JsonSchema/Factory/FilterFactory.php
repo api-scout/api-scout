@@ -20,41 +20,23 @@ use RuntimeException;
 final class FilterFactory implements FilterFactoryInterface
 {
     use PropertyTypeBuilderTrait;
+    public const PATH = 'path';
+    public const QUERY = 'query';
 
-    public function buildPathFilter(array $uriVariables, Model\Operation $openapiOperation): Model\Operation
-    {
-        foreach ($uriVariables as $uriVariableName => $uriVariableType) {
+    public function buildUriParams(
+        string $type,
+        array $uriParams,
+        Model\Operation $openapiOperation
+    ): Model\Operation {
+        foreach ($uriParams as $uriParam) {
             $parameter = new Model\Parameter(
-                $uriVariableName,
-                'path',
-                '',
-                true,
+                $uriParam->getName(),
+                $type,
+                $uriParam->getDescription() ?? '',
+                $uriParam->isRequired(),
+                $uriParam->isDeprecated(),
                 false,
-                false,
-                $this->getClassType($uriVariableType)
-            );
-
-            if ($this->hasParameter($openapiOperation, $parameter)) {
-                continue;
-            }
-
-            $openapiOperation = $openapiOperation->withParameter($parameter);
-        }
-
-        return $openapiOperation;
-    }
-
-    public function buildQueryFilters(array $operationFilters, Model\Operation $openapiOperation): Model\Operation
-    {
-        foreach ($operationFilters as $apiProperty) {
-            $parameter = new Model\Parameter(
-                $apiProperty->getName(),
-                'query',
-                $apiProperty->getDescription() ?? '',
-                $apiProperty->isRequired(),
-                $apiProperty->isDeprecated(),
-                false,
-                $this->getClassType($apiProperty->getType())
+                $this->getClassType($uriParam->getType())
             );
 
             if ($this->hasParameter($openapiOperation, $parameter)) {

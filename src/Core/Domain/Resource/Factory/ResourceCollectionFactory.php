@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Core\Domain\Resource\Factory;
 
 use ApiScout\Core\Domain\Attribute\ApiProperty;
+use ApiScout\Core\Domain\Exception\ParamShouldBeTypedException;
 use ApiScout\Core\Domain\Exception\ResourceClassNotFoundException;
 use ApiScout\Core\Domain\Operation;
 use ApiScout\Core\Domain\Operations;
@@ -28,7 +29,6 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
 final class ResourceCollectionFactory implements ResourceCollectionFactoryInterface
 {
-
     public function __construct(
         private readonly string $path
     ) {
@@ -81,6 +81,12 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
             $operation->setFilters(
                 $this->buildParameterFilters($payload)
             );
+
+            if ($payload->getType() === null) {
+                throw new ParamShouldBeTypedException($payload->name);
+            }
+
+            /** @phpstan-ignore-next-line getName is an existing method */
             $operation->setInput($payload->getType()->getName());
         }
 
@@ -184,7 +190,7 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
     /**
      * @param array<ReflectionParameter> $parameters
      *
-     * @return array<string, string>
+     * @return array<string, ApiProperty>
      */
     private function buildUriVariables(array $parameters, string $path): array
     {
@@ -194,8 +200,12 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
         foreach ($parameters as $parameter) {
             foreach ($parsedPathQuery as $query) {
                 if ($this->isQueryResource($parameter, $query) === true) {
-                    /** @phpstan-ignore-next-line getName is an existing method */
-                    $uriVariables[$parameter->getName()] = $parameter->getType() !== null ? $parameter->getType()->getName() : 'string';
+                    $uriVariables[$parameter->getName()] = new ApiProperty(
+                        name: $parameter->getName(),
+                        /** @phpstan-ignore-next-line getName is an existing method */
+                        type: $parameter->getType() !== null ? $parameter->getType()->getName() : 'string',
+                        required: !$parameter->isOptional(),
+                    );
                 }
             }
         }

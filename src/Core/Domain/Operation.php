@@ -16,6 +16,7 @@ namespace ApiScout\Core\Domain;
 use ApiScout\Core\Domain\Attribute\ApiProperty;
 use ApiScout\Core\Domain\Exception\FiltersShouldBeAnArrayOfApiPropertyException;
 use ApiScout\Core\Domain\Exception\ResourceClassNotFoundException;
+use ApiScout\Core\Domain\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
 use LogicException;
 use RuntimeException;
 
@@ -207,11 +208,23 @@ abstract class Operation
 
     public function getUriVariables(): array
     {
+        foreach ($this->uriVariables as $uriVariable) {
+            if (!$uriVariable instanceof ApiProperty) {
+                throw new UriVariablesShouldBeAnArrayOfApiPropertyException($uriVariable);
+            }
+        }
+
         return $this->uriVariables;
     }
 
     public function setUriVariables(array $uriVariables): void
     {
+        foreach ($uriVariables as $uriVariable) {
+            if (!$uriVariable instanceof ApiProperty) {
+                throw new UriVariablesShouldBeAnArrayOfApiPropertyException($uriVariable);
+            }
+        }
+
         $this->uriVariables = $uriVariables;
     }
 

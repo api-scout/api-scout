@@ -21,7 +21,7 @@ final class ApiProperty
     public function __construct(
         private readonly string $name,
         private readonly string $type = 'string',
-        private readonly bool $required = false,
+        private readonly bool $required = true,
         private readonly ?string $description = null,
         private readonly bool $deprecated = false,
     ) {

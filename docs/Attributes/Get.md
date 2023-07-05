@@ -29,7 +29,9 @@ In the case below you could retrieve your uriVariable using the request and not 
         name: 'app_get_dummy_attribute',
         output: DummyAttributeOutput::class,
         class: DummyAttribute::class,
-        uriVariables: ['id' => 'string'],
+        uriVariables: [
+            new ApiProperty('id', 'string'),
+        ],
         deprecationReason: 'Do not use this route anymore', // If you want to deprecate this route
     )]
     public function getDummy():

@@ -18,10 +18,12 @@ use ApiScout\Core\Domain\OpenApi\Model;
 
 interface FilterFactoryInterface
 {
-    public function buildPathFilter(array $uriVariables, Model\Operation $openapiOperation): Model\Operation;
-
     /**
-     * @param array<ApiProperty> $operationFilters
+     * @param array<string, ApiProperty> $uriParams
      */
-    public function buildQueryFilters(array $operationFilters, Model\Operation $openapiOperation): Model\Operation;
+    public function buildUriParams(
+        string $type,
+        array $uriParams,
+        Model\Operation $openapiOperation
+    ): Model\Operation;
 }

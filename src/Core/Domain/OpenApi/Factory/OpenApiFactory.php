@@ -16,6 +16,7 @@ namespace ApiScout\Core\Domain\OpenApi\Factory;
 use ApiScout\Core\Domain\Attribute\CollectionOperationInterface;
 use ApiScout\Core\Domain\Http\AbstractResponse;
 use ApiScout\Core\Domain\HttpOperation;
+use ApiScout\Core\Domain\OpenApi\JsonSchema\Factory\FilterFactory;
 use ApiScout\Core\Domain\OpenApi\JsonSchema\Factory\FilterFactoryInterface;
 use ApiScout\Core\Domain\OpenApi\JsonSchema\Factory\SchemaFactoryInterface;
 use ApiScout\Core\Domain\OpenApi\JsonSchema\JsonSchema;
@@ -134,14 +135,16 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $schema->setDefinitions($schemas);
 
             if ($operation->getUriVariables() !== []) {
-                $openapiOperation = $this->filterFactory->buildPathFilter(
+                $openapiOperation = $this->filterFactory->buildUriParams(
+                    FilterFactory::PATH,
                     $operation->getUriVariables(),
                     $openapiOperation
                 );
             }
 
             if ($operation instanceof CollectionOperationInterface) {
-                $openapiOperation = $this->filterFactory->buildQueryFilters(
+                $openapiOperation = $this->filterFactory->buildUriParams(
+                    FilterFactory::QUERY,
                     $operation->getFilters(),
                     $openapiOperation
                 );
