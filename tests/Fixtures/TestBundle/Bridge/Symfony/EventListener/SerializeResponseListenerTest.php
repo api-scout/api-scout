@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Core\Infrastructure\Symfony\EventListener;
+namespace ApiScout\Tests\Fixtures\TestBundle\Bridge\Symfony\EventListener;
 
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
