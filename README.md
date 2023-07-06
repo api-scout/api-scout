@@ -8,7 +8,7 @@ auto document your api using attribute in your controller
 ## Installation
 
 ```bash
-composer require digital-source/api-scout dev-main
+composer require api-scout/api-scout dev-main
 ```
 
 ```php
