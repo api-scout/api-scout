@@ -24,7 +24,7 @@ final class DeleteDummyController extends AbstractController
     #[Delete(
         path: '/dummies/{name}',
         name: 'app_delete_dummy',
-        class: Dummy::class
+        tag: Dummy::class
     )]
     public function __invoke(
         string $name

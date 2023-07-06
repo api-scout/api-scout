@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Attribute;
 
 use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\AbstractResponse;
 use Attribute;
 
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
@@ -24,8 +25,8 @@ final class Get extends HttpOperation
         string $name,
         ?string $input = null,
         ?string $output = null,
-        int $statusCode = 200,
-        string $class = '',
+        int $statusCode = AbstractResponse::HTTP_OK,
+        string $tag = 'Default',
         array $filters = [],
         bool $openApi = true,
         array $formats = [],
@@ -60,7 +61,7 @@ final class Get extends HttpOperation
             input: $input,
             output: $output,
             statusCode: $statusCode,
-            class: $class,
+            tag: $tag,
             filters: $filters,
             openApi: $openApi,
             formats: $formats,

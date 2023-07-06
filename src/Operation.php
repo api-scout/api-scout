@@ -38,7 +38,7 @@ abstract class Operation
         protected string|null $input,
         protected string|null $output,
         protected readonly int $statusCode,
-        protected string $class,
+        protected string $tag,
         protected array $filters,
         protected readonly bool $openApi,
         protected array $formats,
@@ -138,9 +138,9 @@ abstract class Operation
         return $this->statusCode;
     }
 
-    public function getClass(): string
+    public function getTag(): string
     {
-        return $this->class;
+        return $this->tag;
     }
 
     /**

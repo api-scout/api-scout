@@ -27,7 +27,7 @@ final class GetCollectionDummyController extends AbstractController
     #[GetCollection(
         path: '/dummies',
         name: 'app_get_dummy_collection',
-        class: Dummy::class,
+        tag: Dummy::class,
     )]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,

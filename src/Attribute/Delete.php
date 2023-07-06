@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Attribute;
 
 use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\AbstractResponse;
 use Attribute;
 
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
@@ -24,8 +25,8 @@ final class Delete extends HttpOperation
         string $name,
         ?string $input = null,
         ?string $output = null,
-        int $statusCode = 204,
-        string $class = '',
+        int $statusCode = AbstractResponse::HTTP_NO_CONTENT,
+        string $tag = 'Default',
         array $filters = [],
         bool $openApi = true,
         array $formats = [],
@@ -60,7 +61,7 @@ final class Delete extends HttpOperation
             input: $input,
             output: $output,
             statusCode: $statusCode,
-            class: $class,
+            tag: $tag,
             filters: $filters,
             openApi: $openApi,
             formats: $formats,

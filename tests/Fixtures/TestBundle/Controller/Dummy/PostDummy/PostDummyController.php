@@ -26,7 +26,7 @@ final class PostDummyController extends AbstractController
     #[Post(
         path: '/dummies',
         name: 'app_add_dummy',
-        class: Dummy::class
+        tag: Dummy::class
     )]
     public function __invoke(
         #[MapRequestPayload] DummyPayloadInput $dummyPayloadInput,

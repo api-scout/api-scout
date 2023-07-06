@@ -24,7 +24,7 @@ final class GetDummyController extends AbstractController
     #[Get(
         path: '/dummies/{id}',
         name: 'app_get_dummy',
-        class: Dummy::class
+        tag: Dummy::class
     )]
     public function __invoke(
         int $id,
