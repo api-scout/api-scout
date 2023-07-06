@@ -6,7 +6,6 @@ final class GetCollectionDummyController extends AbstractController
     #[GetCollection(
         path: '/dummies',
         name: 'app_get_dummy_collection',
-        class: Dummy::class,
     )]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,
@@ -26,16 +25,18 @@ The following parameters are mandatory:
 
 - `path` is the path of your route
 - `name` is the unique name your route need to have
-- `class` can also be a string and non class-string, this is the section of your api documentation
 
 Your DummyQueryInput and DummyCollectionOutput classes will automatically be mapped.
-But you could override those or add more information using the following parameters
+
+## Advanced installation
+
+You could override those or add more information using the following parameters
 
 ```php
     #[GetCollection(
         path: '/dummies',
         name: 'app_get_dummy_collection',
-        class: Dummy::class,
+        tag: Dummy::class,
         filters: [
             new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
             new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
