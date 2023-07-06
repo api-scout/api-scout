@@ -53,10 +53,13 @@ bin/console assets:install
 
 ## Usages
 
+#### Operations
 - [GetCollection](docs/Attributes/GetCollection.md)
 - [Get](docs/Attributes/Get.md)
 - [Post, Put, Patch](docs/Attributes/Update.md)
 - [Delete](docs/Attributes/Delete.md)
+
+#### Advanced
 - [Configuration](docs/Configuration.md)
 
 ## Contributing
