@@ -18,7 +18,7 @@ use ApiScout\Exception\ParamShouldBeTypedException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Operation;
 use ApiScout\Operations;
-use ApiScout\Utils\DirectoryClassExtractor;
+use ApiScout\Resource\DirectoryClassExtractor;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;

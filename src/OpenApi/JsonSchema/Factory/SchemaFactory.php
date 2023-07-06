@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi\JsonSchema\Factory;
 
 use ApiScout\OpenApi\JsonSchema\JsonSchema;
-use ApiScout\OpenApi\JsonSchema\PropertyTypeBuilderTrait;
-use ApiScout\Utils\ClassNameNormalizerTrait;
+use ApiScout\OpenApi\JsonSchema\Trait\PropertyTypeBuilderTrait;
+use ApiScout\OpenApi\Trait\ClassNameNormalizerTrait;
 use ReflectionClass;
 use Symfony\Component\PropertyInfo\Type;
 

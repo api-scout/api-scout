@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\OpenApi\JsonSchema\Factory;
 
-use ApiScout\OpenApi\JsonSchema\PropertyTypeBuilderTrait;
+use ApiScout\OpenApi\JsonSchema\Trait\PropertyTypeBuilderTrait;
 use ApiScout\OpenApi\Model;
 use RuntimeException;
 
