@@ -11,6 +11,17 @@ auto document your api using attribute in your controller
 composer require digital-source/api-scout dev-main
 ```
 
+```php
+# config/bundles.php
+
+<?php
+
+return [
+    // ...
+    ApiScout\Core\Infrastructure\Symfony\Bundle\ApiScoutBundle::class => ['all' => true]
+];
+```
+
 ```yaml
 # config/packages/api_scout.yaml
 
@@ -34,6 +45,11 @@ api_scout:
 api_doc:
   resource: '@ApiScoutBundle/Resources/config/routes/routes.php'
 
+```
+
+You will need to run `composer require symfony/asset` first if you haven't installed this package
+```bash
+bin/console assets:install
 ```
 
 ## Usages
