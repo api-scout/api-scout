@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\EventListener;
 
-use ApiScout\Api\FormatMatcher;
+use ApiScout\OpenApi\Http\FormatMatcher;
 use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use Negotiation\Negotiator;
 use Symfony\Component\HttpFoundation\Request;

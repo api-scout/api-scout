@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi\Factory;
 
 use ApiScout\Attribute\CollectionOperationInterface;
-use ApiScout\OpenApi\Model;
-use ApiScout\Http\AbstractResponse;
 use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\AbstractResponse;
 use ApiScout\OpenApi\JsonSchema\Factory\FilterFactory;
 use ApiScout\OpenApi\JsonSchema\Factory\FilterFactoryInterface;
 use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactoryInterface;
 use ApiScout\OpenApi\JsonSchema\JsonSchema;
+use ApiScout\OpenApi\Model;
 use ApiScout\OpenApi\OpenApi;
 use ApiScout\OpenApi\Options;
 use ApiScout\Operation;
@@ -34,16 +34,17 @@ use function in_array;
 final class OpenApiFactory implements OpenApiFactoryInterface
 {
     use ClassNameNormalizerTrait;
+    use ClassNameNormalizerTrait;
     public const BASE_URL = 'base_url';
 
     private readonly Options $openApiOptions;
 
     public function __construct(
-        private readonly ResourceCollectionFactoryInterface        $resourceCollection,
-        private readonly SchemaFactoryInterface                    $schemaFactory,
-        private readonly FilterFactoryInterface                    $filterFactory,
-        private readonly \ApiScout\OpenApi\Model\PaginationOptions $paginationOptions,
-        ?Options                                                   $openApiOptions = null
+        private readonly ResourceCollectionFactoryInterface $resourceCollection,
+        private readonly SchemaFactoryInterface $schemaFactory,
+        private readonly FilterFactoryInterface $filterFactory,
+        private readonly Model\PaginationOptions $paginationOptions,
+        ?Options $openApiOptions = null
     ) {
         $this->openApiOptions = $openApiOptions ?: new Options('Alximy OpenApi Documentation');
     }
@@ -52,11 +53,11 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     {
         $collections = $this->resourceCollection->create();
         $baseUrl = $context[self::BASE_URL] ?? '/';
-        $contact = $this->openApiOptions->getContactUrl() === null || $this->openApiOptions->getContactEmail() === null ? null : new \ApiScout\OpenApi\Model\Contact($this->openApiOptions->getContactName(), $this->openApiOptions->getContactUrl(), $this->openApiOptions->getContactEmail());
-        $license = $this->openApiOptions->getLicenseName() === null ? null : new \ApiScout\OpenApi\Model\License($this->openApiOptions->getLicenseName(), $this->openApiOptions->getLicenseUrl());
-        $info = new \ApiScout\OpenApi\Model\Info($this->openApiOptions->getTitle(), $this->openApiOptions->getVersion(), trim($this->openApiOptions->getDescription()), $this->openApiOptions->getTermsOfService(), $contact, $license);
-        $servers = $baseUrl === '/' || $baseUrl === '' ? [new \ApiScout\OpenApi\Model\Server('/')] : [new \ApiScout\OpenApi\Model\Server($baseUrl)];
-        $paths = new \ApiScout\OpenApi\Model\Paths();
+        $contact = $this->openApiOptions->getContactUrl() === null || $this->openApiOptions->getContactEmail() === null ? null : new Model\Contact($this->openApiOptions->getContactName(), $this->openApiOptions->getContactUrl(), $this->openApiOptions->getContactEmail());
+        $license = $this->openApiOptions->getLicenseName() === null ? null : new Model\License($this->openApiOptions->getLicenseName(), $this->openApiOptions->getLicenseUrl());
+        $info = new Model\Info($this->openApiOptions->getTitle(), $this->openApiOptions->getVersion(), trim($this->openApiOptions->getDescription()), $this->openApiOptions->getTermsOfService(), $contact, $license);
+        $servers = $baseUrl === '/' || $baseUrl === '' ? [new Model\Server('/')] : [new Model\Server($baseUrl)];
+        $paths = new Model\Paths();
         $schemas = new ArrayObject();
 
         $this->collectPaths(
@@ -76,7 +77,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $info,
             $servers,
             $paths,
-            new \ApiScout\OpenApi\Model\Components(
+            new Model\Components(
                 $schemas,
                 new ArrayObject(),
                 new ArrayObject(),
@@ -90,9 +91,9 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     }
 
     private function collectPaths(
-        Operations                    $resource,
-        \ApiScout\OpenApi\Model\Paths $paths,
-        ArrayObject                   $schemas
+        Operations $resource,
+        Model\Paths $paths,
+        ArrayObject $schemas
     ): void {
         foreach ($resource->getOperations() as $operationName => $operation) {
             $openapiOperation = $operation->getOpenApi();
@@ -105,13 +106,13 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $resourceShortName = $this->normalizeClassName($operation->getClass());
             $method = $operation->getMethod();
 
-            if (!in_array($method, \ApiScout\OpenApi\Model\PathItem::$methods, true)) {
+            if (!in_array($method, Model\PathItem::$methods, true)) {
                 continue;
             }
 
             // Complete with defaults
-            $openapiOperationInitializer = new \ApiScout\OpenApi\Model\Operation();
-            $openapiOperation = new \ApiScout\OpenApi\Model\Operation(
+            $openapiOperationInitializer = new Model\Operation();
+            $openapiOperation = new Model\Operation(
                 operationId: $openapiOperationInitializer->getOperationId() !== null ? $openapiOperationInitializer->getOperationId() : $this->normalizeOperationName($operationName),
                 tags: $openapiOperationInitializer->getTags() !== null ? $openapiOperationInitializer->getTags() : [$resourceShortName],
                 responses: $openapiOperationInitializer->getResponses() !== null ? $openapiOperationInitializer->getResponses() : [],
@@ -128,7 +129,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             );
 
             $path = $operation->getPath();
-            $pathItem = $paths->getPath($path) ?: new \ApiScout\OpenApi\Model\PathItem();
+            $pathItem = $paths->getPath($path) ?: new Model\PathItem();
 
             $schema = new JsonSchema('openapi');
             $schema->setDefinitions($schemas);
@@ -165,7 +166,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 $this->appendSchemaDefinitions($schemas, $operationInputSchema);
 
                 $openapiOperation = $openapiOperation->withRequestBody(
-                    new \ApiScout\OpenApi\Model\RequestBody(
+                    new Model\RequestBody(
                         sprintf('The %s %s resource', $method === HttpOperation::METHOD_POST ? 'new' : 'updated', $resourceShortName),
                         $this->buildContent(
                             $operation
@@ -181,10 +182,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     }
 
     private function buildOpenApiResponse(
-        \ApiScout\OpenApi\Model\Operation $openapiOperation,
-        Operation                         $operation,
-        ArrayObject                       $schemas
-    ): \ApiScout\OpenApi\Model\Operation {
+        Model\Operation $openapiOperation,
+        Operation $operation,
+        ArrayObject $schemas
+    ): Model\Operation {
         $existingResponses = $openapiOperation->getResponses() ?: [];
         $resourceShortName = $this->normalizeClassName($operation->getClass());
 
@@ -253,7 +254,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             if (!isset($existingResponses[404])) {
                 $openapiOperation = $openapiOperation->withResponse(
                     404,
-                    new \ApiScout\OpenApi\Model\Response('Resource not found')
+                    new Model\Response('Resource not found')
                 );
             }
         }
@@ -261,7 +262,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         if ($openapiOperation->getResponses() === null) {
             $openapiOperation = $openapiOperation->withResponse(
                 'default',
-                new \ApiScout\OpenApi\Model\Response('Unexpected error')
+                new Model\Response('Unexpected error')
             );
         }
 
@@ -269,18 +270,18 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     }
 
     private function buildResponseContent(
-        int                               $status,
-        string                            $description,
-        ?Operation                        $operation,
-        \ApiScout\OpenApi\Model\Operation $openapiOperation,
-    ): \ApiScout\OpenApi\Model\Operation {
+        int $status,
+        string $description,
+        ?Operation $operation,
+        Model\Operation $openapiOperation,
+    ): Model\Operation {
         //        if ($operation) {
         //            $responseLinks = $this->getLinks($operations, $operation);
         //        }
 
         return $openapiOperation->withResponse(
             $status,
-            new \ApiScout\OpenApi\Model\Response(
+            new Model\Response(
                 $description,
                 $operation !== null ? $this->buildResponseSchema($operation) : null,
                 null,
@@ -290,20 +291,20 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     }
 
     /**
-     * @return ArrayObject<\ApiScout\OpenApi\Model\MediaType>
+     * @return ArrayObject<Model\MediaType>
      */
     private function buildContent(Operation $operation): ArrayObject
     {
         [$requestMimeTypes, $responseMimeTypes] = $this->getMimeTypes($operation);
 
-        /** @var ArrayObject<\ApiScout\OpenApi\Model\MediaType> $content */
+        /** @var ArrayObject<Model\MediaType> $content */
         $content = new ArrayObject();
         foreach ($requestMimeTypes as $mimeType => $type) {
             if ($operation->getInput() === null) {
                 continue;
             }
 
-            $content[$mimeType] = new \ApiScout\OpenApi\Model\MediaType(
+            $content[$mimeType] = new Model\MediaType(
                 new ArrayObject(
                     ['$ref' => '#/components/schemas/'.
                         $this->normalizeClassName($operation->getClass()).'.'.$this->normalizeClassName($operation->getInput()),
@@ -319,14 +320,14 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     {
         [$requestMimeTypes, $responseMimeTypes] = $this->getMimeTypes($operation);
 
-        /** @var ArrayObject<\ApiScout\OpenApi\Model\MediaType> $content */
+        /** @var ArrayObject<Model\MediaType> $content */
         $content = new ArrayObject();
         foreach ($responseMimeTypes as $mimeType => $type) {
             if ($operation->getOutput() === null) {
                 continue;
             }
 
-            $content[$mimeType] = new \ApiScout\OpenApi\Model\MediaType(
+            $content[$mimeType] = new Model\MediaType(
                 new ArrayObject(
                     [
                         '$ref' => '#/components/schemas/'.
@@ -356,7 +357,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
         foreach ($this->openApiOptions->getApiKeys() as $key => $apiKey) {
             $description = sprintf('Value for the %s %s parameter.', $apiKey['name'], $apiKey['type']);
-            $securitySchemes[$key] = new \ApiScout\OpenApi\Model\SecurityScheme('apiKey', $description, $apiKey['name'], $apiKey['type']);
+            $securitySchemes[$key] = new Model\SecurityScheme('apiKey', $description, $apiKey['name'], $apiKey['type']);
         }
 
         return $securitySchemes;
@@ -405,9 +406,9 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         return sprintf($pathSummary, $resourceShortName);
     }
 
-    private function getOauthSecurityScheme(): \ApiScout\OpenApi\Model\SecurityScheme
+    private function getOauthSecurityScheme(): Model\SecurityScheme
     {
-        $oauthFlow = new \ApiScout\OpenApi\Model\OAuthFlow(
+        $oauthFlow = new Model\OAuthFlow(
             $this->openApiOptions->getOAuthAuthorizationUrl(),
             $this->openApiOptions->getOAuthTokenUrl() ?: null,
             $this->openApiOptions->getOAuthRefreshUrl() ?: null,
@@ -445,10 +446,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 throw new LogicException('OAuth flow must be one of: implicit, password, clientCredentials, authorizationCode');
         }
 
-        return new \ApiScout\OpenApi\Model\SecurityScheme(
+        return new Model\SecurityScheme(
             type: $this->openApiOptions->getOAuthType(),
             description: $description,
-            flows: new \ApiScout\OpenApi\Model\OAuthFlows($implicit, $password, $clientCredentials, $authorizationCode),
+            flows: new Model\OAuthFlows($implicit, $password, $clientCredentials, $authorizationCode),
         );
     }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http;
 
-use ApiScout\Http\AbstractResponse;
+use ApiScout\OpenApi\Http\AbstractResponse;
 use Assert\Assertion;
 use PHPUnit\Framework\Assert;
 

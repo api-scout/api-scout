@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\EventListener;
 
-use ApiScout\Http\AbstractResponse;
+use ApiScout\OpenApi\Http\AbstractResponse;
 use ApiScout\OpenApi\OpenApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
