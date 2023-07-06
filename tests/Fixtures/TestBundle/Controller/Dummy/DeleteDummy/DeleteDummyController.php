@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DeleteDummy;
 
-use ApiScout\Core\Domain\Attribute\Delete;
+use ApiScout\Attribute\Delete;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

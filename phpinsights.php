@@ -57,13 +57,13 @@ return [
         \NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class => [
             'exclude' => [
 				'src/Core/Domain/Utils/DirectoryClassExtractor.php',
-				'src/Core/Infrastructure/Symfony/EventListener/AddFormatListener.php'
+				'src/Core/Bridge/Symfony/EventListener/AddFormatListener.php'
             ],
             'maxComplexity' => 7,
         ],
         \SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff::class => [
             'exclude' => [
-                'src/Core/Infrastructure/Symfony/Routing/ApiLoader.php',
+                'src/Core/Bridge/Symfony/Routing/ApiLoader.php',
 				'src/Kernel.php'
             ],
         ],
@@ -75,7 +75,7 @@ return [
             'exclude' => [
 				'src/Core/Domain/OpenApi/JsonSchema/PropertyTypeBuilderTrait.php',
 				'src/Core/Domain/Utils/DirectoryClassExtractor.php',
-				'src/Core/Infrastructure/Symfony/EventListener/AddFormatListener.php',
+				'src/Core/Bridge/Symfony/EventListener/AddFormatListener.php',
             ],
             'maxLinesLength' => 30,
         ],

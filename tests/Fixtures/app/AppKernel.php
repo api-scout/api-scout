@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\app;
 
-use ApiScout\Core\Infrastructure\Symfony\Bundle\ApiScoutBundle;
+use ApiScout\Bridge\Symfony\Bundle\ApiScoutBundle;
 use ApiScout\Tests\Fixtures\TestBundle\TestBundle;
 use FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;

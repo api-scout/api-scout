@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetDummy;
 
-use ApiScout\Core\Domain\Attribute\Get;
+use ApiScout\Attribute\Get;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;

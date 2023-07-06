@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionDummy;
 
-use ApiScout\Core\Domain\Pagination\Paginator;
-use ApiScout\Core\Domain\Pagination\PaginatorInterface;
+use ApiScout\Pagination\Paginator;
+use ApiScout\Pagination\PaginatorInterface;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
 
 /**

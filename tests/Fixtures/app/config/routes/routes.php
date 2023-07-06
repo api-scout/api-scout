@@ -11,8 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use ApiScout\Core\Infrastructure\Symfony\Bundle\SwaggerUi\SwaggerJsonAction;
-use ApiScout\Core\Infrastructure\Symfony\Bundle\SwaggerUi\SwaggerUiAction;
+use ApiScout\Bridge\Symfony\Bundle\SwaggerUi\SwaggerJsonAction;
+use ApiScout\Bridge\Symfony\Bundle\SwaggerUi\SwaggerUiAction;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes): void {

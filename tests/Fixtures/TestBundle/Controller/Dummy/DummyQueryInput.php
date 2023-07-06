@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy;
 
-use ApiScout\Core\Domain\Attribute\ApiProperty;
+use ApiScout\Attribute\ApiProperty;
 
 final class DummyQueryInput
 {

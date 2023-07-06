@@ -15,12 +15,12 @@ parameters:
         - tests
     excludePaths:
         - %currentWorkingDirectory%/tests/Fixtures/app/var
-        - %currentWorkingDirectory%/src/Core/Infrastructure/Symfony/Bundle/DependencyInjection/Configuration.php
+        - %currentWorkingDirectory%/src/Core/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php
     ignoreErrors:
         -
           messages:
             - '#Call to an undefined method ApiScout\\Core\\Domain\\Operation::get[a-zA-Z]+\(\)#'
           paths:
-            - src/Core/Infrastructure/Symfony/Routing
+            - src/Core/Bridge/Symfony/Routing
         - '#Short ternary operator is not allowed. Use null coalesce operator if applicable or consider using long ternary.#'
         - '#ApiScout\\Tests\\Fixtures\\app\\AppKernel::get[a-zA-Z]+\(\) is unused.#'

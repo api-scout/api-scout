@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyAttribute;
 
-use ApiScout\Core\Domain\Attribute\ApiProperty;
-use ApiScout\Core\Domain\Attribute\Delete;
-use ApiScout\Core\Domain\Attribute\Get;
-use ApiScout\Core\Domain\Attribute\GetCollection;
-use ApiScout\Core\Domain\Attribute\Patch;
-use ApiScout\Core\Domain\Attribute\Post;
-use ApiScout\Core\Domain\Attribute\Put;
+use ApiScout\Attribute\ApiProperty;
+use ApiScout\Attribute\Delete;
+use ApiScout\Attribute\Get;
+use ApiScout\Attribute\GetCollection;
+use ApiScout\Attribute\Patch;
+use ApiScout\Attribute\Post;
+use ApiScout\Attribute\Put;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 

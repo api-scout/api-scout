@@ -19,8 +19,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 // Put parameters here that don't need to change on each machine where the app is deployed
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 
-use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactory;
-use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\Resource\Factory\ResourceCollectionFactory;
+use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use ApiScout\Tests\Behat\Symfony\HttpClient\Client;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 

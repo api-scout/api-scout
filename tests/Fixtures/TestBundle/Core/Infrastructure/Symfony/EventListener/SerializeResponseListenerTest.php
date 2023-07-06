@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Core\Infrastructure\Symfony\EventListener;
 
-use ApiScout\Core\Domain\Pagination\Factory\PaginatorRequestFactoryInterface;
-use ApiScout\Core\Domain\Resource\Factory\ResourceCollectionFactoryInterface;
-use ApiScout\Core\Infrastructure\Symfony\EventListener\SerializeResponseListener;
+use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
+use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
+use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use function defined;
 
 final class SerializeResponseListenerTest extends TestCase

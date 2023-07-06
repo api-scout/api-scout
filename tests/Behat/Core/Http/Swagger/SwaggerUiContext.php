@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\Swagger;
 
-use ApiScout\Core\Domain\HttpOperation;
+use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
 final class SwaggerUiContext extends BaseContext

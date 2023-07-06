@@ -87,7 +87,7 @@ $finder = Finder::create()
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
     ->notPath('bootstrap.php')
-    ->notPath(__DIR__.'/src/Core/Infrastructure/Symfony/Bundle/DependencyInjection/Configuration.php')
+    ->notPath(__DIR__.'/src/Core/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php')
     ->notPath(__DIR__.'/tests/Fixtures/app/var')
 ;
 

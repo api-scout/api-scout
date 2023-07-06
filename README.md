@@ -12,13 +12,12 @@ composer require digital-source/api-scout dev-main
 ```
 
 ```php
-# config/bundles.php
-
 <?php
+# config/bundles.php
 
 return [
     // ...
-    ApiScout\Core\Infrastructure\Symfony\Bundle\ApiScoutBundle::class => ['all' => true]
+    ApiScout\Bridge\Symfony\Bundle\ApiScoutBundle::class => ['all' => true]
 ];
 ```
 
