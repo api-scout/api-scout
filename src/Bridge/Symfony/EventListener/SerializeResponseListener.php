@@ -27,7 +27,8 @@ final class SerializeResponseListener
     public function __construct(
         private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
         private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
-        private readonly NormalizerInterface $apiNormalizer
+        private readonly NormalizerInterface $apiNormalizer,
+        private readonly string $responseItemKey
     ) {
     }
 
@@ -87,7 +88,7 @@ final class SerializeResponseListener
 
         $event->setResponse(
             new JsonResponse(
-                data: ['data' => $this->apiNormalizer->normalize($controllerResult)],
+                data: [$this->responseItemKey => $this->apiNormalizer->normalize($controllerResult)],
                 status: $operation->getStatusCode()
             ),
         );

@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-// This file is the entry point to configure your own services.
-// Files in the packages/ subdirectory configure your dependencies.
-
-// Put parameters here that don't need to change on each machine where the app is deployed
-// https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 use ApiScout\Bridge\Symfony\EventListener\AddFormatListener;
 use ApiScout\Bridge\Symfony\EventListener\ApiLoaderResponseListener;
 use ApiScout\Bridge\Symfony\EventListener\EmptyPayloadExceptionListener;
@@ -62,6 +57,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$resourceCollectionFactory', service(ResourceCollectionFactoryInterface::class))
         ->arg('$paginatorRequestFactory', service(PaginatorRequestFactoryInterface::class))
         ->arg('$apiNormalizer', service('api_scout.openapi.normalizer'))
+        ->arg('$responseItemKey', param('api_scout.response_item_key'))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 15])
     ;
 
