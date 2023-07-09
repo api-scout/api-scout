@@ -18,16 +18,19 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 // Put parameters here that don't need to change on each machine where the app is deployed
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+use ApiScout\Documentation\Action\DocumentationAction;
+use ApiScout\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiScout\Resource\Factory\ResourceCollectionFactory;
 use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
-use Negotiation\Negotiator;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
         ->defaults()
     ;
-
     $services
-        ->set('api_scout.infrastructure.negotiator', Negotiator::class)
+        ->set('api_scout.resource.resource_collection_factory', ResourceCollectionFactory::class)
+        ->arg('$path', param('api_scout.path'))
     ;
+
+    $services->alias(ResourceCollectionFactoryInterface::class, 'api_scout.resource.resource_collection_factory');
 };
