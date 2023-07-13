@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
 {
     private readonly Request $request;
-    private readonly Operation $operation;
 
     public function __construct(
         private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
@@ -35,7 +34,6 @@ final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
         }
 
         $this->request = $requestStack->getCurrentRequest();
-        $this->operation = $this->getOperationFromRequest();
     }
 
     public function getCurrentPage(): int
@@ -51,20 +49,16 @@ final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
 
     public function getItemsPerPage(): int
     {
-        return $this->operation->getPaginationItemsPerPage() ?? $this->paginationOptions->getPaginationItemsPerPage();
+        return $this->getOperationFromRequest()
+            ->getPaginationItemsPerPage() ?? $this->paginationOptions->getPaginationItemsPerPage();
     }
 
     public function isPaginationEnabled(): bool
     {
-        return $this->operation->isPaginationEnabled();
-        //        if ($operation->isPaginationEnabled()) {
-        //            return true;
-        //        }
-        //
-        //        return $this->paginationOptions->isPaginationEnabled();
+        return $this->getOperationFromRequest()->isPaginationEnabled();
     }
 
-    public function getOperationFromRequest(): Operation
+    private function getOperationFromRequest(): Operation
     {
         if (!$this->request->attributes->has('_controller_class')
             && !$this->request->attributes->has('_route_name')

@@ -22,6 +22,4 @@ interface PaginatorRequestFactoryInterface
     public function getItemsPerPage(): int;
 
     public function isPaginationEnabled(): bool;
-
-    public function getOperationFromRequest(): Operation;
 }
