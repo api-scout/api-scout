@@ -21,14 +21,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class GetDummyController extends AbstractController
 {
-    #[Get(
-        path: '/dummies/{id}',
-        name: 'app_get_dummy',
-        tag: Dummy::class
-    )]
-    public function __invoke(
-        int $id,
-    ): DummyOutput {
+    #[Get('/dummies/{id}', name: 'app_get_dummy', tag: Dummy::class)]
+    public function __invoke(int $id): DummyOutput
+    {
         return new DummyOutput(
             1,
             'Pink',
