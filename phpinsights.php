@@ -41,10 +41,6 @@ return [
         \PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\TodoSniff::class,
     ],
     'config' => [
-        \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses::class => [
-            'exclude' => [
-            ],
-        ],
         \PhpCsFixer\Fixer\Import\OrderedImportsFixer::class => [
             'imports_order' => ['class', 'function', 'const'],
             'sort_algorithm' => 'alpha',
@@ -56,15 +52,14 @@ return [
         ],
         \NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class => [
             'exclude' => [
-				'src/Core/Domain/Utils/DirectoryClassExtractor.php',
-				'src/Core/Bridge/Symfony/EventListener/AddFormatListener.php'
+                'src/Resource/DirectoryClassesExtractor.php',
+				'src/Bridge/Symfony/EventListener/AddFormatListener.php'
             ],
             'maxComplexity' => 7,
         ],
         \SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff::class => [
             'exclude' => [
-                'src/Core/Bridge/Symfony/Routing/ApiLoader.php',
-				'src/Kernel.php'
+                'src/Bridge/Symfony/Routing/ApiLoader.php',
             ],
         ],
         \SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff::class => [
@@ -73,20 +68,15 @@ return [
         ],
         \SlevomatCodingStandard\Sniffs\Functions\FunctionLengthSniff::class => [
             'exclude' => [
-				'src/Core/Domain/OpenApi/JsonSchema/PropertyTypeBuilderTrait.php',
-				'src/Core/Domain/Utils/DirectoryClassExtractor.php',
-				'src/Core/Bridge/Symfony/EventListener/AddFormatListener.php',
+				'src/OpenApi/JsonSchema/PropertyTypeBuilderTrait.php',
+				'src/Resource/DirectoryClassesExtractor.php',
+				'src/Bridge/Symfony/EventListener/AddFormatListener.php',
             ],
             'maxLinesLength' => 30,
         ],
-        \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineFunctions::class => [
-            'exclude' => [
-                'src/Core/Domain/Enum',
-            ],
-        ],
         \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses::class => [
             'exclude' => [
-                'src/Core/Domain/Pagination/Paginator.php',
+                'src/Pagination/Paginator.php',
             ],
         ],
     ],
