@@ -18,11 +18,6 @@ use Countable;
 use function array_slice;
 use function count;
 
-/**
- * @template ITEM of object
- *
- * @implements \IteratorAggregate<ITEM>
- */
 class Paginator implements Countable, PaginatorInterface
 {
     protected string $type;
@@ -87,6 +82,7 @@ class Paginator implements Countable, PaginatorInterface
      */
     private function isValidPageNumber(int $page): bool
     {
+        /** @phpstan-ignore-next-line filter_var might return false */
         return $page >= 1 && filter_var($page, \FILTER_VALIDATE_INT) !== false;
     }
 }

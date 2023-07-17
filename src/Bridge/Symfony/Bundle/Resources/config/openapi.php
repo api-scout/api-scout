@@ -81,10 +81,6 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$resourceCollection', service(ResourceCollectionFactoryInterface::class))
         ->arg('$schemaFactory', service(SchemaFactoryInterface::class))
         ->arg('$filterFactory', service(FilterFactoryInterface::class))
-        ->arg(
-            '$paginationOptions',
-            expr("service('ApiScout\\\\OpenApi\\\\PaginationOptionsConfigurator').getPaginationOptions()")
-        )
         ->arg('$openApiOptions', service(Options::class))
     ;
 

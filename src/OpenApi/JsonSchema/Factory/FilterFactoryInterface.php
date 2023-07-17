@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi\JsonSchema\Factory;
 
 use ApiScout\Attribute\ApiProperty;
+use ApiScout\OpenApi\Model\Operation;
 
 interface FilterFactoryInterface
 {
@@ -23,6 +24,6 @@ interface FilterFactoryInterface
     public function buildUriParams(
         string $type,
         array $uriParams,
-        \ApiScout\OpenApi\Model\Operation $openapiOperation
-    ): \ApiScout\OpenApi\Model\Operation;
+        Operation $openapiOperation
+    ): Operation;
 }

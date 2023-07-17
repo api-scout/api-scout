@@ -69,6 +69,7 @@ final class FilterFactory implements FilterFactoryInterface
 
     private function hasParameter(Model\Operation $operation, Model\Parameter $parameter): bool
     {
+        /** @phpstan-ignore-next-line up to this point getParameters should be iterable */
         foreach ($operation->getParameters() as $existingParameter) {
             if ($existingParameter->getName() === $parameter->getName() && $existingParameter->getIn() === $parameter->getIn()) {
                 return true;

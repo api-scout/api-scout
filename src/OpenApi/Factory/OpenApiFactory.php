@@ -44,7 +44,6 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         private readonly ResourceCollectionFactoryInterface $resourceCollection,
         private readonly SchemaFactoryInterface $schemaFactory,
         private readonly FilterFactoryInterface $filterFactory,
-        private readonly Model\PaginationOptions $paginationOptions,
         ?Options $openApiOptions = null
     ) {
         $this->openApiOptions = $openApiOptions ?: new Options('Alximy OpenApi Documentation');
@@ -161,6 +160,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     true
                 )) {
                 $operationInputSchema = $this->schemaFactory->buildSchema(
+                /** @phpstan-ignore-next-line up to this point if input is set then it has a class-string */
                     $operation->getInput(),
                     $operation->getTag()
                 );
