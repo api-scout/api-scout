@@ -35,7 +35,8 @@ final class SerializeResponseListenerTest extends TestCase
         $listener = new SerializeResponseListener(
             $resourceCollectionFactory,
             $paginatorRequestFactory,
-            $normalizer
+            $normalizer,
+            'data'
         );
 
         $event = new ViewEvent(
