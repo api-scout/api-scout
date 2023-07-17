@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace ApiScout\Pagination\Factory;
 
-use ApiScout\Operation;
-
 interface PaginatorRequestFactoryInterface
 {
     public function getCurrentPage(): int;

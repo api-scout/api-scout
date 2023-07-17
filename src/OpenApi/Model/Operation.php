@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi\Model;
 
 use ArrayObject;
+
 use function is_array;
 
 final class Operation

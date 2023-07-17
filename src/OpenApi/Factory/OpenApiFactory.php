@@ -29,6 +29,7 @@ use ApiScout\Operations;
 use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use ArrayObject;
 use LogicException;
+
 use function in_array;
 
 final class OpenApiFactory implements OpenApiFactoryInterface

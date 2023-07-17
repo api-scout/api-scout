@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Pagination;
 
 use Countable;
+
 use function array_slice;
 use function count;
 

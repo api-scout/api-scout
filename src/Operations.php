@@ -17,6 +17,7 @@ use Countable;
 use Generator;
 use IteratorAggregate;
 use Traversable;
+
 use function count;
 
 final class Operations implements IteratorAggregate, Countable

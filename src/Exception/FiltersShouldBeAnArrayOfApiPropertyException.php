@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Exception;
 
 use Exception;
+
 use function gettype;
 
 /**

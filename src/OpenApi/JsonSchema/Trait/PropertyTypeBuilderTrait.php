@@ -22,6 +22,7 @@ use SplFileInfo;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
+
 use function is_string;
 
 trait PropertyTypeBuilderTrait
