@@ -19,6 +19,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 // Put parameters here that don't need to change on each machine where the app is deployed
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 
+use ApiScout\Resource\DirectoryClassesExtractor;
 use ApiScout\Resource\Factory\ResourceCollectionFactory;
 use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use ApiScout\Tests\Behat\Symfony\HttpClient\Client;
@@ -54,9 +55,7 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services
-        ->set('api_scout.resource.resource_collection_factory', ResourceCollectionFactory::class)
+        ->set('api_scout.resource.directory_class_extractor', DirectoryClassesExtractor::class)
         ->arg('$path', __DIR__.'/../../TestBundle/Controller')
     ;
-
-    $services->alias(ResourceCollectionFactoryInterface::class, 'api_scout.resource.resource_collection_factory');
 };

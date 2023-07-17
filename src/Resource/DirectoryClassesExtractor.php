@@ -23,13 +23,18 @@ use function count;
 use function defined;
 use function in_array;
 
-final class DirectoryClassExtractor
+final class DirectoryClassesExtractor
 {
-    public static function extract(string $dir): array
+    public function __construct(
+        private readonly string $path
+    ) {
+    }
+
+    public function extract(): array
     {
         $files = iterator_to_array(new RecursiveIteratorIterator(
             new RecursiveCallbackFilterIterator(
-                new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS),
+                new RecursiveDirectoryIterator($this->path, FilesystemIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS),
                 static fn (SplFileInfo $current) => !str_starts_with($current->getBasename(), '.')
             ),
             RecursiveIteratorIterator::LEAVES_ONLY
@@ -55,7 +60,7 @@ final class DirectoryClassExtractor
         return $classes;
     }
 
-    private static function buildClass(string $file): string|false
+    private function buildClass(string $file): string|false
     {
         $class = false;
         $namespace = false;

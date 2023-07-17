@@ -18,7 +18,7 @@ use ApiScout\Exception\ParamShouldBeTypedException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Operation;
 use ApiScout\Operations;
-use ApiScout\Resource\DirectoryClassExtractor;
+use ApiScout\Resource\DirectoryClassesExtractor;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
@@ -30,13 +30,13 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 final class ResourceCollectionFactory implements ResourceCollectionFactoryInterface
 {
     public function __construct(
-        private readonly string $path
+        private readonly DirectoryClassesExtractor $directoryClassExtractor
     ) {
     }
 
     public function create(): Operations
     {
-        $classes = DirectoryClassExtractor::extract($this->path);
+        $classes = $this->directoryClassExtractor->extract();
 
         $operations = new Operations();
 
