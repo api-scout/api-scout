@@ -36,7 +36,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
 
         $loader = new PhpFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/config'),
+            new FileLocator(__DIR__.'/../Resources/config'),
             $env
         );
 

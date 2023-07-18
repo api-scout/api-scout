@@ -50,7 +50,8 @@ final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
     public function getItemsPerPage(): int
     {
         return $this->getOperationFromRequest()
-            ->getPaginationItemsPerPage() ?? $this->paginationOptions->getPaginationItemsPerPage();
+            ->getPaginationItemsPerPage() ?? $this->paginationOptions->getPaginationItemsPerPage()
+        ;
     }
 
     public function isPaginationEnabled(): bool

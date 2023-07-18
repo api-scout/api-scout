@@ -20,8 +20,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 
 use ApiScout\Resource\DirectoryClassesExtractor;
-use ApiScout\Resource\Factory\ResourceCollectionFactory;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use ApiScout\Tests\Behat\Symfony\HttpClient\Client;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 

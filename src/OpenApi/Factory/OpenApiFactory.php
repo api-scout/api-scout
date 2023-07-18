@@ -160,7 +160,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     true
                 )) {
                 $operationInputSchema = $this->schemaFactory->buildSchema(
-                /** @phpstan-ignore-next-line up to this point if input is set then it has a class-string */
+                    /** @phpstan-ignore-next-line up to this point if input is set then it has a class-string */
                     $operation->getInput(),
                     $operation->getTag()
                 );
