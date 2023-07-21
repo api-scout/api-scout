@@ -19,6 +19,7 @@ use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Operation;
 use ApiScout\Operations;
 use ApiScout\Resource\DirectoryClassesExtractor;
+use PhpDocReader\PhpDocReader;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
@@ -123,19 +124,9 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
         $queryClass = new ReflectionClass($inputClassName->getName());
 
         foreach ($queryClass->getProperties() as $property) {
-            $apiProperty = $this->buildApiProperty(
-                $property->getAttributes()
+            $apiProperties[$property->getName()] = $this->buildApiProperty(
+                $property
             );
-            if ($apiProperty === null) {
-                $apiProperty = new ApiProperty(
-                    name: $property->getName(),
-                    /** @phpstan-ignore-next-line getName will exist if getType is a ReflectionNamedType */
-                    type: !$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string',
-                    required: $property->getType() !== null ? $property->getType()->allowsNull() : true
-                );
-            }
-
-            $apiProperties[$property->getName()] = $apiProperty;
         }
 
         return $apiProperties;
@@ -170,12 +161,9 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
         return null;
     }
 
-    /**
-     * @param array<ReflectionAttribute> $propertyAttributes
-     */
-    private function buildApiProperty(array $propertyAttributes): ?ApiProperty
+    private function buildApiProperty(\ReflectionProperty $property): ApiProperty
     {
-        foreach ($propertyAttributes as $attribute) {
+        foreach ($property->getAttributes() as $attribute) {
             if ($attribute->getName() === ApiProperty::class) {
                 /**
                  * @var ApiProperty
@@ -184,7 +172,12 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
             }
         }
 
-        return null;
+        return new ApiProperty(
+            name: $property->getName(),
+            /** @phpstan-ignore-next-line getName will exist if getType is a ReflectionNamedType */
+            type: !$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string',
+            required: $property->getType() !== null ? $property->getType()->allowsNull() : true
+        );
     }
 
     /**
