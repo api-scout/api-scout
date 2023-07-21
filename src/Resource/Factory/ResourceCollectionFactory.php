@@ -183,7 +183,7 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
             ,
             required: $apiProperty->isRequired() !== null
                 ? $apiProperty->isRequired()
-                : ($property->getType() !== null ? !$property->getType()->allowsNull() : false)
+                : ($property->getType() !== null && !$property->getType()->allowsNull())
             ,
             description: $apiProperty->getDescription(),
             deprecated: $apiProperty->isDeprecated()
