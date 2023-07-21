@@ -18,8 +18,9 @@ use ApiScout\Attribute\ApiProperty;
 final class DummyQueryInput
 {
     public function __construct(
-        #[ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion')]
+        #[ApiProperty(description: 'The name of the champion')]
         public readonly ?string $name = '',
+        /** @var string|null $city The name of the city */
         public readonly ?string $city = '',
         #[ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate')]
         public readonly int $page = 1,

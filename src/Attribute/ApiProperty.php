@@ -19,30 +19,30 @@ use Attribute;
 final class ApiProperty
 {
     public function __construct(
-        private readonly string $name,
-        private readonly string $type = 'string',
-        private readonly bool $required = true,
-        private readonly ?string $description = null,
+        private readonly ?string $name = null,
+        private readonly ?string $type = null,
+        private readonly ?bool $required = null,
+        private readonly string $description = '',
         private readonly bool $deprecated = false,
     ) {
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function isRequired(): bool
+    public function isRequired(): ?bool
     {
         return $this->required;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }

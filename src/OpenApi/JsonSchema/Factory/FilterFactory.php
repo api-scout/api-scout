@@ -30,10 +30,10 @@ final class FilterFactory implements FilterFactoryInterface
     ): Model\Operation {
         foreach ($uriParams as $uriParam) {
             $parameter = new Model\Parameter(
-                $uriParam->getName(),
+                $uriParam->getName() ?? throw new \LogicException('Name should not be null.'),
                 $type,
-                $uriParam->getDescription() ?? '',
-                $uriParam->isRequired(),
+                $uriParam->getDescription(),
+                $uriParam->isRequired() ?? true,
                 $uriParam->isDeprecated(),
                 false,
                 $this->getClassType($uriParam->getType())

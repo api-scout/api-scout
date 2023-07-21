@@ -40,7 +40,7 @@ final class GetCollectionDummyContext extends BaseContext
         Assert::assertSame('city', $parameters[1]['name']);
         Assert::assertSame('query', $parameters[1]['in']);
         Assert::assertSame('', $parameters[1]['description']);
-        Assert::assertSame(true, $parameters[1]['required']);
+        Assert::assertSame(false, $parameters[1]['required']);
         Assert::assertSame(false, $parameters[1]['deprecated']);
         Assert::assertSame('string', $parameters[1]['schema']['type']);
 

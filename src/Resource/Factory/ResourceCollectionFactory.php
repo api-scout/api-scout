@@ -163,20 +163,30 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
 
     private function buildApiProperty(\ReflectionProperty $property): ApiProperty
     {
+        $apiProperty = new ApiProperty();
+
         foreach ($property->getAttributes() as $attribute) {
             if ($attribute->getName() === ApiProperty::class) {
                 /**
-                 * @var ApiProperty
+                 * @var ApiProperty $apiProperty
                  */
-                return $attribute->newInstance();
+                $apiProperty = $attribute->newInstance();
             }
         }
 
         return new ApiProperty(
-            name: $property->getName(),
-            /** @phpstan-ignore-next-line getName will exist if getType is a ReflectionNamedType */
-            type: !$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string',
-            required: $property->getType() !== null ? $property->getType()->allowsNull() : true
+            name: $apiProperty->getName() !== null ? $apiProperty->getName() : $property->getName(),
+            type: $apiProperty->getType() !== null
+                ? $apiProperty->getType()
+                /** @phpstan-ignore-next-line getName will exist if getType is a ReflectionNamedType */
+                : (!$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string')
+            ,
+            required: $apiProperty->isRequired() !== null
+                ? $apiProperty->isRequired()
+                : ($property->getType() !== null ? !$property->getType()->allowsNull() : false)
+            ,
+            description: $apiProperty->getDescription(),
+            deprecated: $apiProperty->isDeprecated()
         );
     }
 
