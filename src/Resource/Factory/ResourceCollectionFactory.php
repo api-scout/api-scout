@@ -19,12 +19,12 @@ use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Operation;
 use ApiScout\Operations;
 use ApiScout\Resource\DirectoryClassesExtractor;
-use PhpDocReader\PhpDocReader;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionProperty;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
@@ -161,7 +161,7 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
         return null;
     }
 
-    private function buildApiProperty(\ReflectionProperty $property): ApiProperty
+    private function buildApiProperty(ReflectionProperty $property): ApiProperty
     {
         $apiProperty = new ApiProperty();
 
@@ -179,12 +179,10 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
             type: $apiProperty->getType() !== null
                 ? $apiProperty->getType()
                 /** @phpstan-ignore-next-line getName will exist if getType is a ReflectionNamedType */
-                : (!$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string')
-            ,
+                : (!$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string'),
             required: $apiProperty->isRequired() !== null
                 ? $apiProperty->isRequired()
-                : ($property->getType() !== null && !$property->getType()->allowsNull())
-            ,
+                : ($property->getType() !== null && !$property->getType()->allowsNull()),
             description: $apiProperty->getDescription(),
             deprecated: $apiProperty->isDeprecated()
         );
@@ -208,6 +206,7 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
                         /** @phpstan-ignore-next-line getName is an existing method */
                         type: $parameter->getType() !== null ? $parameter->getType()->getName() : 'string',
                         required: !$parameter->isOptional(),
+                        description: 'Uri parameter',
                     );
                 }
             }
