@@ -30,13 +30,13 @@ final class FilterFactory implements FilterFactoryInterface
     ): Model\Operation {
         foreach ($uriParams as $uriParam) {
             $parameter = new Model\Parameter(
-                $uriParam->getName() ?? throw new \LogicException('Name should not be null.'),
+                $uriParam->getName() ?? '',
                 $type,
                 $uriParam->getDescription(),
                 $uriParam->isRequired() ?? true,
                 $uriParam->isDeprecated(),
                 false,
-                $this->getClassType($uriParam->getType())
+                $this->getClassType($uriParam->getType() ?? 'string')
             );
 
             if ($this->hasParameter($openapiOperation, $parameter)) {

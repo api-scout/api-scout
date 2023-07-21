@@ -28,6 +28,7 @@ class Paginator implements Countable, PaginatorInterface
         protected readonly iterable $items,
         int $currentPage,
         protected readonly int $itemsPerPage,
+        // RAJOUTER LE COUNT DE LA REQUEST ICI
     ) {
         $this->currentPage = $this->setCurrentPage($currentPage);
     }
