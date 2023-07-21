@@ -17,7 +17,6 @@ use ApiScout\OpenApi\Model\Paths;
 use ApiScout\OpenApi\OpenApi;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 use function is_array;
@@ -25,18 +24,15 @@ use function is_array;
 /**
  * Generates an OpenAPI v3 specification.
  */
-// #[AsDecorator(decorates: NormalizerInterface::class)]
-// #[AutoconfigureTag('serializer.normalizer', ['priority' => '-795'])]
-final class OpenApiNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+final class OpenApiNormalizer implements NormalizerInterface
 {
     public const FORMAT = 'json';
+
     private const EXTENSION_PROPERTIES_KEY = 'extensionProperties';
 
     public function __construct(
-        //        private readonly ObjectNormalizer $decorated
         private readonly NormalizerInterface $decorated
     ) {
-        //      dd($decorated);
     }
 
     /**
@@ -65,9 +61,11 @@ final class OpenApiNormalizer implements NormalizerInterface, CacheableSupportsM
         return $data instanceof OpenApi;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return [
+            OpenApi::class => true,
+        ];
     }
 
     private function recursiveClean(array $data): array
