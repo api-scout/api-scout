@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\Routing;
 
+use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\RuntimeException;
 use ApiScout\HttpOperation;
 use ApiScout\Operations;
@@ -42,8 +43,8 @@ final class ApiLoader extends Loader
 
         $routeCollection = new RouteCollection();
         foreach ($operations->getOperations() as $operation) {
-            if (!$this->container->has($operation->getController())) {
-                throw new RuntimeException(sprintf('There is no builtin action for the "%s" operation. You need to define the controller yourself.', $operation->getName()));
+            if (!class_exists($operation->getController())) {
+                throw new ResourceClassNotFoundException($operation->getController());
             }
 
             $controller = $operation->getControllerMethod() === '__invoke'
