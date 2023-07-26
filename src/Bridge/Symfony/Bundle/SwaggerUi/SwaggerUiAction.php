@@ -83,6 +83,10 @@ final class SwaggerUiAction
      */
     private function getPathAndMethod(array $swaggerData): array
     {
+        if ($swaggerData['spec']['paths'] === []) {
+            return ['', ''];
+        }
+
         foreach ($swaggerData['spec']['paths'] as $path => $operations) {
             foreach ($operations as $method => $operation) {
                 if ($operation['operationId'] ?? null) {
