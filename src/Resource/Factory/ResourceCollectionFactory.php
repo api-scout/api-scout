@@ -19,6 +19,7 @@ use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Operation;
 use ApiScout\Operations;
 use ApiScout\Resource\DirectoryClassesExtractor;
+use LogicException;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
@@ -27,6 +28,9 @@ use ReflectionParameter;
 use ReflectionProperty;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+
+use function function_exists;
+use function is_int;
 
 final class ResourceCollectionFactory implements ResourceCollectionFactoryInterface
 {
@@ -58,7 +62,7 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
                     $operation = $this->buildOperationFromMethod($method, $controller);
 
                     if ($operation->getName() === null) {
-                        throw new \LogicException('Operation name should have been initialized before hand.');
+                        throw new LogicException('Operation name should have been initialized before hand.');
                     }
 
                     $operations->add($operation->getName(), $operation);
@@ -172,15 +176,13 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
         return null;
     }
 
-    protected function getDefaultRouteName(string $class, string $method): string
+    private function getDefaultRouteName(string $class, string $method): string
     {
         $name = str_replace('\\', '_', $class).'_'.$method;
-        $name = \function_exists('mb_strtolower') && is_int(preg_match('//u', $name))
-            ? mb_strtolower($name, 'UTF-8')
-            : strtolower($name)
-        ;
 
-        return $name;
+        return function_exists('mb_strtolower') && is_int(preg_match('//u', $name))
+            ? mb_strtolower($name, 'UTF-8')
+            : strtolower($name);
     }
 
     private function buildApiProperty(ReflectionProperty $property): ApiProperty
