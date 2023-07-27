@@ -22,7 +22,7 @@ final class Delete extends HttpOperation
 {
     public function __construct(
         string $path,
-        string $name,
+        ?string $name = null,
         ?string $input = null,
         ?string $output = null,
         int $statusCode = AbstractResponse::HTTP_NO_CONTENT,

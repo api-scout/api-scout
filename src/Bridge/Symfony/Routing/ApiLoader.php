@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace ApiScout\Bridge\Symfony\Routing;
 
 use ApiScout\Exception\ResourceClassNotFoundException;
-use ApiScout\Exception\RuntimeException;
 use ApiScout\HttpOperation;
 use ApiScout\Operations;
 use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use LogicException;
 use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -28,8 +27,7 @@ final class ApiLoader extends Loader
 {
     public function __construct(
         KernelInterface $kernel,
-        private readonly ResourceCollectionFactoryInterface $resourceCollection,
-        private readonly ContainerInterface $container
+        private readonly ResourceCollectionFactoryInterface $resourceCollection
     ) {
         parent::__construct($kernel->getEnvironment());
     }
@@ -50,6 +48,10 @@ final class ApiLoader extends Loader
             $controller = $operation->getControllerMethod() === '__invoke'
                 ? $operation->getController()
                 : $operation->getController().'::'.$operation->getControllerMethod();
+
+            if ($operation->getName() === null) {
+                throw new LogicException('Operation name should have been initialized before hand.');
+            }
 
             $route = new Route(
                 $operation->getPath(),

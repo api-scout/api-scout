@@ -60,7 +60,11 @@ final class Operations implements IteratorAggregate, Countable
     public function getIterator(): Traversable
     {
         return (function (): Generator {
-            foreach ($this->operations as [$operationName, $operation]) {
+            //            foreach ($this->operations as $operationName => $operation) {
+            //                dump($operationName);
+            //            }
+            //          die;
+            foreach ($this->operations as $operationName => $operation) {
                 yield $operationName => $operation;
             }
         })();

@@ -33,7 +33,7 @@ abstract class Operation
     /** @phpstan-ignore-next-line It's okay to have some unused parameters */
     public function __construct(
         protected readonly string $path,
-        protected readonly string $name,
+        protected string|null $name,
         protected readonly string $method,
         protected string|null $input,
         protected string|null $output,
@@ -95,9 +95,14 @@ abstract class Operation
         return $this->path;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getMethod(): string
