@@ -1,22 +1,15 @@
 # Post, Put or Patch
 
+## Basic installation
+
 ```php
 final class UpdateDummyController extends AbstractController
 {
-    #[Post(
-        path: '/dummies',
-        name: 'app_add_dummy',
-    )]
+    #[Post('/dummies')]
     public function __invoke(
         #[MapRequestPayload] DummyPayloadInput $dummyPayloadInput,
     ): DummyOutput {
 ```
-The following parameters are mandatory:
-
-- `path` is the path of your route
-- `name` is the unique name your route need to have
-
-Your DummyPayloadInput and DummyOutput will automatically be mapped. <br />
 
 ## Advanced installation
 

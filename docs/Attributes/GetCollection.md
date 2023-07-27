@@ -1,12 +1,11 @@
 # GetCollection
 
+## Basic installation
+
 ```php
 final class GetCollectionDummyController extends AbstractController
 {
-    #[GetCollection(
-        path: '/dummies',
-        name: 'app_get_dummy_collection',
-    )]
+    #[GetCollection('/dummies')]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,
         PaginatorRequestFactoryInterface $paginatorRequestFactory
@@ -21,12 +20,6 @@ final class GetCollectionDummyController extends AbstractController
         );
     }
 ```
-The following parameters are mandatory:
-
-- `path` is the path of your route
-- `name` is the unique name your route need to have
-
-Your DummyQueryInput and DummyCollectionOutput classes will automatically be mapped.
 
 ## Advanced installation
 

@@ -1,23 +1,15 @@
 # Get
 
 ## Basic installation
+
 ```php
 final class GetDummyController extends AbstractController
 {
-    #[Get(
-        path: '/dummies/{id}',
-        name: 'app_get_dummy',
-    )]
+    #[Get(path: '/dummies/{id}')]
     public function __invoke(
         int $id,
     ): DummyOutput
 ```
-The following parameters are mandatory:
-
-- `path` is the path of your route
-- `name` is the unique name your route need to have
-
-Your query parameters and DummyOutput will automatically be mapped. <br />
 
 ## Advanced installation
 

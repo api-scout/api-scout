@@ -1,24 +1,17 @@
 # Delete
 
+## Basic installation
+
 ```php
 final class DeleteDummyController extends AbstractController
 {
-    #[Delete(
-        path: '/dummies/{name}',
-        name: 'app_delete_dummy',
-    )]
+    #[Delete('/dummies/{name}')]
     public function __invoke(
         string $name
     ): JsonResponse {
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 ```
-The following parameters are mandatory:
-
-- `path` is the path of your route
-- `name` is the unique name your route need to have
-
-Your query parameters will automatically be mapped. <br />
 
 ## Advanced installation
 
