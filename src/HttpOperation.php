@@ -26,7 +26,7 @@ abstract class HttpOperation extends Operation
 
     public function __construct(
         string $path,
-        string $name,
+        string|null $name,
         string $method,
         string|null $input,
         string|null $output,
@@ -89,7 +89,7 @@ abstract class HttpOperation extends Operation
         return $this->path;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

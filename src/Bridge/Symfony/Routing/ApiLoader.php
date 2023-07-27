@@ -28,8 +28,7 @@ final class ApiLoader extends Loader
 {
     public function __construct(
         KernelInterface $kernel,
-        private readonly ResourceCollectionFactoryInterface $resourceCollection,
-        private readonly ContainerInterface $container
+        private readonly ResourceCollectionFactoryInterface $resourceCollection
     ) {
         parent::__construct($kernel->getEnvironment());
     }
@@ -50,6 +49,10 @@ final class ApiLoader extends Loader
             $controller = $operation->getControllerMethod() === '__invoke'
                 ? $operation->getController()
                 : $operation->getController().'::'.$operation->getControllerMethod();
+
+            if ($operation->getName() === null) {
+                throw new \LogicException('Operation name should have been initialized before hand.');
+            }
 
             $route = new Route(
                 $operation->getPath(),

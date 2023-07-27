@@ -92,7 +92,6 @@ final class DummyAttributeController extends AbstractController
 
     #[Delete(
         path: '/dummies_attribute/{id}',
-        name: 'app_delete_dummy_attribute',
         tag: DummyAttribute::class,
         uriVariables: [
             new ApiProperty('id', 'int'),

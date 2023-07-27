@@ -56,6 +56,11 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
 
                 if ($this->isOperationResource($method)) {
                     $operation = $this->buildOperationFromMethod($method, $controller);
+
+                    if ($operation->getName() === null) {
+                        throw new \LogicException('Operation name should have been initialized before hand.');
+                    }
+
                     $operations->add($operation->getName(), $operation);
                 }
             }
@@ -76,6 +81,12 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
     private function buildOperationFromMethod(ReflectionMethod $method, string $controller): Operation
     {
         $operation = $this->buildMethodOperation($method);
+
+        if ($operation->getName() === null) {
+            $operation->setName(
+                $this->getDefaultRouteName($method->class, $method->name)
+            );
+        }
 
         if ($operation->getFilters() === []
             && ($payload = $this->isPayloadResource($method->getParameters())) !== null) {
@@ -159,6 +170,17 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
         }
 
         return null;
+    }
+
+    protected function getDefaultRouteName(string $class, string $method): string
+    {
+        $name = str_replace('\\', '_', $class).'_'.$method;
+        $name = \function_exists('mb_strtolower') && is_int(preg_match('//u', $name))
+            ? mb_strtolower($name, 'UTF-8')
+            : strtolower($name)
+        ;
+
+        return $name;
     }
 
     private function buildApiProperty(ReflectionProperty $property): ApiProperty

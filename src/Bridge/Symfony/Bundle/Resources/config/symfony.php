@@ -34,7 +34,6 @@ return static function (ContainerConfigurator $container): void {
         ->private()
         ->arg('$kernel', service(KernelInterface::class))
         ->arg('$resourceCollection', service(ResourceCollectionFactoryInterface::class))
-        ->arg('$container', service('service_container'))
         ->tag('routing.loader')
     ;
 

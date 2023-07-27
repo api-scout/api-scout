@@ -22,7 +22,7 @@ final class GetCollection extends HttpOperation implements CollectionOperationIn
 {
     public function __construct(
         string $path,
-        string $name,
+        ?string $name = null,
         ?string $input = null,
         ?string $output = null,
         int $statusCode = AbstractResponse::HTTP_OK,
