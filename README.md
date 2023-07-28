@@ -43,8 +43,14 @@ api_scout:
 
 api_doc:
   resource: '@ApiScoutBundle/Resources/config/routes/routes.php'
-
 ```
+
+Your doc is now available on:
+```yaml
+/api/docs
+/api/docs.json
+```
+
 
 You will need to run `composer require symfony/asset` first if you haven't installed this package
 ```bash
@@ -68,3 +74,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 For more information see the [contributing guide](CONTRIBUTING.md)
+
+## Disclaimer
+
+This package is still in early development and subject to changes without backward compatibility. <br />
+Consequently we are not responsible if you decide to use it and some breaking changes occur. <br />
+Thanks for your understanding
