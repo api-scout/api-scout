@@ -34,7 +34,7 @@ $rules = [
     '@PhpCsFixer:risky' => true,
     '@Symfony' => true,
     '@Symfony:risky' => true,
-    'header_comment' => ['header' => $header],
+    'header_comment' => ['header' => $header, 'location' => 'after_open'],
     'global_namespace_import' => ['import_classes' => true, 'import_constants' => false, 'import_functions' => true],
     'array_syntax' => ['syntax' => 'short'],
     'class_definition' => ['multi_line_extends_each_single_line' => true],

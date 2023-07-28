@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the ApiScout project.
  *
@@ -11,6 +9,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace ApiScout\Bridge\Symfony\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * The Symfony bundle.
  *
- * @author Marvin Courcier <courciermarvin@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class ApiScoutBundle extends Bundle
 {

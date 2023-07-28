@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the ApiScout project.
  *
@@ -10,6 +8,8 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace ApiScout\OpenApi\JsonSchema;
 
@@ -25,7 +25,7 @@ use function is_string;
  * @see https://json-schema.org/latest/json-schema-core.html
  * @see https://github.com/OAI/OpenAPI-Specification
  *
- * @author Marvin Courcier <courciermarvin@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class JsonSchema extends ArrayObject
 {

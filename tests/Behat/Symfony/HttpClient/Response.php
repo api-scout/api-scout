@@ -1,17 +1,6 @@
 <?php
 
 /*
- * This file is part of the API Platform project.
- *
- * (c) Kévin Dunglas <dunglas@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-declare(strict_types=1);
-
-/*
  * This file is part of the ApiScout project.
  *
  * Copyright (c) 2023 ApiScout
@@ -19,6 +8,8 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Symfony\HttpClient;
 
@@ -41,7 +32,7 @@ use function is_array;
  *
  * Partially copied from \Symfony\Component\HttpClient\Response\ResponseTrait
  *
- * @author Kévin Dunglas <dunglas@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class Response implements ResponseInterface
 {
