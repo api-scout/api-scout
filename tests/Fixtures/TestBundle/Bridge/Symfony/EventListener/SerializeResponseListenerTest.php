@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+use Symfony\Component\Serializer\SerializerInterface;
 use function defined;
 
 final class SerializeResponseListenerTest extends TestCase
@@ -31,12 +32,12 @@ final class SerializeResponseListenerTest extends TestCase
     {
         $resourceCollectionFactory = $this->createStub(ResourceCollectionFactoryInterface::class);
         $paginatorRequestFactory = $this->createStub(PaginatorRequestFactoryInterface::class);
-        $normalizer = $this->createStub(NormalizerInterface::class);
+        $serializer = $this->createStub(SerializerInterface::class);
 
         $listener = new SerializeResponseListener(
             $resourceCollectionFactory,
             $paginatorRequestFactory,
-            $normalizer,
+            $serializer,
             'data'
         );
 

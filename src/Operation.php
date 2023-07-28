@@ -48,6 +48,8 @@ abstract class Operation
         protected ?int $paginationItemsPerPage,
         protected ?int $paginationMaximumItemsPerPage,
         protected array $uriVariables,
+        protected array $normalizationContext,
+        protected array $denormalizationContext,
         protected ?string $deprecationReason,
         array $requirements,
         array $options,
@@ -231,6 +233,16 @@ abstract class Operation
         }
 
         $this->uriVariables = $uriVariables;
+    }
+
+    public function getNormalizationContext(): array
+    {
+        return $this->normalizationContext;
+    }
+
+    public function getDenormalizationContext(): array
+    {
+        return $this->denormalizationContext;
     }
 
     public function getDeprecationReason(): ?string
