@@ -103,7 +103,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 continue;
             }
 
-            $resourceShortName = $this->normalizeClassName($operation->getTag());
+            $resourceShortName = $this->normalizeClassName($operation->getResource());
             $method = $operation->getMethod();
 
             if (!in_array($method, Model\PathItem::$methods, true)) {
@@ -162,7 +162,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 $operationInputSchema = $this->schemaFactory->buildSchema(
                     /** @phpstan-ignore-next-line up to this point if input is set then it has a class-string */
                     $operation->getInput(),
-                    $operation->getTag()
+                    $operation->getResource()
                 );
                 $this->appendSchemaDefinitions($schemas, $operationInputSchema);
 
@@ -188,7 +188,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         ArrayObject $schemas
     ): Model\Operation {
         $existingResponses = $openapiOperation->getResponses() ?: [];
-        $resourceShortName = $this->normalizeClassName($operation->getTag());
+        $resourceShortName = $this->normalizeClassName($operation->getResource());
 
         // Create responses
         switch ($operation->getMethod()) {
@@ -247,7 +247,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         }
 
         if ($operation->getOutput() !== null && class_exists($operation->getOutput())) {
-            $operationOutputSchema = $this->schemaFactory->buildSchema($operation->getOutput(), $operation->getTag());
+            $operationOutputSchema = $this->schemaFactory->buildSchema($operation->getOutput(), $operation->getResource());
             $this->appendSchemaDefinitions($schemas, $operationOutputSchema);
         }
 
@@ -308,7 +308,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $content[$mimeType] = new Model\MediaType(
                 new ArrayObject(
                     ['$ref' => '#/components/schemas/'.
-                        $this->normalizeClassName($operation->getTag()).'.'.$this->normalizeClassName($operation->getInput()),
+                        $this->normalizeClassName($operation->getResource()).'.'.$this->normalizeClassName($operation->getInput()),
                     ]
                 )
             );
@@ -332,7 +332,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 new ArrayObject(
                     [
                         '$ref' => '#/components/schemas/'.
-                            $this->normalizeClassName($operation->getTag()).'.'.$this->normalizeClassName($operation->getOutput()),
+                            $this->normalizeClassName($operation->getResource()).'.'.$this->normalizeClassName($operation->getOutput()),
                     ]
                 )
             );

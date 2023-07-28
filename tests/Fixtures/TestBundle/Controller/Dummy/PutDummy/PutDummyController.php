@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
 final class PutDummyController extends AbstractController
 {
-    #[Put('/dummies', name: 'app_update_put_dummy', tag: Dummy::class)]
+    #[Put('/dummies', name: 'app_update_put_dummy', resource: Dummy::class)]
     public function __invoke(
         #[MapRequestPayload] DummyPayloadInput $dummyPayloadInput,
     ): DummyOutput {

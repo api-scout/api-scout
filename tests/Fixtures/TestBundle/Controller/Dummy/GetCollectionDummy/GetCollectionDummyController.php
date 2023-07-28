@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 final class GetCollectionDummyController extends AbstractController
 {
-    #[GetCollection('/dummies', name: 'app_get_dummy_collection', tag: Dummy::class)]
+    #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,
         PaginatorRequestFactoryInterface $paginatorRequestFactory

@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class DeleteDummyController extends AbstractController
 {
-    #[Delete('/dummies/{name}', tag: Dummy::class)]
+    #[Delete('/dummies/{name}', resource: Dummy::class)]
     public function __invoke(string $name): JsonResponse
     {
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
