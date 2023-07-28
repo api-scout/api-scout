@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the ApiScout project.
  *
@@ -11,6 +9,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace ApiScout\Exception;
 
 use Exception;
@@ -18,7 +18,7 @@ use Exception;
 /**
  * UriVariables should be an array of api property exception.
  *
- * @author Marvin Courcier <courciermarvin@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class ParamShouldBeTypedException extends Exception implements DomainExceptionInterface
 {

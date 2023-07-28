@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the ApiScout project.
  *
@@ -10,6 +8,8 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\EventListener;
 
@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Chooses the format to use according to the Accept header and supported formats.
  *
- * @author Marvin Courcier <courciermarvin@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class AddFormatListener
 {
