@@ -21,13 +21,14 @@ use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 final class SerializeResponseListener
 {
     public function __construct(
         private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
         private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
-        private readonly NormalizerInterface $apiNormalizer,
+        private readonly SerializerInterface $serializer,
         private readonly string $responseItemKey
     ) {
     }
@@ -88,8 +89,13 @@ final class SerializeResponseListener
 
         $event->setResponse(
             new JsonResponse(
-                data: [$this->responseItemKey => $this->apiNormalizer->normalize($controllerResult)],
-                status: $operation->getStatusCode()
+                data: $this->serializer->serialize(
+                    data: [$this->responseItemKey => $controllerResult],
+                    format: 'json',
+                    context: $operation->getNormalizationContext()
+                ),
+                status: $operation->getStatusCode(),
+                json: true
             ),
         );
     }

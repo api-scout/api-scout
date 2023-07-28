@@ -19,6 +19,8 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
+use function array_key_exists;
+
 final class ValidationExceptionListener
 {
     public function onKernelException(ExceptionEvent $event): void
@@ -33,6 +35,7 @@ final class ValidationExceptionListener
          * @var ValidationFailedException $validationException
          */
         $validationException = $exception->getPrevious();
+
         $violations = $this->formatViolationList($validationException);
 
         $event->setResponse(new JsonResponse($violations, Response::HTTP_BAD_REQUEST));
@@ -48,12 +51,19 @@ final class ValidationExceptionListener
          */
         $violationListException = $validationException->getViolations();
         $violations = [];
+        $i = 0;
 
         foreach ($violationListException as $violation) {
-            $violations['violations'][] = [
+            $violations['violations'][$i] = [
                 'path' => $violation->getPropertyPath(),
                 'message' => $violation->getMessage(),
             ];
+
+            if (array_key_exists('hint', $violation->getParameters())) {
+                $violations['violations'][$i] += ['hint' => $violation->getParameters()['hint']];
+            }
+
+            ++$i;
         }
 
         return $violations;
