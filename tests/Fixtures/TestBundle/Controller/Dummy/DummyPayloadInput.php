@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy;
 
 // use Ramsey\Uuid\Uuid;
+use ApiScout\Attribute\ApiProperty;
 use DateTime;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
@@ -24,7 +25,9 @@ final class DummyPayloadInput
     public function __construct(
         #[Assert\NotBlank()]
         public readonly string $firstName,
+        #[ApiProperty(description: 'input lastname', deprecated: true)]
         public readonly ?string $lastName,
+        #[ApiProperty(description: 'input lastname')]
         public readonly DateTime $age,
         public readonly ?Ulid $ulid,
         public readonly ?Uuid $uuid,

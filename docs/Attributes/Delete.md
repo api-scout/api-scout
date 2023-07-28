@@ -15,12 +15,13 @@ final class DeleteDummyController extends AbstractController
 
 ## Advanced installation
 
+### Delete attribute
 You could specify more attribute in case you would need to customize your response or if your parameters are retrieved using the request
 ```php
     #[Delete(
         path: '/dummies_attribute/{id}',
         name: 'app_delete_dummy_attribute',
-        tag: DummyAttribute::class,
+        resource: DummyAttribute::class,
         uriVariables: [
             new ApiProperty('id', 'int'),
         ],

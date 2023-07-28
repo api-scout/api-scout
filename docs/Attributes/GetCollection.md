@@ -23,13 +23,30 @@ final class GetCollectionDummyController extends AbstractController
 
 ## Advanced installation
 
+### ApiProperty Attribute
+You can add more information to the doc regarding your `input` or `output` using the `ApiProperty` attribute
+```php
+final class DummyQueryInput
+{
+    public function __construct(
+        #[ApiProperty(description: 'The name of the champion')]
+        public readonly ?string $name = '',
+        public readonly ?string $city = '',
+        #[ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate')]
+        public readonly int $page = 1,
+    ) {
+    }
+}
+```
+
+### GetCollection attribute
 You could override those or add more information using the following parameters
 
 ```php
     #[GetCollection(
         path: '/dummies',
         name: 'app_get_dummy_collection',
-        tag: Dummy::class,
+        resource: Dummy::class,
         filters: [
             new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
             new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
@@ -45,8 +62,9 @@ You could override those or add more information using the following parameters
     public function getDummyAttributeCollection(): Response
     {}
 ```
-
 If `input` and `output` are specified your parameters and return type will be ignored.
+
+### Pagination
 
 ```php
 final class DummyCollectionOutput extends Paginator implements PaginatorInterface

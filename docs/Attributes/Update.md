@@ -13,6 +13,22 @@ final class UpdateDummyController extends AbstractController
 
 ## Advanced installation
 
+### ApiProperty
+You can add more information to the doc regarding your `input` or `output` using the `ApiProperty` attribute
+```php
+final class DummyPayloadInput
+{
+    public function __construct(
+        #[ApiProperty(description: 'Our firstname hero')]
+        public readonly string $firstName,
+        #[ApiProperty(description: 'input lastname', deprecated: true)]
+        public readonly ?string $lastName,
+    ) {
+    }
+}
+```
+
+### Post attribute
 You could override those or add more information using the following parameters
 
 ```php
@@ -21,7 +37,7 @@ You could override those or add more information using the following parameters
         name: 'app_post_dummy_attribute',
         input: DummyAttributePayloadInput::class,
         output: DummyAttributeOutput::class,
-        tag: DummyAttribute::class,
+        resource: DummyAttribute::class,
         statusCode: 201,
         deprecationReason: 'Do not use this route anymore', // If you want to deprecate this route
     )]

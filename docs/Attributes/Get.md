@@ -13,6 +13,7 @@ final class GetDummyController extends AbstractController
 
 ## Advanced installation
 
+### Get attribute
 You could override those or add more information using the following parameters. <br />
 
 In the case below you could retrieve your uriVariable using the request and not the symfony binding parameters.
@@ -21,7 +22,7 @@ In the case below you could retrieve your uriVariable using the request and not 
         path: '/dummies/{id}',
         name: 'app_get_dummy_attribute',
         output: DummyAttributeOutput::class,
-        tag: DummyAttribute::class,
+        resource: DummyAttribute::class,
         uriVariables: [
             new ApiProperty('id', 'string'),
         ],

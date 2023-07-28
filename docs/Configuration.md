@@ -12,7 +12,6 @@ api_scout:
   version: '0.0.0'
   # Controller directory you need to be documented
   path: '%kernel.project_dir%/src/Controller/'
-  show_webby: true
   asset_package: null
   enable_swagger: true
   # Enable Swagger UI.
