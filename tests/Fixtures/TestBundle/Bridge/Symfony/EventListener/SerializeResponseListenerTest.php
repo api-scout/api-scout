@@ -44,7 +44,7 @@ final class SerializeResponseListenerTest extends TestCase
         $event = new ViewEvent(
             $this->createStub(HttpKernelInterface::class),
             new Request(),
-            defined(HttpKernelInterface::class.'::MAIN_REQUEST') ? HttpKernelInterface::MAIN_REQUEST : HttpKernelInterface::MASTER_REQUEST,
+            HttpKernelInterface::MAIN_REQUEST,
             null
         );
 
