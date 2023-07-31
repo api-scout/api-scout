@@ -22,13 +22,6 @@ return [
 ```
 
 ```yaml
-# config/packages/api_scout.yaml
-
-api_scout:
-  path: '%kernel.project_dir%/src/Controller/'
-```
-
-```yaml
 # config/routes/api_scout.yaml
 
 api_scout:
