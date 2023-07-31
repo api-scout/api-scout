@@ -57,23 +57,14 @@ final class Configuration implements ConfigurationInterface
             ->cannotBeEmpty()
             ->defaultValue('data')
             ->end()
-            ->scalarNode('path')
-            ->defaultValue('')
-            ->cannotBeEmpty()
-            ->info('Controllers path.')
+            ->arrayNode('mapping')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->arrayNode('paths')
+            ->prototype('scalar')->end()
             ->end()
-
-//			->arrayNode('mapping')
-//				->addDefaultsIfNotSet()
-//				->children()
-//					->arrayNode('paths')
-//						->prototype('scalar')->end()
-//					->end()
-//				->end()
-//			->end()
-//			->arrayNode('resource_class_directories')
-//				->prototype('scalar')->end()
-//			->end()
+            ->end()
+            ->end()
         ;
 
         $this->addSwaggerUiContextSection($rootNode);
@@ -178,7 +169,6 @@ final class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
-            ->booleanNode('show_webby')->defaultTrue()->info('If true, show Webby on the documentation page')->end()
             ->scalarNode('asset_package')->defaultNull()->info('Specify an asset package name to use.')->end()
             ->booleanNode('enable_swagger')->defaultTrue()->info('Enable the Swagger documentation and export.')->end()
             ->booleanNode('enable_swagger_ui')->defaultValue(class_exists(TwigBundle::class))->info('Enable Swagger UI')->end()

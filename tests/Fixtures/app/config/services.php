@@ -51,9 +51,4 @@ return static function (ContainerConfigurator $container): void {
         )
         ->tag('controller.service_arguments')
     ;
-
-    $services
-        ->set('api_scout.resource.directory_class_extractor', DirectoryClassesExtractor::class)
-        ->arg('$path', __DIR__.'/../../TestBundle/Controller')
-    ;
 };

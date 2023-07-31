@@ -83,12 +83,36 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.openapi.license.name', $configs['openapi']['license']['name']);
         $container->setParameter('api_scout.openapi.license.url', $configs['openapi']['license']['url']);
 
-        $container->setParameter('api_scout.path', $configs['path']);
+        $container->setParameter(
+            'api_scout.mapping.paths',
+            $this->registerMappingPathsConfiguration($container, $configs)
+        );
 
         $container->setParameter('api_scout.enable_swagger_ui', $configs['enable_swagger_ui']);
-        $container->setParameter('api_scout.show_webby', $configs['show_webby']);
         $container->setParameter('api_scout.enable_re_doc', $configs['enable_re_doc']);
         $container->setParameter('api_scout.asset_package', $configs['asset_package']);
         $container->setParameter('api_scout.swagger_ui_extra_configuration', $configs['swagger_ui_extra_configuration']);
+    }
+
+    private function registerMappingPathsConfiguration(ContainerBuilder $container, array $config): array
+    {
+        /**
+         * @var array<string> $paths
+         */
+        $paths = $config['mapping']['paths'];
+
+        if ($paths === []) {
+            /**
+             * @var string $projectDir
+             */
+            $projectDir = $container->getParameter('kernel.project_dir');
+            $dir = $projectDir.'/src/Controller';
+
+            if (is_dir($dir)) {
+                $paths[] = $dir;
+            }
+        }
+
+        return $paths;
     }
 }
