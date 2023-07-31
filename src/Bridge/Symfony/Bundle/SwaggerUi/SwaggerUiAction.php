@@ -59,7 +59,6 @@ final class SwaggerUiAction
             'formats' => [],
             'title' => $openApi->getInfo()->getTitle(),
             'description' => $openApi->getInfo()->getDescription(),
-            'showWebby' => $this->swaggerUiContext->isWebbyShown(),
             'swaggerUiEnabled' => $this->swaggerUiContext->isSwaggerUiEnabled(),
             'reDocEnabled' => $this->swaggerUiContext->isRedocEnabled(),
             'assetPackage' => $this->swaggerUiContext->getAssetPackage(),
