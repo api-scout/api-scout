@@ -98,6 +98,14 @@ final class AppKernel extends Kernel
             $twigConfig['exception_controller'] = null;
         }
         $container->prependExtensionConfig('twig', $twigConfig);
+
+        $container->prependExtensionConfig('api_scout', [
+            'mapping' => [
+                'paths' => [
+                    '%kernel.project_dir%/../TestBundle/Controller',
+                ],
+            ],
+        ]);
     }
 
     /**
