@@ -24,7 +24,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set('api_scout.resource.directory_class_extractor', DirectoryClassesExtractor::class)
-        ->arg('$paths', param('api_scout.mapping.paths'))
+        ->arg('$path', param('api_scout.path'))
     ;
 
     $services

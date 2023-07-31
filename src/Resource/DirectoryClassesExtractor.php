@@ -27,23 +27,19 @@ use function in_array;
 final class DirectoryClassesExtractor
 {
     public function __construct(
-        private readonly array $paths
+        private readonly string $path
     ) {
     }
 
     public function extract(): array
     {
-        $files = [];
-
-        foreach ($this->paths as $path) {
-            $files += iterator_to_array(new RecursiveIteratorIterator(
-                new RecursiveCallbackFilterIterator(
-                    new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS),
-                    static fn (SplFileInfo $current) => !str_starts_with($current->getBasename(), '.')
-                ),
-                RecursiveIteratorIterator::LEAVES_ONLY
-            ));
-        }
+        $files = iterator_to_array(new RecursiveIteratorIterator(
+            new RecursiveCallbackFilterIterator(
+                new RecursiveDirectoryIterator($this->path, FilesystemIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS),
+                static fn (SplFileInfo $current) => !str_starts_with($current->getBasename(), '.')
+            ),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        ));
 
         /** @phpstan-ignore-next-line Specified type are okay */
         usort($files, static fn (SplFileInfo $a, SplFileInfo $b) => (string) $a > (string) $b ? 1 : -1);
