@@ -21,10 +21,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use Symfony\Component\Serializer\SerializerInterface;
-use function defined;
 
 final class SerializeResponseListenerTest extends TestCase
 {

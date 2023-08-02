@@ -20,7 +20,6 @@ use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class SerializeResponseListener
