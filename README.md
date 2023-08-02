@@ -61,6 +61,11 @@ bin/console assets:install
 #### Advanced
 - [Configuration](docs/Configuration.md)
 
+#### Migrate to Api-Scout
+
+- [Migrate from ApiPlatform](docs/MigrateToApiScout/ApiPlatform.md)
+- [Migrate from FosRestBundle](docs/MigrateToApiScout/FosRestBundle.md)
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
