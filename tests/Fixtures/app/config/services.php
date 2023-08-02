@@ -13,13 +13,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-// This file is the entry point to configure your own services.
-// Files in the packages/ subdirectory configure your dependencies.
-
-// Put parameters here that don't need to change on each machine where the app is deployed
-// https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-
-use ApiScout\Resource\DirectoryClassesExtractor;
 use ApiScout\Tests\Behat\Symfony\HttpClient\Client;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 

@@ -40,7 +40,7 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services
-        ->set(SwaggerUiAction::class)
+        ->set('api_scout.swagger_ui.action', SwaggerUiAction::class)
         ->arg('$openApiFactory', service(OpenApiFactoryInterface::class))
         ->arg('$swaggerUiContext', service(SwaggerUiContext::class))
         ->arg('$urlGenerator', service(UrlGeneratorInterface::class))
@@ -51,7 +51,7 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services
-        ->set(SwaggerJsonAction::class)
+        ->set('api_scout.swagger_json.action', SwaggerJsonAction::class)
         ->arg('$openApiFactory', service(OpenApiFactoryInterface::class))
         ->tag('controller.service_arguments')
     ;

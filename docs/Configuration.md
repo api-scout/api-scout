@@ -19,6 +19,7 @@ api_scout:
   # Enable Swagger UI.
   enable_swagger_ui: true
   enable_re_doc: true
+  enable_docs: true
   swagger_ui_extra_configuration: {  }
   pagination:
     # Enable the pagination
