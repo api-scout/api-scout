@@ -29,28 +29,8 @@ api_scout:
   type: api_scout
 ```
 
-## Enable Swagger routes
-
-```yaml
-# config/routes.yaml
-
-api_doc:
-  resource: '@ApiScoutBundle/Resources/config/routes/routes.php'
-```
-
-Your doc is now available on:
-```yaml
-/api/docs
-/api/docs.json
-```
-
-
-You will need to run `composer require symfony/asset` first if you haven't installed this package
-```bash
-bin/console assets:install
-```
-
-## Usages
+#### Enable Swagger routes
+- [OpenApi](docs/OpenApi.md)
 
 #### Operations
 - [GetCollection](docs/Attributes/GetCollection.md)

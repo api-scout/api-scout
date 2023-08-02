@@ -35,6 +35,7 @@ return static function (ContainerConfigurator $container): void {
         ->private()
         ->arg('$kernel', service(KernelInterface::class))
         ->arg('$resourceCollection', service(ResourceCollectionFactoryInterface::class))
+        ->arg('$docsEnabled', param('api_scout.enable_docs'))
         ->tag('routing.loader')
     ;
 

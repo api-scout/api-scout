@@ -88,6 +88,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.enable_swagger_ui', $configs['enable_swagger_ui']);
         $container->setParameter('api_scout.show_webby', $configs['show_webby']);
         $container->setParameter('api_scout.enable_re_doc', $configs['enable_re_doc']);
+        $container->setParameter('api_scout.enable_docs', $configs['enable_docs']);
         $container->setParameter('api_scout.asset_package', $configs['asset_package']);
         $container->setParameter('api_scout.swagger_ui_extra_configuration', $configs['swagger_ui_extra_configuration']);
     }
