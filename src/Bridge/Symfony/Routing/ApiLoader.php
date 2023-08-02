@@ -19,17 +19,26 @@ use ApiScout\Operations;
 use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use LogicException;
 use Symfony\Component\Config\Loader\Loader;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 final class ApiLoader extends Loader
 {
+    private PhpFileLoader $fileLoader;
+
     public function __construct(
         KernelInterface $kernel,
-        private readonly ResourceCollectionFactoryInterface $resourceCollection
+        private readonly ResourceCollectionFactoryInterface $resourceCollection,
+        private readonly bool $docsEnabled,
     ) {
         parent::__construct($kernel->getEnvironment());
+
+        /** @var string[]|string $paths */
+        $paths = $kernel->locateResource('@ApiScoutBundle/Resources/config/routes');
+        $this->fileLoader = new PhpFileLoader(new FileLocator($paths));
     }
 
     public function load(mixed $resource, ?string $type = null): RouteCollection
@@ -40,6 +49,9 @@ final class ApiLoader extends Loader
         $operations = $this->resourceCollection->create();
 
         $routeCollection = new RouteCollection();
+
+        $this->loadExternalFiles($routeCollection);
+
         foreach ($operations->getOperations() as $operation) {
             if (!class_exists($operation->getController())) {
                 throw new ResourceClassNotFoundException($operation->getController());
@@ -77,5 +89,12 @@ final class ApiLoader extends Loader
     public function supports(mixed $resource, ?string $type = null): bool
     {
         return $type === 'api_scout';
+    }
+
+    private function loadExternalFiles(RouteCollection $routeCollection): void
+    {
+        if ($this->docsEnabled) {
+            $routeCollection->addCollection($this->fileLoader->load('swagger.php'));
+        }
     }
 }
