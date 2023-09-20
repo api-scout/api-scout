@@ -11,23 +11,23 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Behat\Core\Swagger\Dummy;
+namespace ApiScout\Tests\Behat\Core\Swagger\DummyAttribute;
 
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
-final class uploadDummyFileContext extends BaseContext
+final class UploadFileDummyAttributeContext extends BaseContext
 {
     /**
-     * @Then upload dummy file should be configured
+     * @Then upload dummy attribute file should be configured
      */
     public function when(): void
     {
         $response = $this->getResponse()->toArray();
 
-        Assert::assertNotEmpty($response['paths']['/dummies/upload_file']['post']);
+        Assert::assertNotEmpty($response['paths']['/upload_file_dummies_attribute']['post']);
 
-        $uploadDummiesAttributeFile = $response['paths']['/dummies/upload_file']['post'];
+        $uploadDummiesAttributeFile = $response['paths']['/upload_file_dummies_attribute']['post'];
 
         Assert::assertIsArray($uploadDummiesAttributeFile['requestBody']);
         Assert::assertArrayHasKey('content', $uploadDummiesAttributeFile['requestBody']);
