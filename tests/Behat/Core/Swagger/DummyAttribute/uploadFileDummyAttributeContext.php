@@ -26,5 +26,21 @@ final class uploadFileDummyAttributeContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/upload_file_dummies_attribute']['post']);
+
+        $uploadDummiesAttributeFile = $response['paths']['/upload_file_dummies_attribute']['post'];
+
+        Assert::assertIsArray($uploadDummiesAttributeFile['requestBody']);
+        Assert::assertArrayHasKey('content', $uploadDummiesAttributeFile['requestBody']);
+
+        Assert::assertIsArray($uploadDummiesAttributeFile['requestBody']['content']);
+        Assert::assertArrayHasKey('multipart/form-data', $uploadDummiesAttributeFile['requestBody']['content']);
+
+        $multipartForm = $uploadDummiesAttributeFile['requestBody']['content']['multipart/form-data'];
+
+        Assert::assertIsArray($multipartForm['schema']['properties']['file']);
+        Assert::assertArrayHasKey('type', $multipartForm['schema']['properties']['file']);
+        Assert::assertArrayHasKey('format', $multipartForm['schema']['properties']['file']);
+        Assert::assertSame($multipartForm['schema']['properties']['file']['type'], 'string');
+        Assert::assertSame($multipartForm['schema']['properties']['file']['format'], 'binary');
     }
 }

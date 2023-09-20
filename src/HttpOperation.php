@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ApiScout;
 
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
+
 abstract class HttpOperation extends Operation
 {
     public const METHOD_GET = 'GET';
@@ -33,7 +35,7 @@ abstract class HttpOperation extends Operation
         int $statusCode,
         string $resource,
         array $filters,
-        bool $openApi,
+        bool|OpenApiOperation|null $openapi,
         array $formats,
         array $inputFormats,
         array $outputFormats,
@@ -64,7 +66,7 @@ abstract class HttpOperation extends Operation
             statusCode: $statusCode,
             resource: $resource,
             filters: $filters,
-            openApi: $openApi,
+            openapi: $openapi,
             formats: $formats,
             inputFormats: $inputFormats,
             outputFormats: $outputFormats,

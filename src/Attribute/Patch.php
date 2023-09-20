@@ -15,6 +15,7 @@ namespace ApiScout\Attribute;
 
 use ApiScout\HttpOperation;
 use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
@@ -28,7 +29,7 @@ final class Patch extends HttpOperation
         int $statusCode = AbstractResponse::HTTP_OK,
         string $resource = 'Default',
         array $filters = [],
-        bool $openApi = true,
+        bool|OpenApiOperation $openapi = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],
@@ -65,7 +66,7 @@ final class Patch extends HttpOperation
             statusCode: $statusCode,
             resource: $resource,
             filters: $filters,
-            openApi: $openApi,
+            openapi: $openapi,
             formats: $formats,
             inputFormats: $inputFormats,
             outputFormats: $outputFormats,

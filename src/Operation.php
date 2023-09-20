@@ -17,6 +17,7 @@ use ApiScout\Attribute\ApiProperty;
 use ApiScout\Exception\FiltersShouldBeAnArrayOfApiPropertyException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use LogicException;
 use RuntimeException;
 
@@ -40,7 +41,7 @@ abstract class Operation
         protected readonly int $statusCode,
         protected string $resource,
         protected array $filters,
-        protected readonly bool $openApi,
+        protected readonly bool|OpenApiOperation|null $openapi,
         protected array $formats,
         protected array $inputFormats,
         protected array $outputFormats,
@@ -178,9 +179,9 @@ abstract class Operation
         $this->filters = $filters;
     }
 
-    public function getOpenApi(): bool
+    public function getOpenapi(): bool|OpenApiOperation|null
     {
-        return $this->openApi;
+        return $this->openapi;
     }
 
     public function getFormats(): array
