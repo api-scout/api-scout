@@ -1,12 +1,12 @@
 Feature: Upload a DummyAttribute File
 
   @http
-  Scenario: Post a resource
-    Given a file named "helloWorld.pdf" with:
+  Scenario: Upload a DummyAttribute File resource
+    Given a file named "dummyAttributeFile.pdf" with:
     """
-    Hello World
+    Dummy Attribute File
     """
-    When one upload a dummy attribute file "helloWorld.pdf"
+    When one upload a dummy attribute file "dummyAttributeFile.pdf"
     Then created
 
   @swagger

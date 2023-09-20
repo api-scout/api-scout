@@ -11,24 +11,26 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Behat\Core\Http\DummyAttribute;
+namespace ApiScout\Tests\Behat\Core\Http\Dummy;
 
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
+use Behat\Gherkin\Node\PyStringNode;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-final class UploadFileDummyAttributeContext extends BaseContext
+final class UploadDummyFileContext extends BaseContext
 {
-    private const UPLOAD_FILE_DUMMY_ATTRIBUTE_PATH = 'upload_file_dummies_attribute';
+    private const POST_DUMMY_PATH = 'dummies/upload_file';
 
     /**
-     * @When one upload a dummy attribute file :fileName
+     * @When one upload a dummy file :fileName
      */
     public function when(string $fileName): void
     {
         $this->request(
             HttpOperation::METHOD_POST,
-            self::UPLOAD_FILE_DUMMY_ATTRIBUTE_PATH,
+            self::POST_DUMMY_PATH,
             [
                 'headers' => ['CONTENT_TYPE' => 'multipart/form-data'],
                 'extra' => [
@@ -37,6 +39,21 @@ final class UploadFileDummyAttributeContext extends BaseContext
                     ],
                 ],
             ]
+        );
+
+        dd($this->getResponse()->toArray(false));
+    }
+
+    /**
+     * @Then upload dummy file response should have:
+     */
+    public function then(PyStringNode $content): void
+    {
+        $content = $this->json($content->getRaw());
+
+        Assert::assertSame(
+            $content,
+            $this->getResponse()->toArray()
         );
     }
 }

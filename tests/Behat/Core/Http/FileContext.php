@@ -18,10 +18,8 @@ use LogicException;
 
 use function dirname;
 
-abstract class FileContext extends BaseContext
+final class FileContext extends BaseContext
 {
-    private string $workingDir;
-
     /**
      * Cleans test folders in the temporary directory.
      *
@@ -33,19 +31,6 @@ abstract class FileContext extends BaseContext
         if (is_dir($dir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'behat')) {
             self::clearDirectory($dir);
         }
-    }
-
-    /**
-     * Prepares test folders in the temporary directory.
-     *
-     * @BeforeScenario
-     */
-    public function prepareTestFolders(): void
-    {
-        $dir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'behat'.\DIRECTORY_SEPARATOR.
-            md5(microtime().random_int(0, 10000));
-
-        $this->workingDir = $dir;
     }
 
     /**
@@ -69,11 +54,6 @@ abstract class FileContext extends BaseContext
     public function aFileNamed(string $filename): void
     {
         $this->createFile($this->workingDir.'/'.$filename, '');
-    }
-
-    protected function getFilePath(string $filename): string
-    {
-        return $this->workingDir.'/'.$filename;
     }
 
     private function createFile(string $filename, string $content): void
