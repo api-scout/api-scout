@@ -22,6 +22,10 @@ return static function (ContainerConfigurator $container): void {
         ->autowire()
         ->autoconfigure()
         ->bind('$httpTestClient', service(Client::class))
+        ->bind(
+            '$workingDir',
+            sys_get_temp_dir().\DIRECTORY_SEPARATOR.'behat'.\DIRECTORY_SEPARATOR.md5(microtime().random_int(0, 10000))
+        )
     ;
 
     $services
