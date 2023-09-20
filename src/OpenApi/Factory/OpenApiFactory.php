@@ -31,6 +31,7 @@ use ArrayObject;
 use LogicException;
 
 use function in_array;
+use function is_object;
 
 final class OpenApiFactory implements OpenApiFactoryInterface
 {
@@ -96,7 +97,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         ArrayObject $schemas
     ): void {
         foreach ($resource->getOperations() as $operationName => $operation) {
-            $openapiOperation = $operation->getOpenApi();
+            $openapiOperation = $operation->getOpenapi();
 
             // Operation ignored from OpenApi
             if ($operation instanceof HttpOperation && $openapiOperation === false) {
@@ -110,22 +111,25 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 continue;
             }
 
+            if (!is_object($openapiOperation)) {
+                $openapiOperation = new Model\Operation();
+            }
+
             // Complete with defaults
-            $openapiOperationInitializer = new Model\Operation();
             $openapiOperation = new Model\Operation(
-                operationId: $openapiOperationInitializer->getOperationId() !== null ? $openapiOperationInitializer->getOperationId() : $this->normalizeOperationName($operationName),
-                tags: $openapiOperationInitializer->getTags() !== null ? $openapiOperationInitializer->getTags() : [$resourceShortName],
-                responses: $openapiOperationInitializer->getResponses() !== null ? $openapiOperationInitializer->getResponses() : [],
-                summary: $openapiOperationInitializer->getSummary() !== null ? $openapiOperationInitializer->getSummary() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
-                description: $openapiOperationInitializer->getDescription() !== null ? $openapiOperationInitializer->getDescription() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
-                externalDocs: $openapiOperationInitializer->getExternalDocs(),
-                parameters: $openapiOperationInitializer->getParameters() !== null ? $openapiOperationInitializer->getParameters() : [],
-                requestBody: $openapiOperationInitializer->getRequestBody(),
-                callbacks: $openapiOperationInitializer->getCallbacks(),
-                deprecated: $openapiOperationInitializer->getDeprecated() !== null ? $openapiOperationInitializer->getDeprecated() : (bool) $operation->getDeprecationReason(),
-                security: $openapiOperationInitializer->getSecurity() !== null ? $openapiOperationInitializer->getSecurity() : null,
-                servers: $openapiOperationInitializer->getServers() !== null ? $openapiOperationInitializer->getServers() : null,
-                extensionProperties: $openapiOperationInitializer->getExtensionProperties(),
+                operationId: $openapiOperation->getOperationId() !== null ? $openapiOperation->getOperationId() : $this->normalizeOperationName($operationName),
+                tags: $openapiOperation->getTags() !== null ? $openapiOperation->getTags() : [$resourceShortName],
+                responses: $openapiOperation->getResponses() !== null ? $openapiOperation->getResponses() : [],
+                summary: $openapiOperation->getSummary() !== null ? $openapiOperation->getSummary() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
+                description: $openapiOperation->getDescription() !== null ? $openapiOperation->getDescription() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
+                externalDocs: $openapiOperation->getExternalDocs(),
+                parameters: $openapiOperation->getParameters() !== null ? $openapiOperation->getParameters() : [],
+                requestBody: $openapiOperation->getRequestBody(),
+                callbacks: $openapiOperation->getCallbacks(),
+                deprecated: $openapiOperation->getDeprecated() !== null ? $openapiOperation->getDeprecated() : (bool) $operation->getDeprecationReason(),
+                security: $openapiOperation->getSecurity() !== null ? $openapiOperation->getSecurity() : null,
+                servers: $openapiOperation->getServers() !== null ? $openapiOperation->getServers() : null,
+                extensionProperties: $openapiOperation->getExtensionProperties(),
             );
 
             $path = $operation->getPath();
