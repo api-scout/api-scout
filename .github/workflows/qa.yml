@@ -125,23 +125,26 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader --ignore-platform-req=php
 
+      - name: Cache composer dependencies
+        run: composer bin all install
+
       - name: Check directoris
         run: ls -la vendor/bin
-#
-#      - name: Lint templates
-#        run: php tests/Fixtures/app/bin/console lint:twig src/Bridge/Symfony/Bundle/templates
-#
-#      - name: Lint container
-#        run: php tests/Fixtures/app/bin/console lint:container
-#
-#      - name: PHP code sniffer
-#        run: php vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
-#
-#      - name: PHPCsFixer
-#        run: PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --diff
-#
-#      - name: PHPStan
-#        run: php vendor/bin/phpstan
+
+      - name: Lint templates
+        run: php tests/Fixtures/app/bin/console lint:twig src/Bridge/Symfony/Bundle/templates
+
+      - name: Lint container
+        run: php tests/Fixtures/app/bin/console lint:container
+
+      - name: PHP code sniffer
+        run: php vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
+
+      - name: PHPCsFixer
+        run: PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --diff
+
+      - name: PHPStan
+        run: php vendor/bin/phpstan
 
 #  test:
 #    name: Tests
