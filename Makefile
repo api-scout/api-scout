@@ -23,7 +23,7 @@ lint-container: ## Lints containers
 
 .PHONY: phpcs
 phpcs: ## PHP_CodeSniffer (https://github.com/squizlabs/PHP_CodeSniffer)
-	$(PHP) vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml src
+	$(PHP) vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
 
 .PHONY: php-cs-fixer
 php-cs-fixer: ## PhpCsFixer (https://cs.symfony.com/)
@@ -44,6 +44,25 @@ phpinsights: ## PHP Insights (https://phpinsights.com)
 .PHONY: phpinsights-fix
 phpinsights-fix: ## PHP Insights (https://phpinsights.com)
 	$(PHP) vendor/bin/phpinsights analyse src --no-interaction --fix
+
+##
+##Tests
+##------------
+##
+
+.PHONY: tests
+tests: ## Run all tests
+tests: phpunit behat
+
+.PHONY: phpunit
+phpunit: ## Run unit tests
+	# Needs database container to be running (run "make start" if needed)
+	$(PHP) ./vendor/bin/simple-phpunit --coverage-html coverage -vvv
+
+.PHONY: behat
+behat: ## Run functional tests
+	# Needs database container to be running (run "make start" if needed)
+	$(PHP) ./vendor/bin/behat
 
 ##
 ##Dependencies validation
