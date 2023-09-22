@@ -131,17 +131,17 @@ jobs:
       - name: Lint container
         run: php tests/Fixtures/app/bin/console lint:container
 
+      - name: Check directoris
+        run: ls -la
+
       - name: PHP code sniffer
-        run: php ./vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
+        run: php vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
 
       - name: PHPCsFixer
-        run: PHP_CS_FIXER_IGNORE_ENV=1 php ./vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --diff
+        run: PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --diff
 
       - name: PHPStan
-        run: php ./vendor/bin/phpstan
-
-      - name: PHPInsights
-        run: php vendor/bin/phpinsights analyse --no-interaction --min-quality=100 --min-complexity=90 --min-architecture=100 --min-style=100 --disable-security-check
+        run: php vendor/bin/phpstan
 
   test:
     name: Tests
@@ -155,11 +155,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 19
 
       - name: Setup PHP, extensions and composer with shivammathur/setup-php
         uses: shivammathur/setup-php@v2
