@@ -1,4 +1,4 @@
-# FileUpload
+# Handling File Upload
 
 ## Basic installation
 
@@ -26,7 +26,7 @@ final class UploadDummyFileController extends AbstractController
             )
         )
     )]
-    public function __invoke(): UploadDummyFileOutput
+    public function __invoke(Request $request): UploadDummyFileOutput
     {
         $uploadedFile = $request->files->get('file');
         
