@@ -39,6 +39,7 @@ api_scout:
 - [Delete](docs/Attributes/Delete.md)
 
 #### Advanced
+- [FileUpload](docs/FileUpload.md)
 - [Configuration](docs/Configuration.md)
 
 #### Migrate to Api-Scout
