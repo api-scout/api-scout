@@ -33,7 +33,7 @@ final class UploadFileDummyAttributeContext extends BaseContext
                 'headers' => ['CONTENT_TYPE' => 'multipart/form-data'],
                 'extra' => [
                     'files' => [
-                        'icon' => new UploadedFile($this->getFilePath($fileName), $fileName),
+                        'file' => new UploadedFile($this->getFilePath($fileName), $fileName),
                     ],
                 ],
             ]
