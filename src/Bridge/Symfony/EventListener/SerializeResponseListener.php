@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace ApiScout\Bridge\Symfony\EventListener;
 
 use ApiScout\Attribute\CollectionOperationInterface;
+use ApiScout\Operation;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Pagination\Paginator;
+use ApiScout\Pagination\PaginatorInterface;
 use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,39 +50,9 @@ final class SerializeResponseListener
             $request->attributes->get('_route_name') /** @phpstan-ignore-line this value will always be a string */
         );
 
-        if ($operation instanceof CollectionOperationInterface
-            && $this->paginatorRequestFactory->isPaginationEnabled()
-            && !$controllerResult instanceof Paginator
-        ) {
-            if (!is_iterable($controllerResult)) {
-                throw new LogicException('Controller response from Collection Operation should be iterable.');
-            }
-
-            $paginator = new Paginator(
-                $controllerResult,
-                $this->paginatorRequestFactory->getCurrentPage(),
-                $this->paginatorRequestFactory->getItemsPerPage()
-            );
-
+        if ($operation instanceof CollectionOperationInterface) {
             $event->setResponse(
-                new JsonResponse(
-                    data: $paginator->toArray(),
-                    status: $operation->getStatusCode()
-                ),
-            );
-
-            return;
-        }
-
-        if ($operation instanceof CollectionOperationInterface
-            && $this->paginatorRequestFactory->isPaginationEnabled()
-            && $controllerResult instanceof Paginator
-        ) {
-            $event->setResponse(
-                new JsonResponse(
-                    data: $controllerResult->toArray(),
-                    status: $operation->getStatusCode()
-                ),
+                $this->handleCollectionOperationResponse($operation, $controllerResult)
             );
 
             return;
@@ -96,6 +68,45 @@ final class SerializeResponseListener
                 status: $operation->getStatusCode(),
                 json: true
             ),
+        );
+    }
+
+    private function handleCollectionOperationResponse(
+        Operation $operation,
+        mixed $controllerResult
+    ): JsonResponse {
+        if (!$this->paginatorRequestFactory->isPaginationEnabled()) {
+            return new JsonResponse(
+                data: $controllerResult,
+                status: $operation->getStatusCode()
+            );
+        }
+
+        if (!$controllerResult instanceof PaginatorInterface) {
+            if (!is_iterable($controllerResult)) {
+                throw new LogicException('Controller response from Collection Operation should be iterable.');
+            }
+
+            $paginator = new Paginator(
+                $controllerResult,
+                $this->paginatorRequestFactory->getCurrentPage(),
+                $this->paginatorRequestFactory->getItemsPerPage()
+            );
+
+            return new JsonResponse(
+                data: $paginator->toArray(),
+                status: $operation->getStatusCode()
+            );
+        }
+
+        return new JsonResponse(
+            data: $this->serializer->serialize(
+                data: $controllerResult,
+                format: 'json',
+                context: $operation->getNormalizationContext()
+            ),
+            status: $operation->getStatusCode(),
+            json: true
         );
     }
 }

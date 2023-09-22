@@ -31,6 +31,8 @@ final class GetCollectionDummyContext extends BaseContext
             HttpOperation::METHOD_GET,
             self::GET_COLLECTION_DUMMY_PATH,
         );
+
+        dd($this->getResponse()->toArray(false));
     }
 
     /**

@@ -15,6 +15,7 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionDummy
 
 use ApiScout\Attribute\GetCollection;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
+use ApiScout\Pagination\Pagination;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
@@ -22,13 +23,16 @@ use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyQueryInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
+use function array_slice;
+use function count;
+
 final class GetCollectionDummyController extends AbstractController
 {
     #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,
         PaginatorRequestFactoryInterface $paginatorRequestFactory
-    ): DummyCollectionOutput {
+    ): Pagination {
         $pinkFloydCollection = [];
 
         for ($i = 0; $i < 31; ++$i) {
@@ -49,10 +53,17 @@ final class GetCollectionDummyController extends AbstractController
                 );
         }
 
-        return new DummyCollectionOutput(
+        $slicedPinkFloydCollection = array_slice(
             $pinkFloydCollection,
-            $paginatorRequestFactory->getCurrentPage(),
+            0,
             $paginatorRequestFactory->getItemsPerPage()
+        );
+
+        return new Pagination(
+            $slicedPinkFloydCollection,
+            $paginatorRequestFactory->getCurrentPage(),
+            $paginatorRequestFactory->getItemsPerPage(),
+            count($pinkFloydCollection)
         );
     }
 }
