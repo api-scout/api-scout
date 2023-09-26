@@ -5,6 +5,8 @@ namespace PHPStan\Type\BeberleiAssert;
 use Closure;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\BinaryOp\BooleanAnd;
 use PhpParser\Node\Expr\BinaryOp\BooleanOr;
 use PhpParser\Node\Expr\BinaryOp\Identical;
 use PhpParser\Node\Expr\BinaryOp\NotIdentical;
@@ -13,20 +15,26 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\Instanceof_;
 use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Analyser\SpecifiedTypes;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ArrayType;
+use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
+use PHPStan\Type\Constant\ConstantBooleanType;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\IterableType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\NeverType;
+use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use PHPStan\Type\UnionType;
 use ReflectionObject;
 use function array_key_exists;
 use function count;
@@ -161,6 +169,25 @@ class AssertHelper
 				$args[0]->value,
 				static function (Type $type) use ($valueType): Type {
 					return TypeCombinator::remove($type, $valueType);
+				}
+			);
+		}
+
+		if ($assertName === 'notBlank') {
+			return self::allArrayOrIterable(
+				$typeSpecifier,
+				$scope,
+				$args[0]->value,
+				static function (Type $type): Type {
+					return TypeCombinator::remove(
+						$type,
+						new UnionType([
+							new NullType(),
+							new ConstantBooleanType(false),
+							new ConstantStringType(''),
+							new ConstantArrayType([], []),
+						])
+					);
 				}
 			);
 		}
@@ -400,6 +427,30 @@ class AssertHelper
 						new FuncCall(
 							new Name('array_key_exists'),
 							[$key, $array]
+						)
+					);
+				},
+				'notBlank' => static function (Scope $scope, Arg $value): Expr {
+					return new BooleanAnd(
+						new BooleanAnd(
+							new NotIdentical(
+								$value->value,
+								new ConstFetch(new Name('null'))
+							),
+							new NotIdentical(
+								$value->value,
+								new ConstFetch(new Name('false'))
+							)
+						),
+						new BooleanAnd(
+							new NotIdentical(
+								$value->value,
+								new String_('')
+							),
+							new NotIdentical(
+								$value->value,
+								new Array_()
+							)
 						)
 					);
 				},

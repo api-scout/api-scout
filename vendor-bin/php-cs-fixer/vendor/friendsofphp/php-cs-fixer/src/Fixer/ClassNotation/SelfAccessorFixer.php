@@ -59,6 +59,16 @@ class Sample
         return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after PsrAutoloadingFixer.
+     */
+    public function getPriority(): int
+    {
+        return -11;
+    }
+
     public function isRisky(): bool
     {
         return true;
@@ -145,7 +155,7 @@ class Sample
                 || (
                     null !== $insideMethodSignatureUntil
                     && $i < $insideMethodSignatureUntil
-                    && $prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON], [CT::T_NULLABLE_TYPE]])
+                    && $prevToken->equalsAny(['(', ',', [CT::T_NULLABLE_TYPE], [CT::T_TYPE_ALTERNATION], [CT::T_TYPE_COLON]])
                 )
             ) {
                 for ($j = $classStartIndex; $j < $i; ++$j) {

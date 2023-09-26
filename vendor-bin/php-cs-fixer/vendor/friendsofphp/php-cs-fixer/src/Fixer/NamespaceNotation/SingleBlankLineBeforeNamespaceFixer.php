@@ -50,9 +50,14 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractProxyFixer imple
         return $tokens->isTokenKindFound(T_NAMESPACE);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after HeaderCommentFixer.
+     */
     public function getPriority(): int
     {
-        return -21;
+        return parent::getPriority();
     }
 
     protected function createProxyFixers(): array

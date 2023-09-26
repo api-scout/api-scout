@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -67,28 +68,16 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         ],
     ];
 
-    private string $patternToFix = '';
+    /** @var array<string, true> */
+    private array $typesSetToFix;
 
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
-        $typesToFix = array_merge(...array_map(static function (string $group): array {
-            return self::POSSIBLE_TYPES[$group];
-        }, $this->configuration['groups']));
+        $typesToFix = array_merge(...array_map(static fn (string $group): array => self::POSSIBLE_TYPES[$group], $this->configuration['groups']));
 
-        $this->patternToFix = sprintf(
-            '/(?<![a-zA-Z0-9_\x80-\xff]\\\\)(\b|.(?=\$))(%s)\b(?!(\\\\|:))/i',
-            implode(
-                '|',
-                array_map(
-                    static function (string $type): string {
-                        return preg_quote($type, '/');
-                    },
-                    $typesToFix
-                )
-            )
-        );
+        $this->typesSetToFix = array_combine($typesToFix, array_fill(0, \count($typesToFix), true));
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -140,13 +129,32 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
 
     protected function normalize(string $type): string
     {
-        return Preg::replaceCallback(
-            $this->patternToFix,
-            function (array $matches): string {
-                return strtolower($matches[0]);
-            },
-            $type
-        );
+        $typeExpression = new TypeExpression($type, null, []);
+
+        $typeExpression->walkTypes(function (TypeExpression $type): void {
+            if (!$type->isUnionType()) {
+                $value = $type->toString();
+                $valueLower = strtolower($value);
+                if (isset($this->typesSetToFix[$valueLower])) {
+                    $value = $valueLower;
+                }
+
+                // normalize shape/callable/generic identifiers too
+                // TODO parse them as inner types and this will be not needed then
+                $value = Preg::replaceCallback(
+                    '/^(\??\s*)([^()[\]{}<>\'"]+)(?<!\s)(\s*[\s()[\]{}<>])/',
+                    fn ($matches) => $matches[1].$this->normalize($matches[2]).$matches[3],
+                    $value
+                );
+
+                // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
+                \Closure::bind(static function () use ($type, $value): void {
+                    $type->value = $value;
+                }, null, TypeExpression::class)();
+            }
+        });
+
+        return $typeExpression->toString();
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
