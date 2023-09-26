@@ -3,6 +3,8 @@
 ## Basic installation
 
 ```php
+use ApiScout\Attribute\Delete;
+
 final class DeleteDummyController extends AbstractController
 {
     #[Delete('/dummies/{name}')]

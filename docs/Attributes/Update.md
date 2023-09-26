@@ -3,6 +3,8 @@
 ## Basic installation
 
 ```php
+use ApiScout\Attribute\Post;
+
 final class UpdateDummyController extends AbstractController
 {
     #[Post('/dummies')]
@@ -16,6 +18,8 @@ final class UpdateDummyController extends AbstractController
 ### ApiProperty
 You can add more information to the doc regarding your `input` or `output` using the `ApiProperty` attribute
 ```php
+use ApiScout\Attribute\ApiProperty;
+
 final class DummyPayloadInput
 {
     public function __construct(

@@ -3,6 +3,8 @@
 ## Basic installation
 
 ```php
+use ApiScout\Attribute\GetCollection;
+
 final class GetCollectionDummyController extends AbstractController
 {
     #[GetCollection('/dummies')]
@@ -26,6 +28,8 @@ final class GetCollectionDummyController extends AbstractController
 ### ApiProperty Attribute
 You can add more information to the doc regarding your `input` or `output` using the `ApiProperty` attribute
 ```php
+use ApiScout\Attribute\ApiProperty;
+
 final class DummyQueryInput
 {
     public function __construct(
@@ -43,6 +47,9 @@ final class DummyQueryInput
 You could override those or add more information using the following parameters
 
 ```php
+use ApiScout\Attribute\GetCollection;
+use ApiScout\Attribute\ApiProperty;
+
     #[GetCollection(
         path: '/dummies',
         name: 'app_get_dummy_collection',

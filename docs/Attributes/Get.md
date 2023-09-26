@@ -3,6 +3,8 @@
 ## Basic installation
 
 ```php
+use ApiScout\Attribute\Get;
+
 final class GetDummyController extends AbstractController
 {
     #[Get(path: '/dummies/{id}')]
