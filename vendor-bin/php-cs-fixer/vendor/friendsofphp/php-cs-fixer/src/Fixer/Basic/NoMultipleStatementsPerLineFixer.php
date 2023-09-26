@@ -41,7 +41,8 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
     /**
      * {@inheritdoc}
      *
-     * Must run after ControlStructureBracesFixer, NoEmptyStatementFixer.
+     * Must run before CurlyBracesPositionFixer.
+     * Must run after ControlStructureBracesFixer, NoEmptyStatementFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {
@@ -73,7 +74,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
                 $token = $tokens[$nextIndex];
 
                 if ($token->isWhitespace() || $token->isComment()) {
-                    if (1 === Preg::match('/\R/', $token->getContent())) {
+                    if (Preg::match('/\R/', $token->getContent())) {
                         break;
                     }
 

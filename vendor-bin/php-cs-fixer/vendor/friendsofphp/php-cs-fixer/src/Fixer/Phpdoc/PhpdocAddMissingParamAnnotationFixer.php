@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -128,7 +129,6 @@ function f9(string $foo, $bar, $baz) {}
                 T_PROTECTED,
                 T_PUBLIC,
                 T_STATIC,
-                T_VAR,
             ])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
@@ -160,7 +160,7 @@ function f9(string $foo, $bar, $baz) {}
             foreach ($doc->getAnnotationsOfType('param') as $annotation) {
                 $pregMatched = Preg::match('/^[^$]+(\$\w+).*$/s', $annotation->getContent(), $matches);
 
-                if (1 === $pregMatched) {
+                if ($pregMatched) {
                     unset($arguments[$matches[1]]);
                 }
 
@@ -197,7 +197,7 @@ function f9(string $foo, $bar, $baz) {}
 
             array_splice(
                 $lines,
-                $lastParamLine ? $lastParamLine + 1 : $linesCount - 1,
+                $lastParamLine > 0 ? $lastParamLine + 1 : $linesCount - 1,
                 0,
                 $newLines
             );
@@ -232,7 +232,16 @@ function f9(string $foo, $bar, $baz) {}
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isComment() || $token->isWhitespace()) {
+            if (
+                $token->isComment()
+                || $token->isWhitespace()
+                || $token->isGivenKind([
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                ])
+                || (\defined('T_READONLY') && $token->isGivenKind(T_READONLY))
+            ) {
                 continue;
             }
 

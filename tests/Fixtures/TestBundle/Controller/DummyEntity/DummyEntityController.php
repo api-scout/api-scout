@@ -23,25 +23,25 @@ final class DummyEntityController
         '/api/dummies_entity',
         name: 'app_add_dummy_entity',
         resource: DummyEntity::class,
-        normalizationContext: ['groups' => 'read']
+        normalizationContext: ['groups' => 'dummy::read']
     )]
     public function __invoke(
         #[MapRequestPayload(
             serializationContext: [
-                'groups' => 'write',
+                AbstractNormalizer::GROUPS => 'dummy::write',
                 AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
             ]
         )] DummyEntity $dummyEntityInput,
     ): DummyEntity {
         return new DummyEntity(
-            1,
             $dummyEntityInput->firstName,
             $dummyEntityInput->lastName,
             new DummyCompanyEntity(
                 1,
                 $dummyEntityInput->addressEntity->name ?? '',
                 $dummyEntityInput->addressEntity->description ?? '',
-            )
+            ),
+            1,
         );
     }
 }

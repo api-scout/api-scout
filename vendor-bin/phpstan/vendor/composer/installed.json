@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.21",
-            "version_normalized": "1.10.21.0",
+            "version": "1.10.35",
+            "version_normalized": "1.10.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "b2a30186be2e4d97dce754ae4e65eb0ec2f04eb5"
+                "reference": "e730e5facb75ffe09dfb229795e8c01a459f26c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b2a30186be2e4d97dce754ae4e65eb0ec2f04eb5",
-                "reference": "b2a30186be2e4d97dce754ae4e65eb0ec2f04eb5",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e730e5facb75ffe09dfb229795e8c01a459f26c3",
+                "reference": "e730e5facb75ffe09dfb229795e8c01a459f26c3",
                 "shasum": ""
             },
             "require": {
@@ -21,7 +21,7 @@
             "conflict": {
                 "phpstan/phpstan-shim": "*"
             },
-            "time": "2023-06-21T20:07:58+00:00",
+            "time": "2023-09-19T15:27:56+00:00",
             "bin": [
                 "phpstan",
                 "phpstan.phar"
@@ -67,17 +67,17 @@
         },
         {
             "name": "phpstan/phpstan-beberlei-assert",
-            "version": "1.1.0",
-            "version_normalized": "1.1.0.0",
+            "version": "1.1.2",
+            "version_normalized": "1.1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-beberlei-assert.git",
-                "reference": "bbf7df77f65f2c8136eef38718910634c5c60351"
+                "reference": "0918f2c71f93d44839b74fe3ba2682b2083a8729"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-beberlei-assert/zipball/bbf7df77f65f2c8136eef38718910634c5c60351",
-                "reference": "bbf7df77f65f2c8136eef38718910634c5c60351",
+                "url": "https://api.github.com/repos/phpstan/phpstan-beberlei-assert/zipball/0918f2c71f93d44839b74fe3ba2682b2083a8729",
+                "reference": "0918f2c71f93d44839b74fe3ba2682b2083a8729",
                 "shasum": ""
             },
             "require": {
@@ -92,7 +92,7 @@
                 "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5"
             },
-            "time": "2023-02-18T13:10:37+00:00",
+            "time": "2023-09-04T12:13:01+00:00",
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {
@@ -114,7 +114,7 @@
             "description": "PHPStan beberlei/assert extension",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-beberlei-assert/issues",
-                "source": "https://github.com/phpstan/phpstan-beberlei-assert/tree/1.1.0"
+                "source": "https://github.com/phpstan/phpstan-beberlei-assert/tree/1.1.2"
             },
             "install-path": "../phpstan/phpstan-beberlei-assert"
         },

@@ -29,7 +29,7 @@ final class GetCollection extends HttpOperation implements CollectionOperationIn
         int $statusCode = AbstractResponse::HTTP_OK,
         string $resource = 'Default',
         array $filters = [],
-        bool|OpenApiOperation $openapi = null,
+        bool|OpenApiOperation|null $openapi = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],

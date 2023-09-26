@@ -29,7 +29,7 @@ final class Delete extends HttpOperation
         int $statusCode = AbstractResponse::HTTP_NO_CONTENT,
         string $resource = 'Default',
         array $filters = [],
-        bool|OpenApiOperation $openapi = null,
+        bool|OpenApiOperation|null $openapi = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],

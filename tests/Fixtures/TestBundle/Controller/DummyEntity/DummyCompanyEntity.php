@@ -18,11 +18,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 final class DummyCompanyEntity
 {
     public function __construct(
-        #[Groups(['read'])]
+        #[Groups(['dummy::read'])]
         public ?int $id,
-        #[Groups(['read', 'write'])]
+        #[Groups(['dummy::read', 'dummy::write'])]
         public string $name,
-        #[Groups(['read', 'write'])]
+        #[Groups(['dummy::read', 'dummy::write'])]
         public string $description,
     ) {
     }

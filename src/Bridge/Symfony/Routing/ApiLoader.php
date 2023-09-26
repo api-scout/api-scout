@@ -36,7 +36,7 @@ final class ApiLoader extends Loader
     ) {
         parent::__construct($kernel->getEnvironment());
 
-        /** @var string[]|string $paths */
+        /** @var array<string>|string $paths */
         $paths = $kernel->locateResource('@ApiScoutBundle/Resources/config/routes');
         $this->fileLoader = new PhpFileLoader(new FileLocator($paths));
     }

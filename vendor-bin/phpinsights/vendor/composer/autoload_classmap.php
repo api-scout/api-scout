@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+    'CURLStringFile' => $vendorDir . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
     'Cmgmyr\\PHPLOC\\Analyser' => $vendorDir . '/cmgmyr/phploc/src/Analyser.php',
     'Cmgmyr\\PHPLOC\\Application' => $vendorDir . '/cmgmyr/phploc/src/CLI/Application.php',
     'Cmgmyr\\PHPLOC\\Arguments' => $vendorDir . '/cmgmyr/phploc/src/CLI/Arguments.php',
