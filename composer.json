@@ -1,8 +1,8 @@
 {
     "name": "api-scout/api-scout",
     "description": "A library with a few tools, to auto document your api",
-    "type": "library",
-    "license": "proprietary",
+    "type": "symfony-bundle",
+    "license": "MIT",
     "authors": [
         {
             "name": "Marvin Courcier",
