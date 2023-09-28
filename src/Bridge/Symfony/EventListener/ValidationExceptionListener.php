@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\EventListener;
 
+use ApiScout\HttpOperation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -23,6 +24,14 @@ use function array_key_exists;
 
 final class ValidationExceptionListener
 {
+    /**
+     * @param array<class-string<\Throwable>, int> $exceptionsToStatuses
+     */
+    public function __construct(
+        private readonly array $exceptionsToStatuses,
+    ) {
+    }
+
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
@@ -31,14 +40,32 @@ final class ValidationExceptionListener
             return;
         }
 
+        $request = $event->getRequest();
+        $operation = $request->attributes->get('_api_scout_operation');
+
+        if (!$operation instanceof HttpOperation) {
+            return;
+        }
+
         /**
          * @var ValidationFailedException $validationException
          */
         $validationException = $exception->getPrevious();
 
+        $statusCode = Response::HTTP_BAD_REQUEST;
+
+        $exceptionToStatuses = array_merge(
+            $this->exceptionsToStatuses,
+            $operation->getExceptionToStatus() ?? [],
+        );
+
+        if (isset($exceptionToStatuses[$validationException::class])) {
+            $statusCode = $exceptionToStatuses[$validationException::class];
+        }
+
         $violations = $this->formatViolationList($validationException);
 
-        $event->setResponse(new JsonResponse($violations, Response::HTTP_BAD_REQUEST));
+        $event->setResponse(new JsonResponse($violations, $statusCode));
     }
 
     /**

@@ -24,6 +24,7 @@ use ApiScout\OpenApi\Model;
 use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 final class DummyAttributeController extends AbstractController
 {
@@ -88,7 +89,7 @@ final class DummyAttributeController extends AbstractController
                     ],
                 ])
             )
-        )
+        ),
     )]
     public function uploadFileDummyAttribute(): Response
     {
