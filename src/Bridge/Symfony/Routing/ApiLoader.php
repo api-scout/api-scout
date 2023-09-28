@@ -15,8 +15,8 @@ namespace ApiScout\Bridge\Symfony\Routing;
 
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\HttpOperation;
+use ApiScout\OperationProviderInterface;
 use ApiScout\Operations;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use LogicException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\Loader;
@@ -31,7 +31,7 @@ final class ApiLoader extends Loader
 
     public function __construct(
         KernelInterface $kernel,
-        private readonly ResourceCollectionFactoryInterface $resourceCollection,
+        private readonly OperationProviderInterface $resourceCollection,
         private readonly bool $docsEnabled,
     ) {
         parent::__construct($kernel->getEnvironment());
@@ -46,13 +46,13 @@ final class ApiLoader extends Loader
         /**
          * @var Operations<HttpOperation> $operations
          */
-        $operations = $this->resourceCollection->create();
+        $operations = $this->resourceCollection->getCollection();
 
         $routeCollection = new RouteCollection();
 
         $this->loadExternalFiles($routeCollection);
 
-        foreach ($operations->getOperations() as $operation) {
+        foreach ($operations as $operation) {
             if (!class_exists($operation->getController())) {
                 throw new ResourceClassNotFoundException($operation->getController());
             }

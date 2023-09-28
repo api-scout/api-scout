@@ -27,7 +27,7 @@ use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactoryInterface;
 use ApiScout\OpenApi\Options;
 use ApiScout\OpenApi\PaginationOptionsConfigurator;
 use ApiScout\OpenApi\Serializer\OpenApiNormalizer;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\OperationProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -78,7 +78,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set('api_scout.openapi.openapi_factory', OpenApiFactory::class)
-        ->arg('$resourceCollection', service(ResourceCollectionFactoryInterface::class))
+        ->arg('$resourceCollection', service(OperationProviderInterface::class))
         ->arg('$schemaFactory', service(SchemaFactoryInterface::class))
         ->arg('$filterFactory', service(FilterFactoryInterface::class))
         ->arg('$openApiOptions', service(Options::class))

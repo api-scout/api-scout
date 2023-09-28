@@ -17,7 +17,7 @@ use ApiScout\Documentation\Documentation;
 use ApiScout\Documentation\DocumentationInterface;
 use ApiScout\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiScout\OpenApi\OpenApi;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\OperationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -28,12 +28,13 @@ use Symfony\Component\HttpFoundation\Request;
 final class DocumentationAction
 {
     public function __construct(
-        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
+        private readonly OperationProviderInterface $resourceCollectionFactory,
         private readonly ?OpenApiFactoryInterface $openApiFactory = null,
         private readonly string $title = '',
         private readonly string $description = '',
         private readonly string $version = '',
     ) {
+        exit('toto');
     }
 
     public function __invoke(?Request $request = null): DocumentationInterface|OpenApi
@@ -47,7 +48,7 @@ final class DocumentationAction
         }
 
         return new Documentation(
-            $this->resourceCollectionFactory->create(),
+            $this->resourceCollectionFactory->getCollection(),
             $this->title,
             $this->description,
             $this->version
