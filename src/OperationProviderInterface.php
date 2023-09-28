@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Resource\Factory;
+namespace ApiScout;
 
-use ApiScout\Operations;
-
-interface ResourceCollectionFactoryInterface
+interface OperationProviderInterface
 {
-    public function create(): Operations;
+    public function getCollection(): Operations;
+
+    public function get(string $controllerName): ?Operation;
 }

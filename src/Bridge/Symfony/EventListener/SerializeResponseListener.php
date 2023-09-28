@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace ApiScout\Bridge\Symfony\EventListener;
 
 use ApiScout\Attribute\CollectionOperationInterface;
+use ApiScout\HttpOperation;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Pagination\Paginator;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -25,7 +25,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class SerializeResponseListener
 {
     public function __construct(
-        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
         private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
         private readonly SerializerInterface $serializer,
         private readonly string $responseItemKey
@@ -37,19 +36,17 @@ final class SerializeResponseListener
      */
     public function onKernelView(ViewEvent $event): void
     {
-        $controllerResult = $event->getControllerResult();
         $request = $event->getRequest();
+        $operation = $request->attributes->get('_api_scout_operation');
 
-        if (!$request->attributes->has('_route_name')) {
+        if (!$operation instanceof HttpOperation) {
             return;
         }
 
-        $operation = $this->resourceCollectionFactory->create()->getOperation(
-            $request->attributes->get('_route_name') /** @phpstan-ignore-line this value will always be a string */
-        );
+        $controllerResult = $event->getControllerResult();
 
         if ($operation instanceof CollectionOperationInterface
-            && $this->paginatorRequestFactory->isPaginationEnabled()
+            && $operation->isPaginationEnabled()
             && !$controllerResult instanceof Paginator
         ) {
             if (!is_iterable($controllerResult)) {
@@ -58,8 +55,8 @@ final class SerializeResponseListener
 
             $paginator = new Paginator(
                 $controllerResult,
-                $this->paginatorRequestFactory->getCurrentPage(),
-                $this->paginatorRequestFactory->getItemsPerPage()
+                $this->paginatorRequestFactory->getCurrentPage($request),
+                $this->paginatorRequestFactory->getItemsPerPage($operation)
             );
 
             $event->setResponse(
@@ -73,7 +70,7 @@ final class SerializeResponseListener
         }
 
         if ($operation instanceof CollectionOperationInterface
-            && $this->paginatorRequestFactory->isPaginationEnabled()
+            && $operation->isPaginationEnabled()
             && $controllerResult instanceof Paginator
         ) {
             $event->setResponse(

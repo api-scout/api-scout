@@ -11,13 +11,11 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Resource\Factory;
+namespace ApiScout;
 
 use ApiScout\Attribute\ApiProperty;
 use ApiScout\Exception\ParamShouldBeTypedException;
 use ApiScout\Exception\ResourceClassNotFoundException;
-use ApiScout\Operation;
-use ApiScout\Operations;
 use ApiScout\Resource\DirectoryClassesExtractor;
 use LogicException;
 use ReflectionAttribute;
@@ -28,22 +26,25 @@ use ReflectionParameter;
 use ReflectionProperty;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Contracts\Cache\CacheInterface;
 
 use function function_exists;
 use function is_int;
 
-final class ResourceCollectionFactory implements ResourceCollectionFactoryInterface
+final class OperationProvider implements OperationProviderInterface
 {
+    private const CACHE_PREFIX = 'api_scout.operation.';
+
     public function __construct(
-        private readonly DirectoryClassesExtractor $directoryClassExtractor
+        private readonly DirectoryClassesExtractor $directoryClassExtractor,
+        private readonly CacheInterface $cache,
     ) {
     }
 
-    public function create(): Operations
+    public function getCollection(): Operations
     {
         $classes = $this->directoryClassExtractor->extract();
-
-        $operations = new Operations();
+        $operations = [];
 
         foreach ($classes as $controller) {
             if (!class_exists($controller)) {
@@ -55,22 +56,47 @@ final class ResourceCollectionFactory implements ResourceCollectionFactoryInterf
             foreach ($reflectionClass->getMethods() as $method) {
                 if ($method->class !== $controller) {
                     // We only want the method of the current class. This line avoid reading inherited classes
-                    break;
+                    continue;
                 }
 
                 if ($this->isOperationResource($method)) {
-                    $operation = $this->buildOperationFromMethod($method, $controller);
+                    $operation = $this->cache->get(
+                        self::getOperationCacheKey(self::getControllerName($method)),
+                        fn () => $this->buildOperationFromMethod($method, $controller)
+                    );
 
                     if ($operation->getName() === null) {
                         throw new LogicException('Operation name should have been initialized before hand.');
                     }
 
-                    $operations->add($operation->getName(), $operation);
+                    $operations[$operation->getName()] = $operation;
                 }
             }
         }
 
-        return $operations;
+        return new Operations($operations);
+    }
+
+    public function get(string $controllerName): ?Operation
+    {
+        return $this->cache->get(
+            self::getOperationCacheKey($controllerName),
+            fn () => null
+        );
+    }
+
+    private static function getControllerName(ReflectionMethod $method): string
+    {
+        if ($method->name === '__invoke') {
+            return sprintf('%s', $method->class);
+        }
+
+        return sprintf('%s::%s', $method->class, $method->name);
+    }
+
+    private static function getOperationCacheKey(string $controllerName): string
+    {
+        return self::CACHE_PREFIX.str_replace(['(', ')', '\\', ':'], '_', $controllerName);
     }
 
     private function isOperationResource(ReflectionMethod $reflection): bool

@@ -51,8 +51,8 @@ final class GetCollectionDummyController extends AbstractController
 
         return new DummyCollectionOutput(
             $pinkFloydCollection,
-            $paginatorRequestFactory->getCurrentPage(),
-            $paginatorRequestFactory->getItemsPerPage()
+            1,
+            10
         );
     }
 }

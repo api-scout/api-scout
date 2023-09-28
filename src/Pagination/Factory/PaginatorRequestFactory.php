@@ -15,30 +15,18 @@ namespace ApiScout\Pagination\Factory;
 
 use ApiScout\OpenApi\Model\PaginationOptions;
 use ApiScout\Operation;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
-use LogicException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
 {
-    private readonly Request $request;
-
     public function __construct(
-        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
         private readonly PaginationOptions $paginationOptions,
-        RequestStack $requestStack,
     ) {
-        if ($requestStack->getCurrentRequest() === null) {
-            throw new LogicException('Request should be first initialized.');
-        }
-
-        $this->request = $requestStack->getCurrentRequest();
     }
 
-    public function getCurrentPage(): int
+    public function getCurrentPage(Request $request): int
     {
-        $currentPage = $this->request->get($this->paginationOptions->getPaginationPageParameterName());
+        $currentPage = $request->get($this->paginationOptions->getPaginationPageParameterName());
 
         if (!is_numeric($currentPage)) {
             return 1;
@@ -47,31 +35,8 @@ final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
         return (int) $currentPage;
     }
 
-    public function getItemsPerPage(): int
+    public function getItemsPerPage(Operation $operation): int
     {
-        return $this->getOperationFromRequest()
-            ->getPaginationItemsPerPage() ?? $this->paginationOptions->getPaginationItemsPerPage()
-        ;
-    }
-
-    public function isPaginationEnabled(): bool
-    {
-        return $this->getOperationFromRequest()->isPaginationEnabled();
-    }
-
-    private function getOperationFromRequest(): Operation
-    {
-        if (!$this->request->attributes->has('_controller_class')
-            && !$this->request->attributes->has('_route_name')
-        ) {
-            throw new LogicException('Cannot get Operation when using non declared route with api loader annotation');
-        }
-
-        return $this->resourceCollectionFactory->create()
-            ->getOperation(
-                /** @phpstan-ignore-next-line this value will always be a string */
-                $this->request->attributes->get('_route_name')
-            )
-        ;
+        return $operation->getPaginationItemsPerPage() ?? $this->paginationOptions->getPaginationItemsPerPage();
     }
 }

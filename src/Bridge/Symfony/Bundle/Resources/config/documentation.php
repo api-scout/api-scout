@@ -20,7 +20,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 use ApiScout\Documentation\Action\DocumentationAction;
 use ApiScout\OpenApi\Factory\OpenApiFactoryInterface;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\OperationProviderInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
@@ -28,7 +28,7 @@ return static function (ContainerConfigurator $container): void {
     ;
     $services
         ->set(DocumentationAction::class)
-        ->arg('$resourceCollectionFactory', service(ResourceCollectionFactoryInterface::class))
+        ->arg('$resourceCollectionFactory', service(OperationProviderInterface::class))
         ->arg('$openApiFactory', service(OpenApiFactoryInterface::class))
         ->arg('$title', param('api_scout.title'))
         ->arg('$description', param('api_scout.description'))

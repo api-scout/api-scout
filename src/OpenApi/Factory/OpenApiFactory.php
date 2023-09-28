@@ -25,8 +25,8 @@ use ApiScout\OpenApi\OpenApi;
 use ApiScout\OpenApi\Options;
 use ApiScout\OpenApi\Trait\ClassNameNormalizerTrait;
 use ApiScout\Operation;
+use ApiScout\OperationProviderInterface;
 use ApiScout\Operations;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use ArrayObject;
 use LogicException;
 
@@ -42,7 +42,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     private readonly Options $openApiOptions;
 
     public function __construct(
-        private readonly ResourceCollectionFactoryInterface $resourceCollection,
+        private readonly OperationProviderInterface $resourceCollection,
         private readonly SchemaFactoryInterface $schemaFactory,
         private readonly FilterFactoryInterface $filterFactory,
         ?Options $openApiOptions = null
@@ -52,7 +52,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
     public function __invoke(array $context = []): OpenApi
     {
-        $collections = $this->resourceCollection->create();
+        $collections = $this->resourceCollection->getCollection();
         $baseUrl = $context[self::BASE_URL] ?? '/';
         $contact = $this->openApiOptions->getContactUrl() === null || $this->openApiOptions->getContactEmail() === null ? null : new Model\Contact($this->openApiOptions->getContactName(), $this->openApiOptions->getContactUrl(), $this->openApiOptions->getContactEmail());
         $license = $this->openApiOptions->getLicenseName() === null ? null : new Model\License($this->openApiOptions->getLicenseName(), $this->openApiOptions->getLicenseUrl());
