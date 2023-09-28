@@ -15,6 +15,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ApiScout\Bridge\Symfony\EventListener\AddFormatListener;
 use ApiScout\Bridge\Symfony\EventListener\ApiLoaderResponseListener;
+use ApiScout\Bridge\Symfony\EventListener\CustomExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\EmptyPayloadExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\ExtraAttributeExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\LoaderExceptionListener;
@@ -64,6 +65,11 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$serializer', service('serializer'))
         ->arg('$responseItemKey', param('api_scout.response_item_key'))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 15])
+    ;
+
+    $services->set('api_scout.symfony.custom_exception_listener', CustomExceptionListener::class)
+        ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
+        ->tag('kernel.event_subscriber')
     ;
 
     $services

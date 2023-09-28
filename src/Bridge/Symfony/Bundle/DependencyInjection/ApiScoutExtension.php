@@ -60,6 +60,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.description', $configs['description']);
         $container->setParameter('api_scout.version', $configs['version']);
         $container->setParameter('api_scout.response_item_key', $configs['response_item_key']);
+        $container->setParameter('api_scout.exception_to_status', $configs['exception_to_status']);
 
         $container->setParameter('api_scout.pagination.enabled', $configs['pagination']['enabled']);
         $container->setParameter('api_scout.pagination.page_parameter_name', $configs['pagination']['page_parameter_name']);
