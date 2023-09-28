@@ -22,6 +22,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Add the proper Operation to the request for further handling.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SerializeResponseListener
 {
     public function __construct(
