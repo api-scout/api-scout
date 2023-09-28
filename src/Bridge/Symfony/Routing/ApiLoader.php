@@ -25,6 +25,11 @@ use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * Add routes with all the found controllers using the HttpOperation ApiScout attributes.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ApiLoader extends Loader
 {
     private PhpFileLoader $fileLoader;

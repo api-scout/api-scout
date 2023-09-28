@@ -31,6 +31,12 @@ use Symfony\Contracts\Cache\CacheInterface;
 use function function_exists;
 use function is_int;
 
+/**
+ * Build the Operations.
+ *
+ * @author Jules Pietri <jules@heahprod.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class OperationProvider implements OperationProviderInterface
 {
     private const CACHE_PREFIX = 'api_scout.operation.';

@@ -21,6 +21,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 use function is_string;
 
+/**
+ * Add the proper Operation to the request for further handling.
+ *
+ * @author Jules Pietri <jules@heahprod.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class OperationRequestListener implements EventSubscriberInterface
 {
     public function __construct(
