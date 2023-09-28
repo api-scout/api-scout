@@ -1,5 +1,15 @@
 # ApiScout 🤠
 
+
+<p align="center">
+  <img src="docs/logo-main-black.svg" width="250" title="hover text">
+</p>
+
+This library is backed by [Alximy](https://alximy.io)
+
+>A team of passionate humans from very different backgrounds, sharing our love of PHP, Symfony and its ecosystem. Our CTO, Expert developers, tech leads, can help you learn or develop the tools you need, and perform audits or tailored workshops. We value contributing to the Open Source community and are willing to mentor new contributors in our team or yours.
+
+
 ## Introduction
 
 The purpose of this repo is to provide a bundle which will
