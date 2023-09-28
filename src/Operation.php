@@ -30,6 +30,7 @@ abstract class Operation
      * @param class-string|null  $input
      * @param class-string|null  $output
      * @param array<ApiProperty> $filters
+     * @param array<class-string<\Throwable>, int> $exceptionsToStatuses
      */
     /** @phpstan-ignore-next-line It's okay to have some unused parameters */
     public function __construct(
@@ -183,6 +184,11 @@ abstract class Operation
     public function getOpenapi(): bool|OpenApiOperation|null
     {
         return $this->openapi;
+    }
+
+    public function getExceptionToStatus(): ?array
+    {
+        return $this->exceptionToStatus;
     }
 
     public function getFormats(): array

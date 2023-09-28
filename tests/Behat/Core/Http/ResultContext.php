@@ -61,6 +61,14 @@ final class ResultContext extends BaseContext
     }
 
     /**
+     * @Then unsupported media type
+     */
+    public function unsupportedMediaType(): void
+    {
+        Assert::assertSame(AbstractResponse::HTTP_UNSUPPORTED_MEDIA_TYPE, $this->getResponse()->getStatusCode());
+    }
+
+    /**
      * @Then not found
      */
     public function notFound(): void

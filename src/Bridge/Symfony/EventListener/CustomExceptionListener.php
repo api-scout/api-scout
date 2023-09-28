@@ -25,7 +25,7 @@ use Throwable;
  * @author Jules Pietri <jules@heahprod.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-class CustomExceptionListener implements EventSubscriberInterface
+final class CustomExceptionListener implements EventSubscriberInterface
 {
     /**
      * @param array<class-string<Throwable>, int> $exceptionsToStatuses

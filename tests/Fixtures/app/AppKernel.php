@@ -27,6 +27,7 @@ use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 final class AppKernel extends Kernel
 {
@@ -104,10 +105,7 @@ final class AppKernel extends Kernel
                 'paths' => [
                     '%kernel.project_dir%/../TestBundle/Controller',
                 ],
-            ],
-            'exception_to_status' => [
-                'Symfony\Component\Validator\Exception\ValidationFailedException' => 500,
-            ],
+            ]
         ]);
     }
 
