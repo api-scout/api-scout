@@ -105,6 +105,9 @@ final class AppKernel extends Kernel
                     '%kernel.project_dir%/../TestBundle/Controller',
                 ],
             ],
+            'exception_to_status' => [
+                'Symfony\Component\Validator\Exception\ValidationFailedException' => 500,
+            ],
         ]);
     }
 
