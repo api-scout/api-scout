@@ -42,6 +42,7 @@ abstract class Operation
         protected string $resource,
         protected array $filters,
         protected readonly bool|OpenApiOperation|null $openapi,
+        protected readonly ?array $exceptionToStatus,
         protected array $formats,
         protected array $inputFormats,
         protected array $outputFormats,

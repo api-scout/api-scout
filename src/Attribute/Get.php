@@ -30,6 +30,7 @@ final class Get extends HttpOperation
         string $resource = 'Default',
         array $filters = [],
         bool|OpenApiOperation|null $openapi = null,
+        array $exceptionToStatus = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],
@@ -67,6 +68,7 @@ final class Get extends HttpOperation
             resource: $resource,
             filters: $filters,
             openapi: $openapi,
+            exceptionToStatus: $exceptionToStatus,
             formats: $formats,
             inputFormats: $inputFormats,
             outputFormats: $outputFormats,
@@ -86,7 +88,7 @@ final class Get extends HttpOperation
             priority: $priority,
             locale: $locale,
             format: $format,
-            stateless: $stateless
+            stateless: $stateless,
         );
     }
 }

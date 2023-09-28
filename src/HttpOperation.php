@@ -36,6 +36,7 @@ abstract class HttpOperation extends Operation
         string $resource,
         array $filters,
         bool|OpenApiOperation|null $openapi,
+        ?array $exceptionToStatus,
         array $formats,
         array $inputFormats,
         array $outputFormats,
@@ -67,6 +68,7 @@ abstract class HttpOperation extends Operation
             resource: $resource,
             filters: $filters,
             openapi: $openapi,
+            exceptionToStatus: $exceptionToStatus,
             formats: $formats,
             inputFormats: $inputFormats,
             outputFormats: $outputFormats,
@@ -86,7 +88,7 @@ abstract class HttpOperation extends Operation
             priority: $priority,
             locale: $locale,
             format: $format,
-            stateless: $stateless
+            stateless: $stateless,
         );
     }
 
