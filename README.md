@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="docs/logo-main-black.svg" width="250" title="hover text">
+  <img src="docs/Images/logo-sponsor.svg" width="250" title="alximy logo">
 </p>
 
 This library is backed by [Alximy](https://alximy.io)
