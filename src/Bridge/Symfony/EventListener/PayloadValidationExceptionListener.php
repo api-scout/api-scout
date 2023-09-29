@@ -45,7 +45,7 @@ final class PayloadValidationExceptionListener
                 $this->emptyPayloadException()
             );
 
-            return ;
+            return;
         }
 
         if ($exception instanceof ExtraAttributesException) {
@@ -53,7 +53,7 @@ final class PayloadValidationExceptionListener
                 $this->extraAttributeException($exception)
             );
 
-            return ;
+            return;
         }
 
         if (!$exception->getPrevious() instanceof ValidationFailedException) {
@@ -72,7 +72,7 @@ final class PayloadValidationExceptionListener
         );
     }
 
-    private function validationException(\Throwable $exception, Operation $operation): JsonResponse
+    private function validationException(Throwable $exception, Operation $operation): JsonResponse
     {
         /**
          * @var ValidationFailedException $validationException
