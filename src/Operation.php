@@ -20,6 +20,7 @@ use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use LogicException;
 use RuntimeException;
+use Throwable;
 
 abstract class Operation
 {
@@ -190,6 +191,23 @@ abstract class Operation
         return $this->exceptionToStatus;
     }
 
+    /**
+     * @param array<class-string<Throwable>, int> $exceptionToStatus
+     */
+    public function getExceptionToStatusClassStatusCode(
+        array $exceptionToStatus,
+        object $classException,
+        int $defaultStatusCode = 400
+    ): int {
+        $exceptionToStatuses = $this->formatExceptionToStatusWithConfiguration($exceptionToStatus);
+
+        if (isset($exceptionToStatuses[$classException::class])) {
+            return $exceptionToStatuses[$classException::class];
+        }
+
+        return $defaultStatusCode;
+    }
+
     public function getFormats(): array
     {
         return $this->formats;
@@ -255,5 +273,18 @@ abstract class Operation
     public function getDeprecationReason(): ?string
     {
         return $this->deprecationReason;
+    }
+
+    /**
+     * @param array<class-string<Throwable>, int> $exceptionToStatus
+     *
+     * @return array<class-string<Throwable>, int>
+     */
+    private function formatExceptionToStatusWithConfiguration(array $exceptionToStatus): array
+    {
+        return array_merge(
+            $exceptionToStatus,
+            $this->exceptionToStatus ?? [],
+        );
     }
 }
