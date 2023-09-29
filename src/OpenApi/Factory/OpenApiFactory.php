@@ -29,6 +29,7 @@ use ApiScout\OperationProviderInterface;
 use ApiScout\Operations;
 use ArrayObject;
 use LogicException;
+use Throwable;
 
 use function in_array;
 use function is_object;
@@ -41,10 +42,14 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
     private readonly Options $openApiOptions;
 
+    /**
+     * @param array<class-string<Throwable>, int> $exceptionsToStatuses
+     */
     public function __construct(
         private readonly OperationProviderInterface $resourceCollection,
         private readonly SchemaFactoryInterface $schemaFactory,
         private readonly FilterFactoryInterface $filterFactory,
+        private readonly array $exceptionsToStatuses,
         ?Options $openApiOptions = null
     ) {
         $this->openApiOptions = $openApiOptions ?: new Options('Alximy OpenApi Documentation');
@@ -285,10 +290,12 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         Operation $operation,
     ): Model\Operation {
         /**
-         * @var class-string $exception
+         * @var array<class-string<\Throwable>, int> $exceptionsToStatuses
          */
-        foreach ($operation->getExceptionToStatus() ?? [] as $exception => $status) {
-            if (!isset($openapiOperation->getResponses()[$status])) {
+        $exceptionsToStatuses = $operation->formatExceptionToStatusWithConfiguration($this->exceptionsToStatuses);
+
+        foreach ($exceptionsToStatuses as $exception => $status) {
+            if (!isset($openapiOperation->getResponses()[$status]) && $status >= 200 && $status < 500) {
                 $openapiOperation = $this->buildResponseContent(
                     $status,
                     $this->exceptionClassnameToMessageError($exception),
@@ -310,10 +317,13 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         $classname = end($explodedClassName);
         $messageErrorException = str_replace('Exception', '', $classname);
 
-        /**
-         * @var string
-         */
-        return ltrim(preg_replace('/[A-Z]/', ' $0', $messageErrorException));
+        $formatedMessageErrorException = preg_replace('/[A-Z]/', ' $0', $messageErrorException);
+
+        if ($formatedMessageErrorException === null) {
+            throw new \LogicException('Misformated error message exception.');
+        }
+
+        return ltrim($formatedMessageErrorException);
     }
 
     private function buildResponseContent(

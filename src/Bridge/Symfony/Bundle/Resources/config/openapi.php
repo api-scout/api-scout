@@ -81,6 +81,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$resourceCollection', service(OperationProviderInterface::class))
         ->arg('$schemaFactory', service(SchemaFactoryInterface::class))
         ->arg('$filterFactory', service(FilterFactoryInterface::class))
+        ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
         ->arg('$openApiOptions', service(Options::class))
     ;
 
