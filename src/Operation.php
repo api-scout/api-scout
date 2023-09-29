@@ -280,7 +280,7 @@ abstract class Operation
      *
      * @return array<class-string<Throwable>, int>
      */
-    private function formatExceptionToStatusWithConfiguration(array $exceptionToStatus): array
+    public function formatExceptionToStatusWithConfiguration(array $exceptionToStatus): array
     {
         return array_merge(
             $exceptionToStatus,
