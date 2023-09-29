@@ -290,7 +290,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         Operation $operation,
     ): Model\Operation {
         /**
-         * @var array<class-string<\Throwable>, int> $exceptionsToStatuses
+         * @var array<class-string<Throwable>, int> $exceptionsToStatuses
          */
         $exceptionsToStatuses = $operation->formatExceptionToStatusWithConfiguration($this->exceptionsToStatuses);
 
@@ -320,7 +320,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         $formatedMessageErrorException = preg_replace('/[A-Z]/', ' $0', $messageErrorException);
 
         if ($formatedMessageErrorException === null) {
-            throw new \LogicException('Misformated error message exception.');
+            throw new LogicException('Misformated error message exception.');
         }
 
         return ltrim($formatedMessageErrorException);
