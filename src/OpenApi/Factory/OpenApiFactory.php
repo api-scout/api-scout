@@ -289,9 +289,6 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         Model\Operation $openapiOperation,
         Operation $operation,
     ): Model\Operation {
-        /**
-         * @var array<class-string<Throwable>, int> $exceptionsToStatuses
-         */
         $exceptionsToStatuses = $operation->formatExceptionToStatusWithConfiguration($this->exceptionsToStatuses);
 
         foreach ($exceptionsToStatuses as $exception => $status) {

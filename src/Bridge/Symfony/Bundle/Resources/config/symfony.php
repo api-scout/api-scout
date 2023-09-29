@@ -20,6 +20,7 @@ use ApiScout\Bridge\Symfony\EventListener\EmptyPayloadExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\ExtraAttributeExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\LoaderExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\OperationRequestListener;
+use ApiScout\Bridge\Symfony\EventListener\PayloadValidationExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
 use ApiScout\Bridge\Symfony\EventListener\ValidationExceptionListener;
 use ApiScout\Bridge\Symfony\Routing\ApiLoader;
@@ -73,18 +74,8 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services
-        ->set(ExtraAttributeExceptionListener::class)
-        ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
-    ;
-
-    $services
-        ->set(ValidationExceptionListener::class)
+        ->set(PayloadValidationExceptionListener::class)
         ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
-        ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
-    ;
-
-    $services
-        ->set(EmptyPayloadExceptionListener::class)
         ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
     ;
 
