@@ -15,11 +15,6 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\PostDummyFile;
 
 use ApiScout\Attribute\Post;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyPayloadInput;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\PostDummyFile\DummyFileOutput;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\PostDummyFile\DummyPayloadFileInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Exception\ValidationFailedException;

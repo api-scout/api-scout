@@ -19,13 +19,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Throwable;
 
 use function array_key_exists;
 
 final class ValidationExceptionListener
 {
     /**
-     * @param array<class-string<\Throwable>, int> $exceptionsToStatuses
+     * @param array<class-string<Throwable>, int> $exceptionsToStatuses
      */
     public function __construct(
         private readonly array $exceptionsToStatuses,

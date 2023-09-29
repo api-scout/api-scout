@@ -30,7 +30,7 @@ final class GetCollection extends HttpOperation implements CollectionOperationIn
         string $resource = 'Default',
         array $filters = [],
         bool|OpenApiOperation|null $openapi = null,
-        array $exceptionToStatus = null,
+        ?array $exceptionToStatus = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],

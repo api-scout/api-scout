@@ -222,6 +222,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     null,
                     $openapiOperation
                 );
+
                 break;
             case HttpOperation::METHOD_PATCH:
             case HttpOperation::METHOD_PUT:
@@ -250,6 +251,11 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 break;
         }
 
+        $openapiOperation = $this->buildCustomOpenApiResponse(
+            $openapiOperation,
+            $operation,
+        );
+
         if ($operation->getOutput() !== null && class_exists($operation->getOutput())) {
             $operationOutputSchema = $this->schemaFactory->buildSchema($operation->getOutput(), $operation->getResource());
             $this->appendSchemaDefinitions($schemas, $operationOutputSchema);
@@ -272,6 +278,42 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         }
 
         return $openapiOperation;
+    }
+
+    private function buildCustomOpenApiResponse(
+        Model\Operation $openapiOperation,
+        Operation $operation,
+    ): Model\Operation {
+        /**
+         * @var class-string $exception
+         */
+        foreach ($operation->getExceptionToStatus() ?? [] as $exception => $status) {
+            if (!isset($openapiOperation->getResponses()[$status])) {
+                $openapiOperation = $this->buildResponseContent(
+                    $status,
+                    $this->exceptionClassnameToMessageError($exception),
+                    null,
+                    $openapiOperation
+                );
+            }
+        }
+
+        return $openapiOperation;
+    }
+
+    /**
+     * @param class-string $class
+     */
+    private function exceptionClassnameToMessageError(string $class): string
+    {
+        $explodedClassName = explode('\\', $class);
+        $classname = end($explodedClassName);
+        $messageErrorException = str_replace('Exception', '', $classname);
+
+        /**
+         * @var string
+         */
+        return ltrim(preg_replace('/[A-Z]/', ' $0', $messageErrorException));
     }
 
     private function buildResponseContent(
