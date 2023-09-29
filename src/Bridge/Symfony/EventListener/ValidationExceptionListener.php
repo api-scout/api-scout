@@ -53,20 +53,16 @@ final class ValidationExceptionListener
          */
         $validationException = $exception->getPrevious();
 
-        $statusCode = Response::HTTP_BAD_REQUEST;
-
-        $exceptionToStatuses = array_merge(
-            $this->exceptionsToStatuses,
-            $operation->getExceptionToStatus() ?? [],
-        );
-
-        if (isset($exceptionToStatuses[$validationException::class])) {
-            $statusCode = $exceptionToStatuses[$validationException::class];
-        }
-
         $violations = $this->formatViolationList($validationException);
 
-        $event->setResponse(new JsonResponse($violations, $statusCode));
+        $event->setResponse(new JsonResponse(
+            $violations,
+            $operation->getExceptionToStatusClassStatusCode(
+                $this->exceptionsToStatuses,
+                $validationException,
+                Response::HTTP_BAD_REQUEST
+            )
+        ));
     }
 
     /**
