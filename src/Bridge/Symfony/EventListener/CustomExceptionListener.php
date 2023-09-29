@@ -44,6 +44,10 @@ final class CustomExceptionListener implements EventSubscriberInterface
     {
         $exception = $event->getThrowable()->getPrevious();
 
+        if ($exception === null) {
+            return;
+        }
+
         if (isset($this->exceptionsToStatuses[$exception::class])) {
             $event->setThrowable(new HttpException($this->exceptionsToStatuses[$exception::class]));
             $event->allowCustomResponseCode();
