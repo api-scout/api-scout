@@ -15,8 +15,6 @@ namespace ApiScout\Tests\Behat\Core\Http\ErrorTest;
 
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
-use Behat\Gherkin\Node\PyStringNode;
-use PHPUnit\Framework\Assert;
 
 final class CustomizeErrorContext extends BaseContext
 {
@@ -32,17 +30,4 @@ final class CustomizeErrorContext extends BaseContext
             self::POST_CUSTOM_ERROR_PATH,
         );
     }
-
-    //    /**
-    //     * @Then post with empty payload response should have:
-    //     */
-    //    public function then(PyStringNode $content): void
-    //    {
-    //        $content = $this->json($content->getRaw());
-    //
-    //        Assert::assertSame(
-    //            $content,
-    //            $this->getResponse()->toArray(false)
-    //        );
-    //    }
 }
