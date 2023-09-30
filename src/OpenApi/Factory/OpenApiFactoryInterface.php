@@ -16,7 +16,7 @@ namespace ApiScout\OpenApi\Factory;
 use ApiScout\OpenApi\OpenApi;
 
 /**
- * Inspired by ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface
+ * Inspired by ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface.
  *
  * @author Antoine Bluchet <soyuka@gmail.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>

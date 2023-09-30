@@ -19,7 +19,7 @@ use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
 /**
- * Put Operation
+ * Put Operation.
  *
  * Inspired by ApiPlatform\Metadata\Put
  *

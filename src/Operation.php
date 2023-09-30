@@ -23,7 +23,7 @@ use RuntimeException;
 use Throwable;
 
 /**
- * Attribute to build the Operation
+ * Attribute to build the Operation.
  *
  * Inspired by ApiPlatform\Metadata\Operation
  *

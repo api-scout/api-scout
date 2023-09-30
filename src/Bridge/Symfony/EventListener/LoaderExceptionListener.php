@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Throwable;
 
 /**
- * LoaderExceptionListener for debugging
+ * LoaderExceptionListener for debugging.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

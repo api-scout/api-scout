@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi;
 
 /**
- * Options
+ * Options.
  *
  * Inspired by ApiPlatform\OpenApi\Options
  *

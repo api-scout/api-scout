@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi\Trait;
 
 /**
- * Classname string manipulation
+ * Classname string manipulation.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

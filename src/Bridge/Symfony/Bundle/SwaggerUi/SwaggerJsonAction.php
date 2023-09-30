@@ -18,7 +18,7 @@ use ApiScout\OpenApi\OpenApi;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * The Swagger json controller
+ * The Swagger json controller.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

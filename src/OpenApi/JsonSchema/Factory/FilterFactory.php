@@ -18,7 +18,7 @@ use ApiScout\OpenApi\Model;
 use RuntimeException;
 
 /**
- * Build the Parameter model path and query for OpenApi specification
+ * Build the Parameter model path and query for OpenApi specification.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

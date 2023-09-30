@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi\Model;
 
 /**
- * PaginationOptions
+ * PaginationOptions.
  *
  * Inspired by ApiPlatform\State\Pagination\PaginationOptions
  *

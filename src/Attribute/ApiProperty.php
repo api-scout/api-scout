@@ -16,7 +16,7 @@ namespace ApiScout\Attribute;
 use Attribute;
 
 /**
- * ApiProperty
+ * ApiProperty.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

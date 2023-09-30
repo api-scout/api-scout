@@ -20,11 +20,11 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * OpenApi Json response
+ * OpenApi Json response.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class ApiLoaderResponseListener
+final class OpenApiResponseListener
 {
     public function __construct(
         private readonly NormalizerInterface $apiNormalizer

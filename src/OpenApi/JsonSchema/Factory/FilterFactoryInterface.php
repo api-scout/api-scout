@@ -17,7 +17,7 @@ use ApiScout\Attribute\ApiProperty;
 use ApiScout\OpenApi\Model\Operation;
 
 /**
- * Interface to build the Parameter model path and query for OpenApi specification
+ * Interface to build the Parameter model path and query for OpenApi specification.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

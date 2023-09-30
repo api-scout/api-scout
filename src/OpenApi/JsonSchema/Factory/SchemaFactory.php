@@ -20,7 +20,7 @@ use ReflectionClass;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
- * Build the Input and Output OpenApi Specification schema
+ * Build the Input and Output OpenApi Specification schema.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
