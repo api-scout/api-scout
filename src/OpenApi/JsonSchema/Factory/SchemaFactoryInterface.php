@@ -16,7 +16,7 @@ namespace ApiScout\OpenApi\JsonSchema\Factory;
 use ApiScout\OpenApi\JsonSchema\JsonSchema;
 
 /**
- * Interface to build the Input and Output OpenApi Specification schema
+ * Interface to build the Input and Output OpenApi Specification schema.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

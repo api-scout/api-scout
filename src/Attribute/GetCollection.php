@@ -19,7 +19,7 @@ use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
 /**
- * GetCollection Operation
+ * GetCollection Operation.
  *
  * Inspired by ApiPlatform\Metadata\GetCollection
  *

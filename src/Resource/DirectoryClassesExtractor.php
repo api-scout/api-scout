@@ -25,7 +25,7 @@ use function defined;
 use function in_array;
 
 /**
- * Extract class name from files
+ * Extract class name from files.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

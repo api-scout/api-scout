@@ -19,7 +19,7 @@ use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
 /**
- * Delete Operation
+ * Delete Operation.
  *
  * Inspired by ApiPlatform\Metadata\Delete
  *

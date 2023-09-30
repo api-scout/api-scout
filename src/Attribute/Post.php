@@ -19,7 +19,7 @@ use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
 /**
- * Post Operation
+ * Post Operation.
  *
  * Inspired by ApiPlatform\Metadata\Post
  *

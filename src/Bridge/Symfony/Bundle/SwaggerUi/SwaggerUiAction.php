@@ -29,7 +29,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 /**
- * Display Swagger ui controller
+ * Display Swagger ui controller.
  *
  * Inspired by ApiPlatform\Symfony\Bundle\SwaggerUi\SwaggerUiAction
  *

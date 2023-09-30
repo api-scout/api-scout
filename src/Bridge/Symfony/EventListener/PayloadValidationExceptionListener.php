@@ -26,7 +26,7 @@ use Throwable;
 use function array_key_exists;
 
 /**
- * Format Validation Errors from MapRequestPayload
+ * Format Validation Errors from MapRequestPayload.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

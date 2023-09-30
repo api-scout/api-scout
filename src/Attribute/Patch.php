@@ -19,7 +19,7 @@ use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
 /**
- * Patch Operation
+ * Patch Operation.
  *
  * Inspired by ApiPlatform\Metadata\Patch
  *

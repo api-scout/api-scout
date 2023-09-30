@@ -19,7 +19,7 @@ use ApiScout\OpenApi\Model\Paths;
 use ArrayObject;
 
 /**
- * OpenApi
+ * OpenApi.
  *
  * Inspired by ApiPlatform\OpenApi\OpenApi
  *
