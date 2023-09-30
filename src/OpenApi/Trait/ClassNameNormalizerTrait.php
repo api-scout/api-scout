@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace ApiScout\OpenApi\Trait;
 
+/**
+ * Classname string manipulation
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 trait ClassNameNormalizerTrait
 {
     protected function normalizeClassName(string $classname): string

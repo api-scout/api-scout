@@ -19,6 +19,11 @@ use function in_array;
  * Matches a mime type to a format.
  *
  * @internal
+ *
+ * Inspired by ApiPlatform\Api\FormatMatcher
+ *
+ * @author Teoh Han Hui <teohhanhui@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class FormatMatcher
 {
