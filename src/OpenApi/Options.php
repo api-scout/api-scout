@@ -13,6 +13,14 @@ declare(strict_types=1);
 
 namespace ApiScout\OpenApi;
 
+/**
+ * Options
+ *
+ * Inspired by ApiPlatform\OpenApi\Options
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class Options
 {
     public function __construct(

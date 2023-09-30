@@ -22,6 +22,14 @@ use LogicException;
 use RuntimeException;
 use Throwable;
 
+/**
+ * Attribute to build the Operation
+ *
+ * Inspired by ApiPlatform\Metadata\Operation
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 abstract class Operation
 {
     private ?string $controller = null;

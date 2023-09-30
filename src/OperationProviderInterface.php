@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace ApiScout;
 
+/**
+ * Interface to build the Operations.
+ *
+ * @author Jules Pietri <jules@heahprod.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 interface OperationProviderInterface
 {
     public function getCollection(): Operations;

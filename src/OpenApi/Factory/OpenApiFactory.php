@@ -34,6 +34,14 @@ use Throwable;
 use function in_array;
 use function is_object;
 
+/**
+ * Generates an Open API v3 specification.
+ *
+ * Inspired by ApiPlatform\OpenApi\Factory\OpenApiFactory
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class OpenApiFactory implements OpenApiFactoryInterface
 {
     use ClassNameNormalizerTrait;

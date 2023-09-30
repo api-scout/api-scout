@@ -20,6 +20,12 @@ use Traversable;
 
 use function count;
 
+/**
+ * Operations collection.
+ *
+ * @author Jules Pietri <jules@heahprod.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class Operations implements IteratorAggregate, Countable
 {
     /**

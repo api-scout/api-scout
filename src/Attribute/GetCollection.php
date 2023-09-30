@@ -18,6 +18,14 @@ use ApiScout\OpenApi\Http\AbstractResponse;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
+/**
+ * GetCollection Operation
+ *
+ * Inspired by ApiPlatform\Metadata\GetCollection
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class GetCollection extends HttpOperation implements CollectionOperationInterface
 {

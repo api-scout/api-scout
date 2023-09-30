@@ -19,6 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Throwable;
 
+/**
+ * LoaderExceptionListener for debugging
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class LoaderExceptionListener
 {
     public function onKernelException(ExceptionEvent $event): void

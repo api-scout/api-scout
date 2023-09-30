@@ -15,6 +15,11 @@ namespace ApiScout\Attribute;
 
 use Attribute;
 
+/**
+ * ApiProperty
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
 final class ApiProperty
 {
