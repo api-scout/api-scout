@@ -69,6 +69,14 @@ final class ResultContext extends BaseContext
     }
 
     /**
+     * @Then request entity too large
+     */
+    public function requestEntityTooLarge(): void
+    {
+        Assert::assertSame(AbstractResponse::HTTP_REQUEST_ENTITY_TOO_LARGE, $this->getResponse()->getStatusCode());
+    }
+
+    /**
      * @Then not found
      */
     public function notFound(): void

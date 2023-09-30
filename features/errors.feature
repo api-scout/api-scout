@@ -1,4 +1,4 @@
-Feature: Create a resource with an empty payload
+Feature: Test the Error Customisation
 
   @http
   Scenario: Successfully trigger the empty payload violation
@@ -15,3 +15,8 @@ Feature: Create a resource with an empty payload
       ]
     }
     """
+
+  @http
+  Scenario: Successfully trigger the custom error
+    When one post and trigger a custom error
+    Then request entity too large
