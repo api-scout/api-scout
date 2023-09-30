@@ -71,7 +71,7 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services
-        ->set(PayloadValidationExceptionListener::class)
+        ->set('api_scout.payload_validation_exception_listener', PayloadValidationExceptionListener::class)
         ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
         ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
     ;
