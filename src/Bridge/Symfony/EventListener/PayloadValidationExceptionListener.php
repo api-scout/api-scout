@@ -28,6 +28,10 @@ use function array_key_exists;
 
 final class PayloadValidationExceptionListener
 {
+    private const VIOLATIONS = 'violations';
+    private const VALIDATION_PATH = 'path';
+    private const VALIDATION_MESSAGE = 'message';
+
     /**
      * @param array<class-string<Throwable>, int> $exceptionsToStatuses
      */
@@ -48,9 +52,9 @@ final class PayloadValidationExceptionListener
         }
 
         $jsonResponse = match (true) {
-            $this->isEmptyPayload($exception) => fn () => $this->emptyPayloadException(),
-            $exception instanceof ExtraAttributesException => fn () => $this->extraAttributeException($exception),
-            $exception->getPrevious() instanceof ValidationFailedException => fn () => $this->validationException($exception, $operation),
+            $this->isEmptyPayload($exception) => fn () => $this->emptyPayloadExceptionJsonResponse(),
+            $exception instanceof ExtraAttributesException => fn () => $this->extraAttributeExceptionJsonResponse($operation, $exception),
+            $exception->getPrevious() instanceof ValidationFailedException => fn () => $this->validationExceptionJsonResponse($operation, $exception),
             default => null,
         };
 
@@ -58,12 +62,10 @@ final class PayloadValidationExceptionListener
             return;
         }
 
-        $event->setResponse(
-            $jsonResponse()
-        );
+        $event->setResponse($jsonResponse());
     }
 
-    private function validationException(Throwable $exception, Operation $operation): JsonResponse
+    private function validationExceptionJsonResponse(Operation $operation, Throwable $exception): JsonResponse
     {
         /**
          * @var ValidationFailedException $validationException
@@ -95,30 +97,29 @@ final class PayloadValidationExceptionListener
         $i = 0;
 
         foreach ($violationListException as $violation) {
-            $violations['violations'][$i] = [
-                'path' => $violation->getPropertyPath(),
-                'message' => $violation->getMessage(),
-            ];
-
             if (array_key_exists('hint', $violation->getParameters())) {
-                $violations['violations'][$i] += ['hint' => $violation->getParameters()['hint']];
+                $violations['message'] = $violation->getParameters()['hint'];
+
+                continue;
             }
 
-            ++$i;
+            $violations[self::VIOLATIONS][$i++] = [
+                self::VALIDATION_PATH => $violation->getPropertyPath(),
+                self::VALIDATION_MESSAGE => $violation->getMessage(),
+            ];
         }
 
         return $violations;
     }
 
-    private function emptyPayloadException(): JsonResponse
+    private function emptyPayloadExceptionJsonResponse(): JsonResponse
     {
         return new JsonResponse(
             [
-                'violations' => [[
-                    'path' => 'payload',
-                    'message' => 'Payload should not be empty',
-                ],
-                ],
+                self::VIOLATIONS => [[
+                    self::VALIDATION_PATH => 'payload',
+                    self::VALIDATION_MESSAGE => 'Payload should not be empty',
+                ]],
             ],
             Response::HTTP_BAD_REQUEST
         );
@@ -131,20 +132,26 @@ final class PayloadValidationExceptionListener
             && $exception->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY;
     }
 
-    private function extraAttributeException(ExtraAttributesException $exception): JsonResponse
-    {
+    private function extraAttributeExceptionJsonResponse(
+        Operation $operation,
+        ExtraAttributesException $exception
+    ): JsonResponse {
         $violations = [];
 
         foreach ($exception->getExtraAttributes() as $attribute) {
-            $violations['violations'][] = [
-                'path' => $attribute,
-                'message' => sprintf('Extra attribute: "%s" is not allowed', $attribute),
+            $violations[self::VIOLATIONS][] = [
+                self::VALIDATION_PATH => $attribute,
+                self::VALIDATION_MESSAGE => sprintf('Extra attribute: "%s" is not allowed', $attribute),
             ];
         }
 
         return new JsonResponse(
             $violations,
-            Response::HTTP_BAD_REQUEST
+            $operation->getExceptionToStatusClassStatusCode(
+                $this->exceptionsToStatuses,
+                $exception,
+                Response::HTTP_BAD_REQUEST
+            )
         );
     }
 }
