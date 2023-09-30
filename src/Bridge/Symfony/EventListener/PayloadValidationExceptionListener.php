@@ -40,26 +40,6 @@ final class PayloadValidationExceptionListener
     {
         $exception = $event->getThrowable();
 
-        if ($this->isEmptyPayload($exception)) {
-            $event->setResponse(
-                $this->emptyPayloadException()
-            );
-
-            return;
-        }
-
-        if ($exception instanceof ExtraAttributesException) {
-            $event->setResponse(
-                $this->extraAttributeException($exception)
-            );
-
-            return;
-        }
-
-        if (!$exception->getPrevious() instanceof ValidationFailedException) {
-            return;
-        }
-
         $request = $event->getRequest();
         $operation = $request->attributes->get('_api_scout_operation');
 
@@ -67,8 +47,19 @@ final class PayloadValidationExceptionListener
             return;
         }
 
+        $jsonResponse = match (true) {
+            $this->isEmptyPayload($exception) => fn () => $this->emptyPayloadException(),
+            $exception instanceof ExtraAttributesException => fn () => $this->extraAttributeException($exception),
+            $exception->getPrevious() instanceof ValidationFailedException => fn () => $this->validationException($exception, $operation),
+            default => null,
+        };
+
+        if ($jsonResponse === null) {
+            return;
+        }
+
         $event->setResponse(
-            $this->validationException($exception, $operation)
+            $jsonResponse()
         );
     }
 
