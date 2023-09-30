@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Controller\EmptyPayload;
+namespace ApiScout\Tests\Fixtures\TestBundle\Controller\ErrorTest;
 
 final class NotEmptyInput
 {

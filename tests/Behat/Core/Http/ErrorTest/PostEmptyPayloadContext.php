@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Behat\Core\Http\EmptyPayload;
+namespace ApiScout\Tests\Behat\Core\Http\ErrorTest;
 
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
