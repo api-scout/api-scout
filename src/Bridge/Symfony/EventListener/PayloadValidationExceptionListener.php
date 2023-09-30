@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace ApiScout\Bridge\Symfony\EventListener;
 
 use ApiScout\HttpOperation;
-use ApiScout\Operation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -31,8 +30,6 @@ final class PayloadValidationExceptionListener
     private const VIOLATIONS = 'violations';
     private const VALIDATION_PATH = 'path';
     private const VALIDATION_MESSAGE = 'message';
-
-
 
     /**
      * @param array<class-string<Throwable>, int> $exceptionsToStatuses
@@ -54,9 +51,9 @@ final class PayloadValidationExceptionListener
         }
 
         $jsonResponse = match (true) {
-            $this->isEmptyPayload($exception) => fn () => $this->emptyPayloadExceptionJsonResponse(),
-            $exception instanceof ExtraAttributesException => fn () => $this->extraAttributeExceptionJsonResponse($operation, $exception),
-            $exception->getPrevious() instanceof ValidationFailedException => fn () => $this->validationExceptionJsonResponse($operation, $exception),
+            $this->isEmptyPayload($exception) => fn () => $this->emptyPayloadViolations(),
+            $exception instanceof ExtraAttributesException => fn () => $this->extraAttributeViolations($exception),
+            $exception->getPrevious() instanceof ValidationFailedException => fn () => $this->validationViolations($exception),
             default => null,
         };
 
@@ -64,26 +61,28 @@ final class PayloadValidationExceptionListener
             return;
         }
 
-        $event->setResponse($jsonResponse());
+        $event->setResponse(new JsonResponse(
+            data: $jsonResponse(),
+            status: $operation->getExceptionToStatusClassStatusCode(
+                $this->exceptionsToStatuses,
+                $exception->getPrevious() instanceof ValidationFailedException ? $exception->getPrevious() : $exception,
+                Response::HTTP_BAD_REQUEST
+            ),
+            headers: [
+                'X-Content-Type-Options' => 'nosniff',
+                'X-Frame-Options' => 'deny',
+            ]
+        ));
     }
 
-    private function validationExceptionJsonResponse(Operation $operation, Throwable $exception): JsonResponse
+    private function validationViolations(Throwable $exception): array
     {
         /**
          * @var ValidationFailedException $validationException
          */
         $validationException = $exception->getPrevious();
 
-        $violations = $this->formatViolationList($validationException);
-
-        return new JsonResponse(
-            $violations,
-            $operation->getExceptionToStatusClassStatusCode(
-                $this->exceptionsToStatuses,
-                $validationException,
-                Response::HTTP_BAD_REQUEST
-            )
-        );
+        return $this->formatViolationList($validationException);
     }
 
     /**
@@ -114,17 +113,17 @@ final class PayloadValidationExceptionListener
         return $violations;
     }
 
-    private function emptyPayloadExceptionJsonResponse(): JsonResponse
+    /**
+     * @return array<string, array<array<string, string>>>
+     */
+    private function emptyPayloadViolations(): array
     {
-        return new JsonResponse(
-            [
-                self::VIOLATIONS => [[
-                    self::VALIDATION_PATH => 'payload',
-                    self::VALIDATION_MESSAGE => 'Payload should not be empty',
-                ]],
-            ],
-            Response::HTTP_BAD_REQUEST
-        );
+        return [
+            self::VIOLATIONS => [[
+                self::VALIDATION_PATH => 'payload',
+                self::VALIDATION_MESSAGE => 'Payload should not be empty',
+            ]],
+        ];
     }
 
     private function isEmptyPayload(Throwable $exception): bool
@@ -134,10 +133,11 @@ final class PayloadValidationExceptionListener
             && $exception->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY;
     }
 
-    private function extraAttributeExceptionJsonResponse(
-        Operation $operation,
-        ExtraAttributesException $exception
-    ): JsonResponse {
+    /**
+     * @return array<string, array<array<string, string>>>
+     */
+    private function extraAttributeViolations(ExtraAttributesException $exception): array
+    {
         $violations = [];
 
         foreach ($exception->getExtraAttributes() as $attribute) {
@@ -147,13 +147,6 @@ final class PayloadValidationExceptionListener
             ];
         }
 
-        return new JsonResponse(
-            $violations,
-            $operation->getExceptionToStatusClassStatusCode(
-                $this->exceptionsToStatuses,
-                $exception,
-                Response::HTTP_BAD_REQUEST
-            )
-        );
+        return $violations;
     }
 }
