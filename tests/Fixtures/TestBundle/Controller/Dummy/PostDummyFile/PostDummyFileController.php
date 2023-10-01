@@ -15,7 +15,6 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\PostDummyFile;
 
 use ApiScout\Attribute\Post;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
