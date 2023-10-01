@@ -18,7 +18,7 @@ use Assert\Assertion;
 use PHPUnit\Framework\Assert;
 
 /**
- * Response assertion
+ * Response assertion.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

@@ -24,7 +24,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 use function is_array;
 
 /**
- * Base Http Client context
+ * Base Http Client context.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class OpenApiResponseListener
+final class ApiLoaderResponseListener
 {
     public function __construct(
         private readonly NormalizerInterface $apiNormalizer

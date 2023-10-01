@@ -17,7 +17,7 @@ use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
 /**
- * Post CustomizeError controller test
+ * Post CustomizeError controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

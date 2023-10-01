@@ -16,7 +16,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use ApiScout\Bridge\Symfony\EventListener\AddFormatListener;
 use ApiScout\Bridge\Symfony\EventListener\ApiLoaderResponseListener;
 use ApiScout\Bridge\Symfony\EventListener\CustomExceptionListener;
-use ApiScout\Bridge\Symfony\EventListener\LoaderExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\OperationRequestListener;
 use ApiScout\Bridge\Symfony\EventListener\PayloadValidationExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
@@ -74,10 +73,5 @@ return static function (ContainerConfigurator $container): void {
         ->set('api_scout.payload_validation_exception_listener', PayloadValidationExceptionListener::class)
         ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
         ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
-    ;
-
-    $services
-        ->set(LoaderExceptionListener::class)
-        ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => -100])
     ;
 };

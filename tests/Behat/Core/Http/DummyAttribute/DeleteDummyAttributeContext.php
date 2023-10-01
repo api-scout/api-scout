@@ -19,7 +19,7 @@ use ApiScout\Tests\Fixtures\TestBundle\Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 
 /**
- * Delete DummyAttribute controller test
+ * Delete DummyAttribute controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

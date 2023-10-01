@@ -18,7 +18,7 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 
 /**
- * Patch DummyAttribute controller test
+ * Patch DummyAttribute controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

@@ -17,7 +17,7 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
 /**
- * ErrorTest Swagger response test
+ * ErrorTest Swagger response test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
