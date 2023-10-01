@@ -19,6 +19,11 @@ use ApiScout\Tests\Fixtures\TestBundle\Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Delete Dummy controller test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DeleteDummyContext extends BaseContext
 {
     private const DELETE_DUMMY_PATH = 'dummies';

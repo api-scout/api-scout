@@ -18,6 +18,11 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use ApiScout\Tests\Fixtures\TestBundle\Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 
+/**
+ * Get DummyAttribute controller test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetDummyAttributeContext extends BaseContext
 {
     private const GET_DUMMY_PATH = 'dummies_attribute';

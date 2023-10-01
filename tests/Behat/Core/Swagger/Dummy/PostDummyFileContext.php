@@ -17,6 +17,11 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Post Dummy File Swagger response test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyFileContext extends BaseContext
 {
     /**

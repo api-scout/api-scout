@@ -18,6 +18,11 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Patch Dummy controller test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PatchDummyContext extends BaseContext
 {
     private const PATCH_DUMMY_PATH = 'dummies';

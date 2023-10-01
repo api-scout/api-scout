@@ -17,6 +17,9 @@ use ApiScout\Tests\Behat\ContextPathExtension\Core\Domain\Contracts\Repositories
 
 use function count;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ContextsClassFinder
 {
     private const TOKEN_ID = 0;

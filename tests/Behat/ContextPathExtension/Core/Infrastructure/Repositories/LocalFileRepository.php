@@ -16,6 +16,9 @@ namespace ApiScout\Tests\Behat\ContextPathExtension\Core\Infrastructure\Reposito
 use ApiScout\Tests\Behat\ContextPathExtension\Core\Domain\Contracts\Repositories\FileRepositoryInterface;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class LocalFileRepository implements FileRepositoryInterface
 {
     public const DEFAULT_EXCLUDE = ['vendor', 'tests', 'Tests', 'test', 'Test'];
