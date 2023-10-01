@@ -12,8 +12,19 @@ This library is sponsored by [Alximy](https://alximy.io)
 
 ## Introduction
 
-The purpose of this repo is to provide a bundle which will
-auto document your api using attribute in your controller
+ApiScout will greatly help you develop your api without reinventing the wheel
+
+We deeply love the Symfony framework so this light package is about building your application using the framework components or your own custom methods
+
+This package uses the Symfony [serializer](https://symfony.com/doc/current/components/serializer.html)
+
+- Enjoy the magic of an auto generated [Swagger](https://swagger.io) API Documentation
+- [MapRequestPayload and MapQueryString](https://symfony.com/blog/new-in-symfony-6-3-mapping-request-data-to-typed-objects) to deserialize your Request
+- Serialize automatically your Response by returning an object to the Controller 
+- Nice Symfony [Validation](https://symfony.com/doc/current/validation.html) Response
+- A Pagination tool to help you with your collections
+
+You can choose to use those tools as well as not to use them without having to fight against ApiScout.
 
 ## Installation
 
