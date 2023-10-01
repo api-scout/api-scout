@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
-final class PostDummyFileController extends AbstractController
+final class PostDummyFileController
 {
     #[Post(
         '/dummies/file',

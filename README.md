@@ -50,6 +50,7 @@ api_scout:
 
 #### Advanced
 - [FileUpload](docs/FileUpload.md)
+- [ErrorsHandling](docs/ErrorsHandling.md)
 - [Configuration](docs/Configuration.md)
 
 #### Migrate to Api-Scout
