@@ -56,13 +56,13 @@ final class GetCollectionDummyController extends AbstractController
         $slicedPinkFloydCollection = array_slice(
             $pinkFloydCollection,
             0,
-            $paginatorRequestFactory->getItemsPerPage()
+            10
         );
 
         return new Pagination(
             $slicedPinkFloydCollection,
-            $paginatorRequestFactory->getCurrentPage(),
-            $paginatorRequestFactory->getItemsPerPage(),
+            0,
+            10,
             count($pinkFloydCollection)
         );
     }

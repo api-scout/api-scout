@@ -21,6 +21,7 @@ use ApiScout\Pagination\Paginator;
 use ApiScout\Pagination\PaginatorInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -54,7 +55,11 @@ final class SerializeResponseListener
 
         if ($operation instanceof CollectionOperationInterface) {
             $event->setResponse(
-                $this->handleCollectionOperationResponse($operation, $controllerResult)
+                $this->handleCollectionOperationResponse(
+                    $operation,
+                    $controllerResult,
+                    $request
+                )
             );
 
             return;
@@ -75,9 +80,10 @@ final class SerializeResponseListener
 
     private function handleCollectionOperationResponse(
         Operation $operation,
-        mixed $controllerResult
+        mixed $controllerResult,
+        Request $request
     ): JsonResponse {
-        if (!$this->paginatorRequestFactory->isPaginationEnabled()) {
+        if (!$operation->isPaginationEnabled()) {
             return new JsonResponse(
                 data: $controllerResult,
                 status: $operation->getStatusCode()
