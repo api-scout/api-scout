@@ -18,6 +18,11 @@ use LogicException;
 
 use function dirname;
 
+/**
+ * File manipulation context
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class FileContext extends BaseContext
 {
     /**

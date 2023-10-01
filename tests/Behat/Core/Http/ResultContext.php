@@ -17,6 +17,11 @@ use ApiScout\OpenApi\Http\AbstractResponse;
 use Assert\Assertion;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Response assertion
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ResultContext extends BaseContext
 {
     /**

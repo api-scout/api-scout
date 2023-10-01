@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Http\Swagger;
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
+/**
+ * Swagger Ui service action test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SwaggerUiContext extends BaseContext
 {
     private const SWAGGER_UI_PATH = '/api/docs';

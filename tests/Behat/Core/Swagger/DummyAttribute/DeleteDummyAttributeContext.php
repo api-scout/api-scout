@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\DummyAttribute;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Delete DummyAttribute Swagger response test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DeleteDummyAttributeContext extends BaseContext
 {
     /**

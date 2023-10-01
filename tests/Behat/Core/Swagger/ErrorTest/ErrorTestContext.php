@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\ErrorTest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * ErrorTest Swagger response test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ErrorTestContext extends BaseContext
 {
     /**

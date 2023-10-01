@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\Dummy;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Patch Dummy Swagger response test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PatchDummyContext extends BaseContext
 {
     /**

@@ -23,6 +23,11 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 use function is_array;
 
+/**
+ * Base Http Client context
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 abstract class BaseContext implements Context
 {
     protected Client $client;

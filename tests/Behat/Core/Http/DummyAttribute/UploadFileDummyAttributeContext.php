@@ -17,6 +17,11 @@ use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * UploadFile DummyAttribute controller test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class UploadFileDummyAttributeContext extends BaseContext
 {
     private const UPLOAD_FILE_DUMMY_ATTRIBUTE_PATH = 'upload_file_dummies_attribute';

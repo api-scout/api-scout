@@ -18,6 +18,11 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Post EmptyPayload controller test
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostEmptyPayloadContext extends BaseContext
 {
     private const POST_EMPTY_PAYLOAD_PATH = 'empty/payload';
