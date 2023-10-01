@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -88,6 +89,11 @@ class InvalidName {}
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before SelfAccessorFixer.
+     */
     public function getPriority(): int
     {
         return -10;
@@ -103,7 +109,7 @@ class InvalidName {}
             // ignore file with extension other than php
             ('php' !== $file->getExtension())
             // ignore file with name that cannot be a class name
-            || 0 === Preg::match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $file->getBasename('.php'))
+            || !Preg::match('/^'.TypeExpression::REGEX_IDENTIFIER.'$/', $file->getBasename('.php'))
         ) {
             return false;
         }

@@ -20,8 +20,8 @@ class ComposerStaticInit2ac8f5e1ab0cbb6741c071ccd5dc1002
     public static $prefixDirsPsr4 = array (
         'PHPStan\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpstan/phpstan-beberlei-assert/src',
-            1 => __DIR__ . '/..' . '/phpstan/phpstan-strict-rules/src',
+            0 => __DIR__ . '/..' . '/phpstan/phpstan-strict-rules/src',
+            1 => __DIR__ . '/..' . '/phpstan/phpstan-beberlei-assert/src',
         ),
     );
 

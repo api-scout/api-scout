@@ -15,14 +15,13 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ApiScout\Bridge\Symfony\EventListener\AddFormatListener;
 use ApiScout\Bridge\Symfony\EventListener\ApiLoaderResponseListener;
-use ApiScout\Bridge\Symfony\EventListener\EmptyPayloadExceptionListener;
-use ApiScout\Bridge\Symfony\EventListener\ExtraAttributeExceptionListener;
-use ApiScout\Bridge\Symfony\EventListener\LoaderExceptionListener;
+use ApiScout\Bridge\Symfony\EventListener\CustomExceptionListener;
+use ApiScout\Bridge\Symfony\EventListener\OperationRequestListener;
+use ApiScout\Bridge\Symfony\EventListener\PayloadValidationExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
-use ApiScout\Bridge\Symfony\EventListener\ValidationExceptionListener;
 use ApiScout\Bridge\Symfony\Routing\ApiLoader;
+use ApiScout\OperationProviderInterface;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -34,15 +33,19 @@ return static function (ContainerConfigurator $container): void {
         ->set(ApiLoader::class)
         ->private()
         ->arg('$kernel', service(KernelInterface::class))
-        ->arg('$resourceCollection', service(ResourceCollectionFactoryInterface::class))
+        ->arg('$resourceCollection', service(OperationProviderInterface::class))
         ->arg('$docsEnabled', param('api_scout.enable_docs'))
         ->tag('routing.loader')
     ;
 
     $services
+        ->set(OperationRequestListener::class)
+        ->arg('$resourceCollectionFactory', service(OperationProviderInterface::class))
+        ->tag('kernel.event_subscriber')
+    ;
+
+    $services
         ->set(AddFormatListener::class)
-        ->private()
-        ->arg('$resourceCollectionFactory', service(ResourceCollectionFactoryInterface::class))
         ->arg('$negotiator', service('api_scout.infrastructure.negotiator'))
         ->tag('kernel.event_listener', ['event' => 'kernel.request', 'method' => 'onKernelRequest', 'priority' => 27])
     ;
@@ -55,30 +58,20 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set(SerializeResponseListener::class)
-        ->arg('$resourceCollectionFactory', service(ResourceCollectionFactoryInterface::class))
         ->arg('$paginatorRequestFactory', service(PaginatorRequestFactoryInterface::class))
         ->arg('$serializer', service('serializer'))
         ->arg('$responseItemKey', param('api_scout.response_item_key'))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 15])
     ;
 
-    $services
-        ->set(ExtraAttributeExceptionListener::class)
-        ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
+    $services->set('api_scout.symfony.custom_exception_listener', CustomExceptionListener::class)
+        ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
+        ->tag('kernel.event_subscriber')
     ;
 
     $services
-        ->set(ValidationExceptionListener::class)
+        ->set('api_scout.payload_validation_exception_listener', PayloadValidationExceptionListener::class)
+        ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
         ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
-    ;
-
-    $services
-        ->set(EmptyPayloadExceptionListener::class)
-        ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 27])
-    ;
-
-    $services
-        ->set(LoaderExceptionListener::class)
-        ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => -100])
     ;
 };

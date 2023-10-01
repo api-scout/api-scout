@@ -20,6 +20,11 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Get Dummy controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetDummyContext extends BaseContext
 {
     private const GET_DUMMY_PATH = 'dummies';

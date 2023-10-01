@@ -22,9 +22,12 @@ use function is_string;
  *
  * Both the standard version and the OpenAPI flavors (v2 and v3) are supported.
  *
+ * Inspired by ApiPlatform\JsonSchema\Schema
+ *
  * @see https://json-schema.org/latest/json-schema-core.html
  * @see https://github.com/OAI/OpenAPI-Specification
  *
+ * @author Kévin Dunglas <dunglas@gmail.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class JsonSchema extends ArrayObject

@@ -15,6 +15,11 @@ namespace ApiScout\OpenApi;
 
 use ApiScout\OpenApi\Model\PaginationOptions;
 
+/**
+ * Configure the PaginationOptions through service.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PaginationOptionsConfigurator
 {
     public function __construct(

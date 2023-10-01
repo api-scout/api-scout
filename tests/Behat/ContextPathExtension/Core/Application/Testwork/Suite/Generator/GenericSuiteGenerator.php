@@ -21,6 +21,9 @@ use Behat\Testwork\Suite\Suite;
 use function gettype;
 use function is_array;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GenericSuiteGenerator implements SuiteGenerator
 {
     public function __construct(

@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Http\DummyAttribute;
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
+/**
+ * GetCollection DummyAttribute controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetCollectionDummyAttributeContext extends BaseContext
 {
     private const GET_COLLECTION_DUMMY_PATH = 'dummies_attribute';

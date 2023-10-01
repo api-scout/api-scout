@@ -18,6 +18,11 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use ApiScout\Tests\Fixtures\TestBundle\Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
 
+/**
+ * Delete DummyAttribute controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DeleteDummyAttributeContext extends BaseContext
 {
     private const DELETE_DUMMY_ATTRIBUTE_PATH = 'dummies_attribute';

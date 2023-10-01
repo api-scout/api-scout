@@ -28,6 +28,14 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+/**
+ * Display Swagger ui controller.
+ *
+ * Inspired by ApiPlatform\Symfony\Bundle\SwaggerUi\SwaggerUiAction
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SwaggerUiAction
 {
     public function __construct(

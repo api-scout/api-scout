@@ -55,7 +55,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             'empty_loop_body' => ['style' => 'braces'],
             'empty_loop_condition' => true,
             'fully_qualified_strict_types' => true,
-            'function_typehint_space' => true,
             'general_phpdoc_tag_rename' => [
                 'replacements' => [
                     'inheritDocs' => 'inheritDoc',
@@ -71,6 +70,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'integer_literal_case' => true,
             'lambda_not_used_import' => true,
             'linebreak_after_opening_tag' => true,
+            'long_to_shorthand_operator' => true,
             'magic_constant_casing' => true,
             'magic_method_casing' => true,
             'method_argument_space' => [
@@ -204,6 +204,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'switch_continue_to_break' => true,
             'trailing_comma_in_multiline' => true,
             'trim_array_spaces' => true,
+            'type_declaration_spaces' => true,
             'types_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,

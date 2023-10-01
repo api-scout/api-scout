@@ -18,6 +18,11 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Post Dummy controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyContext extends BaseContext
 {
     private const POST_DUMMY_PATH = 'dummies';

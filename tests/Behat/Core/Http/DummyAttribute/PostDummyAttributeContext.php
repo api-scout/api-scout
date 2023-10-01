@@ -17,6 +17,11 @@ use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 
+/**
+ * Post DummyAttribute controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyAttributeContext extends BaseContext
 {
     private const POST_DUMMY_ATTRIBUTE_PATH = 'dummies_attribute';

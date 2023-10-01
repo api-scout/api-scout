@@ -17,9 +17,19 @@ use ApiScout\Attribute\ApiProperty;
 use ApiScout\Exception\FiltersShouldBeAnArrayOfApiPropertyException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use LogicException;
 use RuntimeException;
+use Throwable;
 
+/**
+ * Attribute to build the Operation.
+ *
+ * Inspired by ApiPlatform\Metadata\Operation
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 abstract class Operation
 {
     private ?string $controller = null;
@@ -40,7 +50,8 @@ abstract class Operation
         protected readonly int $statusCode,
         protected string $resource,
         protected array $filters,
-        protected readonly bool $openApi,
+        protected readonly bool|OpenApiOperation|null $openapi,
+        protected readonly ?array $exceptionToStatus,
         protected array $formats,
         protected array $inputFormats,
         protected array $outputFormats,
@@ -178,9 +189,31 @@ abstract class Operation
         $this->filters = $filters;
     }
 
-    public function getOpenApi(): bool
+    public function getOpenapi(): bool|OpenApiOperation|null
     {
-        return $this->openApi;
+        return $this->openapi;
+    }
+
+    public function getExceptionToStatus(): ?array
+    {
+        return $this->exceptionToStatus;
+    }
+
+    /**
+     * @param array<class-string<Throwable>, int> $exceptionToStatus
+     */
+    public function getExceptionToStatusClassStatusCode(
+        array $exceptionToStatus,
+        object $classException,
+        int $defaultStatusCode = 400
+    ): int {
+        $exceptionToStatuses = $this->formatExceptionToStatusWithConfiguration($exceptionToStatus);
+
+        if (isset($exceptionToStatuses[$classException::class])) {
+            return $exceptionToStatuses[$classException::class];
+        }
+
+        return $defaultStatusCode;
     }
 
     public function getFormats(): array
@@ -248,5 +281,18 @@ abstract class Operation
     public function getDeprecationReason(): ?string
     {
         return $this->deprecationReason;
+    }
+
+    /**
+     * @param array<class-string<Throwable>, int> $exceptionToStatus
+     *
+     * @return array<class-string<Throwable>, int>
+     */
+    public function formatExceptionToStatusWithConfiguration(array $exceptionToStatus): array
+    {
+        return array_merge(
+            $exceptionToStatus,
+            $this->exceptionToStatus ?? [],
+        );
     }
 }

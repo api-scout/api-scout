@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\Dummy;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Get Dummy Swagger test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetDummyContext extends BaseContext
 {
     /**

@@ -17,9 +17,22 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 use function is_array;
 
+/**
+ * The configuration of the bundle.
+ *
+ * Inspired by ApiPlatform\Symfony\Bundle\DependencyInjection\Configuration:
+ *
+ * @author Kévin Dunglas <dunglas@gmail.com>
+ * @author Baptiste Meyer <baptiste.meyer@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
@@ -67,6 +80,7 @@ final class Configuration implements ConfigurationInterface
             ->end()
         ;
 
+        $this->addExceptionToStatusSection($rootNode);
         $this->addSwaggerUiContextSection($rootNode);
         $this->addPaginationSection($rootNode);
         $this->addOpenApiSection($rootNode);
@@ -117,7 +131,7 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('api_keys')
             ->useAttributeAsKey('key')
             ->validate()
-            ->ifTrue(static fn ($v): bool => (bool) array_filter(array_keys($v), fn ($item) => !preg_match('/^[a-zA-Z0-9._-]+$/', $item)))
+            ->ifTrue(static fn ($v): bool => (bool) array_filter(array_keys($v), static fn ($item) => !preg_match('/^[a-zA-Z0-9._-]+$/', $item)))
             ->thenInvalid('The api keys "key" is not valid according to the pattern enforced by OpenAPI 3.1 ^[a-zA-Z0-9._-]+$.')
             ->end()
             ->prototype('array')
@@ -177,10 +191,40 @@ final class Configuration implements ConfigurationInterface
             ->variableNode('swagger_ui_extra_configuration')
             ->defaultValue([])
             ->validate()
-            ->ifTrue(static fn ($v): bool => false === is_array($v))
+            ->ifTrue(static fn ($v): bool => is_array($v) === false)
             ->thenInvalid('The swagger_ui_extra_configuration parameter must be an array.')
             ->end()
             ->info('To pass extra configuration to Swagger UI, like docExpansion or filter.')
+            ->end()
+            ->end()
+        ;
+    }
+
+    private function addExceptionToStatusSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->children()
+            ->arrayNode('exception_to_status')
+            ->defaultValue([
+                SerializerExceptionInterface::class => Response::HTTP_BAD_REQUEST,
+                ValidationFailedException::class => Response::HTTP_BAD_REQUEST,
+            ])
+            ->info('The list of exceptions mapped to their HTTP status code.')
+            ->normalizeKeys(false)
+            ->useAttributeAsKey('exception_class')
+            ->prototype('integer')->end()
+            ->validate()
+            ->ifArray()
+            ->then(static function (array $exceptionToStatus): array {
+                foreach ($exceptionToStatus as $httpStatusCode) {
+                    if ($httpStatusCode < 100 || $httpStatusCode >= 600) {
+                        throw new InvalidConfigurationException(sprintf('The HTTP status code "%s" is not valid.', $httpStatusCode));
+                    }
+                }
+
+                return $exceptionToStatus;
+            })
+            ->end()
             ->end()
             ->end()
         ;

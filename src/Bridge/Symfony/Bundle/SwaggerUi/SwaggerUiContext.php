@@ -13,6 +13,13 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\Bundle\SwaggerUi;
 
+/**
+ * Swagger Ui context configuration.
+ *
+ * Inspired by ApiPlatform\Symfony\Bundle\SwaggerUi\SwaggerUiAction
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SwaggerUiContext
 {
     public function __construct(

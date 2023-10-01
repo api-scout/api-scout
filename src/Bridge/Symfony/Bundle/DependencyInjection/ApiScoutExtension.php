@@ -19,6 +19,11 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
+/**
+ * The Symfony extension.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ApiScoutExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -41,7 +46,6 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         );
 
         $loader->load('api.php');
-        $loader->load('documentation.php');
         $loader->load('openapi.php');
         $loader->load('pagination.php');
         $loader->load('resource.php');
@@ -61,6 +65,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.description', $configs['description']);
         $container->setParameter('api_scout.version', $configs['version']);
         $container->setParameter('api_scout.response_item_key', $configs['response_item_key']);
+        $container->setParameter('api_scout.exception_to_status', $configs['exception_to_status']);
 
         $container->setParameter('api_scout.pagination.enabled', $configs['pagination']['enabled']);
         $container->setParameter('api_scout.pagination.page_parameter_name', $configs['pagination']['page_parameter_name']);

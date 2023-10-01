@@ -23,6 +23,7 @@ final class StdinFileInfo extends \SplFileInfo
 {
     public function __construct()
     {
+        parent::__construct(__FILE__);
     }
 
     public function __toString(): string
@@ -164,11 +165,7 @@ final class StdinFileInfo extends \SplFileInfo
         throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
-    public function setFileClass($className = null): void
-    {
-    }
+    public function setFileClass($className = null): void {}
 
-    public function setInfoClass($className = null): void
-    {
-    }
+    public function setInfoClass($className = null): void {}
 }

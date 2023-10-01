@@ -1,7 +1,7 @@
 Feature: Create a Dummy resource
 
   @http
-  Scenario: Post a resource
+  Scenario: Successfully create a Dummy resource
     When one post a dummy with:
     """
     {

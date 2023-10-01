@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\DummyEntity;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Post DummyEntity Swagger response test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyEntityContext extends BaseContext
 {
     /**

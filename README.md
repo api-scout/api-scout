@@ -1,9 +1,30 @@
 # ApiScout 🤠
 
+
+<p align="center">
+  <img src="docs/Images/logo-sponsor.svg" width="250" title="alximy logo">
+</p>
+
+This library is sponsored by [Alximy](https://alximy.io)
+
+>A team of passionate humans from very different backgrounds, sharing our love of PHP, Symfony and its ecosystem. Our CTO, Expert developers, tech leads, can help you learn or develop the tools you need, and perform audits or tailored workshops. We value contributing to the Open Source community and are willing to mentor new contributors in our team or yours.
+
+
 ## Introduction
 
-The purpose of this repo is to provide a bundle which will
-auto document your api using attribute in your controller
+ApiScout will greatly help you develop your api without reinventing the wheel
+
+We deeply love the Symfony framework so this light package is about building your application using the framework components or your own custom methods
+
+This package uses the Symfony [serializer](https://symfony.com/doc/current/components/serializer.html)
+
+- Enjoy the magic of an auto generated [Swagger](https://swagger.io) API Documentation
+- [MapRequestPayload and MapQueryString](https://symfony.com/blog/new-in-symfony-6-3-mapping-request-data-to-typed-objects) to deserialize your Request
+- Serialize automatically your Response by returning an object to the Controller 
+- Nice Symfony [Validation](https://symfony.com/doc/current/validation.html) Response
+- A Pagination tool to help you with your collections
+
+You can choose to use those tools as well as not to use them without having to fight against ApiScout.
 
 ## Installation
 
@@ -39,6 +60,8 @@ api_scout:
 - [Delete](docs/Attributes/Delete.md)
 
 #### Advanced
+- [FileUpload](docs/FileUpload.md)
+- [ErrorsHandling](docs/ErrorsHandling.md)
 - [Configuration](docs/Configuration.md)
 
 #### Migrate to Api-Scout

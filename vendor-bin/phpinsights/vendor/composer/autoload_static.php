@@ -241,6 +241,7 @@ class ComposerStaticInitf62f6ae71ffdde2d73cf11bdf8600aa3
 
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'CURLStringFile' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
         'Cmgmyr\\PHPLOC\\Analyser' => __DIR__ . '/..' . '/cmgmyr/phploc/src/Analyser.php',
         'Cmgmyr\\PHPLOC\\Application' => __DIR__ . '/..' . '/cmgmyr/phploc/src/CLI/Application.php',
         'Cmgmyr\\PHPLOC\\Arguments' => __DIR__ . '/..' . '/cmgmyr/phploc/src/CLI/Arguments.php',

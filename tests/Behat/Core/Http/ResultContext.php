@@ -17,6 +17,11 @@ use ApiScout\OpenApi\Http\AbstractResponse;
 use Assert\Assertion;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Response assertion.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ResultContext extends BaseContext
 {
     /**
@@ -58,6 +63,22 @@ final class ResultContext extends BaseContext
     public function invalid(): void
     {
         Assert::assertSame(AbstractResponse::HTTP_BAD_REQUEST, $this->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @Then unsupported media type
+     */
+    public function unsupportedMediaType(): void
+    {
+        Assert::assertSame(AbstractResponse::HTTP_UNSUPPORTED_MEDIA_TYPE, $this->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @Then request entity too large
+     */
+    public function requestEntityTooLarge(): void
+    {
+        Assert::assertSame(AbstractResponse::HTTP_REQUEST_ENTITY_TOO_LARGE, $this->getResponse()->getStatusCode());
     }
 
     /**

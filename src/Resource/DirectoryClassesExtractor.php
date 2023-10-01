@@ -24,6 +24,11 @@ use function count;
 use function defined;
 use function in_array;
 
+/**
+ * Extract class name from files.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DirectoryClassesExtractor
 {
     public function __construct(

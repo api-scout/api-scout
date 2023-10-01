@@ -22,7 +22,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use function is_array;
 
 /**
- * Generates an OpenAPI v3 specification.
+ * Generates an Open API v3 specification.
+ *
+ * Inspired by ApiPlatform\OpenApi\Serializer\OpenApiNormalizer
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class OpenApiNormalizer implements NormalizerInterface
 {

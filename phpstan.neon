@@ -16,12 +16,10 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/tests/Fixtures/app/var
         - %currentWorkingDirectory%/src/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php
+        # TODO: To remove once the pagination will be correctly implemented
+        - %currentWorkingDirectory%/tests/Fixtures/TestBundle/Controller/Dummy/GetCollectionDummy/DummyCollectionOutput.php
+        - %currentWorkingDirectory%/tests/Fixtures/TestBundle/Controller/DummyAttribute/DummyAttributeCollectionOutput.php
     ignoreErrors:
-        -
-          messages:
-            - '#Call to an undefined method ApiScout\\Operation::get[a-zA-Z]+\(\)#'
-          paths:
-            - src/Bridge/Symfony/Routing
         -
           messages:
             - '#Method ApiScout\\Tests\\Fixtures\\app\\AppKernel::getBundlesPath\(\) is unused.#'

@@ -13,6 +13,14 @@ declare(strict_types=1);
 
 namespace ApiScout\OpenApi\Model;
 
+/**
+ * PaginationOptions.
+ *
+ * Inspired by ApiPlatform\State\Pagination\PaginationOptions
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PaginationOptions
 {
     public function __construct(

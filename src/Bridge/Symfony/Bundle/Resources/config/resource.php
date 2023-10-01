@@ -13,24 +13,23 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ApiScout\OperationProvider;
+use ApiScout\OperationProviderInterface;
 use ApiScout\Resource\DirectoryClassesExtractor;
-use ApiScout\Resource\Factory\ResourceCollectionFactory;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
         ->defaults()
     ;
 
-    $services
-        ->set('api_scout.resource.directory_class_extractor', DirectoryClassesExtractor::class)
+    $services->set('api_scout.resource.directory_class_extractor', DirectoryClassesExtractor::class)
         ->arg('$paths', param('api_scout.mapping.paths'))
     ;
 
-    $services
-        ->set('api_scout.resource.factory.resource_collection_factory', ResourceCollectionFactory::class)
+    $services->set('api_scout.resource.factory.resource_collection_factory', OperationProvider::class)
         ->arg('$directoryClassExtractor', service('api_scout.resource.directory_class_extractor'))
+        ->arg('$cache', service('cache.system'))
     ;
 
-    $services->alias(ResourceCollectionFactoryInterface::class, 'api_scout.resource.factory.resource_collection_factory');
+    $services->alias(OperationProviderInterface::class, 'api_scout.resource.factory.resource_collection_factory');
 };

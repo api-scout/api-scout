@@ -1,12 +1,12 @@
 {
     "name": "api-scout/api-scout",
     "description": "A library with a few tools, to auto document your api",
-    "type": "library",
-    "license": "proprietary",
+    "type": "symfony-bundle",
+    "license": "MIT",
     "authors": [
         {
             "name": "Marvin Courcier",
-            "email": "courciermarvin@gmail.com"
+            "email": "marvincourcier.dev@gmail.com"
         }
     ],
     "minimum-stability": "dev",
@@ -75,6 +75,11 @@
         "psr-4": {
             "ApiScout\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@composer bin all install --ansi"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"
