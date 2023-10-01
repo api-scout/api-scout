@@ -18,7 +18,7 @@ use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Post Dummy File Swagger response test
+ * Post Dummy File Swagger response test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

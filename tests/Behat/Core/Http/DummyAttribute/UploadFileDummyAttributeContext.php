@@ -18,7 +18,7 @@ use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * UploadFile DummyAttribute controller test
+ * UploadFile DummyAttribute controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

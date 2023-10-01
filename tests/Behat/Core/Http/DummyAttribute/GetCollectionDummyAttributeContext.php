@@ -17,7 +17,7 @@ use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
 /**
- * GetCollection DummyAttribute controller test
+ * GetCollection DummyAttribute controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

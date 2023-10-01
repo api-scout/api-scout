@@ -19,7 +19,7 @@ use LogicException;
 use function dirname;
 
 /**
- * File manipulation context
+ * File manipulation context.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

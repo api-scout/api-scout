@@ -20,7 +20,7 @@ use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
 /**
- * Delete Dummy controller test
+ * Delete Dummy controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

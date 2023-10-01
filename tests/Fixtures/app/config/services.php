@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ApiScout\Bridge\Symfony\EventListener\LoaderExceptionListener;
 use ApiScout\Tests\Behat\Symfony\HttpClient\Client;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
@@ -47,5 +48,10 @@ return static function (ContainerConfigurator $container): void {
             __DIR__.'/../../TestBundle/Controller/**/*Controller.php'
         )
         ->tag('controller.service_arguments')
+    ;
+
+    $services
+        ->set(LoaderExceptionListener::class)
+        ->tag('kernel.event_listener', ['event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => -100])
     ;
 };

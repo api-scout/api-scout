@@ -19,7 +19,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
 
 /**
- * Post Dummy controller test
+ * Post Dummy controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

@@ -19,7 +19,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
 
 /**
- * Post EmptyPayload controller test
+ * Post EmptyPayload controller test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */

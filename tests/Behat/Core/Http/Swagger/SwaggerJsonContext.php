@@ -17,7 +17,7 @@ use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
 /**
- * Swagger Json service action test
+ * Swagger Json service action test.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
