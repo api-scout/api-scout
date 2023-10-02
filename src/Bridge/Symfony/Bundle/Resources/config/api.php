@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ApiScout\Serializer\SymfonyResponseSerializer;
 use Negotiation\Negotiator;
 
 return static function (ContainerConfigurator $container): void {
@@ -23,4 +24,11 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set('api_scout.infrastructure.negotiator', Negotiator::class)
     ;
+
+    $services->set(SymfonyResponseSerializer::class)
+        ->arg('$serializer', service('serializer'))
+        ->arg('$responseItemKey', param('api_scout.response_item_key'))
+    ;
+
+    $services->alias('api_scout.response_serializer', SymfonyResponseSerializer::class);
 };

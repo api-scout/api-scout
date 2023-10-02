@@ -18,7 +18,7 @@ use ApiScout\HttpOperation;
 use ApiScout\Operation;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Pagination\PaginationInterface;
-use ApiScout\Pagination\Paginator;
+use ApiScout\Pagination\PaginationProviderInterface;
 use ApiScout\Serializer\ResponseSerializerInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,6 +34,7 @@ final class SerializeResponseListener
 {
     public function __construct(
         private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
+        private readonly PaginationProviderInterface $paginationProvider,
         private readonly ResponseSerializerInterface $responseSerializer,
     ) {
     }
@@ -81,41 +82,40 @@ final class SerializeResponseListener
         mixed $controllerResult,
         Request $request
     ): JsonResponse {
-//        if (!$operation->isPaginationEnabled()) {
-//            return new JsonResponse(
-//                data: $controllerResult,
-//                status: $operation->getStatusCode()
-//            );
-//        }
-//
-//        if (!$controllerResult instanceof PaginatorInterface) {
-//            if (!is_iterable($controllerResult)) {
-//                throw new LogicException('Controller response from Collection Operation should be iterable.');
-//            }
-//
-//            $paginator = new Paginator(
-//                $controllerResult,
-//                $this->paginatorRequestFactory->getCurrentPage($request),
-//                $this->paginatorRequestFactory->getItemsPerPage($operation)
-//            );
-//
-//            return new JsonResponse(
-//                data: $paginator->toArray(),
-//                status: $operation->getStatusCode()
-//            );
-//        }
+        //        if (!$operation->isPaginationEnabled()) {
+        //            return new JsonResponse(
+        //                data: $controllerResult,
+        //                status: $operation->getStatusCode()
+        //            );
+        //        }
+        //
+        //        if (!$controllerResult instanceof PaginatorInterface) {
+        //            if (!is_iterable($controllerResult)) {
+        //                throw new LogicException('Controller response from Collection Operation should be iterable.');
+        //            }
+        //
+        //            $paginator = new Paginator(
+        //                $controllerResult,
+        //                $this->paginatorRequestFactory->getCurrentPage($request),
+        //                $this->paginatorRequestFactory->getItemsPerPage($operation)
+        //            );
+        //
+        //            return new JsonResponse(
+        //                data: $paginator->toArray(),
+        //                status: $operation->getStatusCode()
+        //            );
+        //        }
 
         if ($controllerResult instanceof PaginationInterface) {
-            $controllerResult = [
-                $this->responseItemKey => $controllerResult->getItems(),
-                'pagination' => $controllerResult->getMetadata()
-            ];
+            $controllerResult = $this->paginationProvider->provide(
+                $controllerResult,
+                $operation
+            );
         }
 
         return new JsonResponse(
-            data: $this->serializer->serialize(
+            data: $this->responseSerializer->serialize(
                 data: $controllerResult,
-                format: 'json',
                 context: $operation->getNormalizationContext()
             ),
             status: $operation->getStatusCode(),

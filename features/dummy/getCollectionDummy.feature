@@ -151,9 +151,10 @@ Feature: Get Dummy Collection resource
       ],
       "pagination": {
         "currentPage": 1,
-        "nextPage": 2,
         "itemsPerPage": 10,
-        "totalItems": 31
+        "totalItems": 31,
+        "next": null,
+        "prev": null
       }
     }
     """

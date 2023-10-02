@@ -21,6 +21,7 @@ use ApiScout\Attribute\Patch;
 use ApiScout\Attribute\Post;
 use ApiScout\Attribute\Put;
 use ApiScout\OpenApi\Model;
+use ApiScout\Pagination\Pagination;
 use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,15 +31,15 @@ final class DummyAttributeController extends AbstractController
     #[GetCollection(
         path: '/dummies_attribute',
         name: 'app_get_dummy_attribute_collection',
-        output: DummyAttributeCollectionOutput::class,
+        output: Pagination::class,
         resource: DummyAttribute::class,
         filters: [
             new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
             new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
         ]
     )]
-    public function getDummyAttributeCollection(
-    ): Response {
+    public function getDummyAttributeCollection(): Response
+    {
         return new Response();
     }
 

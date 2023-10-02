@@ -58,6 +58,6 @@ final class GetCollectionDummyAttributeContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/dummies_attribute']['get']);
-        Assert::assertNotEmpty($response['components']['schemas']['DummyAttribute.DummyAttributeCollectionOutput']);
+        Assert::assertNotEmpty($response['components']['schemas']['DummyAttribute.Pagination']);
     }
 }

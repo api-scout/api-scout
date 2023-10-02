@@ -17,6 +17,12 @@ use LogicException;
 
 use function count;
 
+/**
+ * The ApiScout Pagination.
+ *
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 class Pagination implements PaginationInterface
 {
     protected string $type;
@@ -25,7 +31,9 @@ class Pagination implements PaginationInterface
         public readonly iterable $items,
         public readonly int $currentPage,
         public readonly int $itemsPerPage,
-        public readonly int $totalItem
+        public readonly ?int $totalItems = null,
+        public ?string $next = null,
+        public ?string $prev = null,
     ) {
         if (count((array) $this->items) > $itemsPerPage) {
             throw new LogicException(sprintf('Total items %d should not be superior to %d', count((array) $this->items), $itemsPerPage));
@@ -42,7 +50,9 @@ class Pagination implements PaginationInterface
         return [
             'currentPage' => $this->currentPage,
             'itemsPerPage' => $this->itemsPerPage,
-            'totalItem' => $this->totalItem,
+            'totalItems' => $this->totalItems,
+            'next' => $this->next,
+            'prev' => $this->prev,
         ];
     }
 }
