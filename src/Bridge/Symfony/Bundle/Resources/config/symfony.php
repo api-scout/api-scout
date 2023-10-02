@@ -22,6 +22,7 @@ use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
 use ApiScout\Bridge\Symfony\Routing\ApiLoader;
 use ApiScout\OperationProviderInterface;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
+use ApiScout\Serializer\SymfonyResponseSerializer;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -56,11 +57,17 @@ return static function (ContainerConfigurator $container): void {
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 16])
     ;
 
+    $services->set(SymfonyResponseSerializer::class)
+        ->arg('$serializer', service('serializer'))
+        ->arg('$responseItemKey', param('api_scout.response_item_key'))
+    ;
+
+    $services->alias('api_scout.response_serializer', SymfonyResponseSerializer::class);
+
     $services
         ->set(SerializeResponseListener::class)
         ->arg('$paginatorRequestFactory', service(PaginatorRequestFactoryInterface::class))
-        ->arg('$serializer', service('serializer'))
-        ->arg('$responseItemKey', param('api_scout.response_item_key'))
+        ->arg('$responseSerializer', service('api_scout.response_serializer'))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 15])
     ;
 

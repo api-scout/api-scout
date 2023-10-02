@@ -17,10 +17,10 @@ use ApiScout\Attribute\CollectionOperationInterface;
 use ApiScout\HttpOperation;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Pagination\Paginator;
+use ApiScout\Serializer\ResponseSerializerInterface;
 use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Add the proper Operation to the request for further handling.
@@ -31,8 +31,7 @@ final class SerializeResponseListener
 {
     public function __construct(
         private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
-        private readonly SerializerInterface $serializer,
-        private readonly string $responseItemKey
+        private readonly ResponseSerializerInterface $responseSerializer,
     ) {
     }
 
@@ -90,9 +89,8 @@ final class SerializeResponseListener
 
         $event->setResponse(
             new JsonResponse(
-                data: $this->serializer->serialize(
-                    data: [$this->responseItemKey => $controllerResult],
-                    format: 'json',
+                data: $this->responseSerializer->serialize(
+                    data: $controllerResult,
                     context: $operation->getNormalizationContext()
                 ),
                 status: $operation->getStatusCode(),
