@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'PHPStan\\' => array($vendorDir . '/phpstan/phpstan-strict-rules/src', $vendorDir . '/phpstan/phpstan-beberlei-assert/src'),
+    'PHPStan\\' => array($vendorDir . '/phpstan/phpstan-beberlei-assert/src', $vendorDir . '/phpstan/phpstan-strict-rules/src'),
 );
