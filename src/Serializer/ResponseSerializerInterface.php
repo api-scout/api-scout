@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace ApiScout\Serializer;
 
+/**
+ * The ApiScout response Serializer interface.
+ *
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 interface ResponseSerializerInterface
 {
     /**

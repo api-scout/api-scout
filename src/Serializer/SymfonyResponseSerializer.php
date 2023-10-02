@@ -15,6 +15,12 @@ namespace ApiScout\Serializer;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * The ApiScout response Serializer.
+ *
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SymfonyResponseSerializer implements ResponseSerializerInterface
 {
     public function __construct(
