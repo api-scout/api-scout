@@ -61,7 +61,7 @@ final class GetCollectionDummyController extends AbstractController
 
         return new Pagination(
             $slicedPinkFloydCollection,
-            0,
+            1,
             10,
             count($pinkFloydCollection)
         );

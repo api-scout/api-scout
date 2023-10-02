@@ -17,6 +17,7 @@ use ApiScout\Attribute\CollectionOperationInterface;
 use ApiScout\HttpOperation;
 use ApiScout\Operation;
 use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
+use ApiScout\Pagination\PaginationInterface;
 use ApiScout\Pagination\Paginator;
 use ApiScout\Pagination\PaginatorInterface;
 use LogicException;
@@ -83,28 +84,35 @@ final class SerializeResponseListener
         mixed $controllerResult,
         Request $request
     ): JsonResponse {
-        if (!$operation->isPaginationEnabled()) {
-            return new JsonResponse(
-                data: $controllerResult,
-                status: $operation->getStatusCode()
-            );
-        }
+//        if (!$operation->isPaginationEnabled()) {
+//            return new JsonResponse(
+//                data: $controllerResult,
+//                status: $operation->getStatusCode()
+//            );
+//        }
+//
+//        if (!$controllerResult instanceof PaginatorInterface) {
+//            if (!is_iterable($controllerResult)) {
+//                throw new LogicException('Controller response from Collection Operation should be iterable.');
+//            }
+//
+//            $paginator = new Paginator(
+//                $controllerResult,
+//                $this->paginatorRequestFactory->getCurrentPage($request),
+//                $this->paginatorRequestFactory->getItemsPerPage($operation)
+//            );
+//
+//            return new JsonResponse(
+//                data: $paginator->toArray(),
+//                status: $operation->getStatusCode()
+//            );
+//        }
 
-        if (!$controllerResult instanceof PaginatorInterface) {
-            if (!is_iterable($controllerResult)) {
-                throw new LogicException('Controller response from Collection Operation should be iterable.');
-            }
-
-            $paginator = new Paginator(
-                $controllerResult,
-                $this->paginatorRequestFactory->getCurrentPage($request),
-                $this->paginatorRequestFactory->getItemsPerPage($operation)
-            );
-
-            return new JsonResponse(
-                data: $paginator->toArray(),
-                status: $operation->getStatusCode()
-            );
+        if ($controllerResult instanceof PaginationInterface) {
+            $controllerResult = [
+                $this->responseItemKey => $controllerResult->getItems(),
+                'pagination' => $controllerResult->getMetadata()
+            ];
         }
 
         return new JsonResponse(

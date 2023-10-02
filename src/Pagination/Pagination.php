@@ -17,7 +17,7 @@ use LogicException;
 
 use function count;
 
-class Pagination implements PaginatorInterface
+class Pagination implements PaginationInterface
 {
     protected string $type;
 
@@ -30,5 +30,19 @@ class Pagination implements PaginatorInterface
         if (count((array) $this->items) > $itemsPerPage) {
             throw new LogicException(sprintf('Total items %d should not be superior to %d', count((array) $this->items), $itemsPerPage));
         }
+    }
+
+    public function getItems(): iterable
+    {
+        return $this->items;
+    }
+
+    public function getMetadata(): array
+    {
+        return [
+            'currentPage' => $this->currentPage,
+            'itemsPerPage' => $this->itemsPerPage,
+            'totalItem' => $this->totalItem,
+        ];
     }
 }
