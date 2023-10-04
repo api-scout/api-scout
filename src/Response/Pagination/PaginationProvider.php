@@ -29,7 +29,7 @@ final class PaginationProvider implements PaginationProviderInterface
     ) {
     }
 
-    public function provide(object|iterable $data, Operation $operation): PaginationInterface
+    public function provide(mixed $data, Operation $operation): PaginationInterface
     {
         if ($data instanceof PaginationInterface) {
             return $data;

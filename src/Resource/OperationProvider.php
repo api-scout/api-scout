@@ -89,7 +89,7 @@ final class OperationProvider implements OperationProviderInterface
     {
         return $this->cache->get(
             self::getOperationCacheKey($controllerName),
-            fn () => null
+            static fn () => null
         );
     }
 

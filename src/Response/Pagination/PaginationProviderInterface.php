@@ -23,5 +23,5 @@ use ApiScout\Operation;
  */
 interface PaginationProviderInterface
 {
-    public function provide(object|iterable $data, Operation $operation): PaginationInterface;
+    public function provide(mixed $data, Operation $operation): PaginationInterface;
 }
