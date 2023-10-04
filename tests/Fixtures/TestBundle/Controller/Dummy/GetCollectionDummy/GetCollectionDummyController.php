@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionDummy;
 
 use ApiScout\Attribute\GetCollection;
-use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Pagination\Pagination;
+use ApiScout\Pagination\PaginatorRequestInterface;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
@@ -31,7 +31,7 @@ final class GetCollectionDummyController extends AbstractController
     #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,
-        PaginatorRequestFactoryInterface $paginatorRequestFactory
+        PaginatorRequestInterface $paginatorRequestFactory
     ): Pagination {
         $pinkFloydCollection = [];
 
@@ -58,6 +58,8 @@ final class GetCollectionDummyController extends AbstractController
             0,
             10
         );
+
+        //        return new \ArrayObject($slicedPinkFloydCollection);
 
         return new Pagination(
             $slicedPinkFloydCollection,

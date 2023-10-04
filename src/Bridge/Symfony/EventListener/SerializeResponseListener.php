@@ -16,14 +16,15 @@ namespace ApiScout\Bridge\Symfony\EventListener;
 use ApiScout\Attribute\CollectionOperationInterface;
 use ApiScout\HttpOperation;
 use ApiScout\Operation;
-use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
 use ApiScout\Pagination\PaginationInterface;
 use ApiScout\Pagination\PaginationProviderInterface;
+use ApiScout\ResponseGeneratorInterface;
 use ApiScout\Serializer\ResponseSerializerInterface;
-use LogicException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
+
+use function is_object;
 
 /**
  * Add the proper Operation to the request for further handling.
@@ -33,9 +34,9 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 final class SerializeResponseListener
 {
     public function __construct(
-        private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
         private readonly PaginationProviderInterface $paginationProvider,
         private readonly ResponseSerializerInterface $responseSerializer,
+        private readonly ResponseGeneratorInterface $prepareResponse,
     ) {
     }
 
@@ -51,75 +52,25 @@ final class SerializeResponseListener
             return;
         }
 
-        $controllerResult = $event->getControllerResult();
+        $data = $event->getControllerResult();
 
-        if ($operation instanceof CollectionOperationInterface) {
-            $event->setResponse(
-                $this->handleCollectionOperationResponse(
-                    $operation,
-                    $controllerResult,
-                    $request
-                )
-            );
-
+        if (!is_iterable($data) && !is_object($data) && !$data instanceof PaginationInterface) {
             return;
+        }
+
+        if ($operation instanceof CollectionOperationInterface && $operation->isPaginationEnabled()) {
+            $data = $this->paginationProvider->provide($data, $operation);
         }
 
         $event->setResponse(
             new JsonResponse(
                 data: $this->responseSerializer->serialize(
-                    data: $controllerResult,
+                    data: $this->prepareResponse->generate($data, $operation),
                     context: $operation->getNormalizationContext()
                 ),
                 status: $operation->getStatusCode(),
                 json: true
             ),
-        );
-    }
-
-    private function handleCollectionOperationResponse(
-        Operation $operation,
-        mixed $controllerResult,
-        Request $request
-    ): JsonResponse {
-        //        if (!$operation->isPaginationEnabled()) {
-        //            return new JsonResponse(
-        //                data: $controllerResult,
-        //                status: $operation->getStatusCode()
-        //            );
-        //        }
-        //
-        //        if (!$controllerResult instanceof PaginatorInterface) {
-        //            if (!is_iterable($controllerResult)) {
-        //                throw new LogicException('Controller response from Collection Operation should be iterable.');
-        //            }
-        //
-        //            $paginator = new Paginator(
-        //                $controllerResult,
-        //                $this->paginatorRequestFactory->getCurrentPage($request),
-        //                $this->paginatorRequestFactory->getItemsPerPage($operation)
-        //            );
-        //
-        //            return new JsonResponse(
-        //                data: $paginator->toArray(),
-        //                status: $operation->getStatusCode()
-        //            );
-        //        }
-
-        if ($controllerResult instanceof PaginationInterface) {
-            $controllerResult = $this->paginationProvider->provide(
-                $controllerResult,
-                $operation
-            );
-        }
-
-        return new JsonResponse(
-            data: $this->responseSerializer->serialize(
-                data: $controllerResult,
-                context: $operation->getNormalizationContext()
-            ),
-            status: $operation->getStatusCode(),
-            json: true
         );
     }
 }

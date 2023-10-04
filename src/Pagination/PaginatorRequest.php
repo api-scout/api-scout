@@ -11,21 +11,33 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Pagination\Factory;
+namespace ApiScout\Pagination;
 
 use ApiScout\OpenApi\Model\PaginationOptions;
 use ApiScout\Operation;
-use Symfony\Component\HttpFoundation\Request;
+use LogicException;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-final class PaginatorRequestFactory implements PaginatorRequestFactoryInterface
+/**
+ * The Paginator Request Factory.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
+final class PaginatorRequest implements PaginatorRequestInterface
 {
     public function __construct(
         private readonly PaginationOptions $paginationOptions,
+        private readonly RequestStack $requestStack
     ) {
     }
 
-    public function getCurrentPage(Request $request): int
+    public function getCurrentPage(): int
     {
+        $request = $this->requestStack->getMainRequest();
+
+        if ($request === null) {
+            throw new LogicException('No request');
+        }
         $currentPage = $request->get($this->paginationOptions->getPaginationPageParameterName());
 
         if (!is_numeric($currentPage)) {

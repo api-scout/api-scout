@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Pagination;
 
 use ApiScout\Operation;
+use LogicException;
 
 /**
  * The Pagination data provider.
@@ -24,16 +25,25 @@ use ApiScout\Operation;
 final class PaginationProvider implements PaginationProviderInterface
 {
     public function __construct(
-        private readonly string $responseItemKey,
-        private readonly string $responsePaginationKey,
+        private readonly PaginatorRequestInterface $paginatorRequestFactory,
     ) {
     }
 
-    public function provide(PaginationInterface $pagination, Operation $operation): array
+    public function provide(object|iterable $data, Operation $operation): PaginationInterface
     {
-        return [
-            $this->responseItemKey => $pagination->getItems(),
-            $this->responsePaginationKey => $pagination->getMetadata(),
-        ];
+        if ($data instanceof PaginationInterface) {
+            return $data;
+        }
+
+        if (!is_iterable($data)) {
+            throw new LogicException('$data from Collection Operation should be iterable.');
+        }
+
+        return new Pagination(
+            $data,
+            $this->paginatorRequestFactory->getCurrentPage(),
+            $this->paginatorRequestFactory->getItemsPerPage($operation),
+            null
+        );
     }
 }

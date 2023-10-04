@@ -153,7 +153,7 @@ Feature: Get Dummy Collection resource
         "currentPage": 1,
         "itemsPerPage": 10,
         "totalItems": 31,
-        "next": null,
+        "next": "/dummies?page=2",
         "prev": null
       }
     }

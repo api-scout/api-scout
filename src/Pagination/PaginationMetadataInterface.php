@@ -13,21 +13,15 @@ declare(strict_types=1);
 
 namespace ApiScout\Pagination;
 
+use ApiScout\Operation;
+
 /**
- * The ApiScout Pagination Interface.
+ * The ApiScout Pagination Metadata interface.
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-interface PaginationInterface
+interface PaginationMetadataInterface
 {
-    public function getItems(): iterable;
-
-    public function getMetadata(): array;
-
-    public function getCurrentPage(): int;
-
-    public function getItemsPerPage(): int;
-
-    public function getTotalItems(): ?int;
+    public function getMetadata(PaginationInterface $pagination, Operation $operation): array;
 }

@@ -11,14 +11,18 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Pagination\Factory;
+namespace ApiScout\Pagination;
 
 use ApiScout\Operation;
-use Symfony\Component\HttpFoundation\Request;
 
-interface PaginatorRequestFactoryInterface
+/**
+ * The Paginator Request Factory interface.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
+interface PaginatorRequestInterface
 {
-    public function getCurrentPage(Request $request): int;
+    public function getCurrentPage(): int;
 
     public function getItemsPerPage(Operation $operation): int;
 }

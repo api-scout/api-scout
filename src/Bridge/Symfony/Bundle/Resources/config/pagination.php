@@ -18,30 +18,35 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 // Put parameters here that don't need to change on each machine where the app is deployed
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-use ApiScout\Pagination\Factory\PaginatorRequestFactory;
-use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
+use ApiScout\Pagination\PaginationMetadata;
+use ApiScout\Pagination\PaginationMetadataInterface;
 use ApiScout\Pagination\PaginationProvider;
+use ApiScout\Pagination\PaginationProviderInterface;
+use ApiScout\Pagination\PaginatorRequest;
+use ApiScout\Pagination\PaginatorRequestInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
         ->defaults()
     ;
 
-    $services
-        ->set('api_scout.pagination.paginator_request_factory', PaginatorRequestFactory::class)
+    $services->set('api_scout.pagination.paginator_request_factory', PaginatorRequest::class)
         ->arg(
             '$paginationOptions',
             expr("service('ApiScout\\\\OpenApi\\\\PaginationOptionsConfigurator').getPaginationOptions()")
         )
+        ->arg('$requestStack', service('request_stack'))
     ;
-    $services
-        ->alias(PaginatorRequestFactoryInterface::class, 'api_scout.pagination.paginator_request_factory')
-    ;
+    $services->alias(PaginatorRequestInterface::class, 'api_scout.pagination.paginator_request_factory');
 
-    $services->set(PaginationProvider::class)
-        ->arg('$responseItemKey', param('api_scout.response_item_key'))
-        ->arg('$responsePaginationKey', param('api_scout.response_pagination_key'))
+    $services->set('api_scout.pagination.pagination_provider', PaginationProvider::class)
+        ->arg('$paginatorRequestFactory', service(PaginatorRequestInterface::class))
     ;
+    $services->alias(PaginationProviderInterface::class, 'api_scout.pagination.pagination_provider');
 
-    $services->alias('api_scout.pagination.pagination_provider', PaginationProvider::class);
+    $services->set('api_scout.pagination.pagination_metadata', PaginationMetadata::class)
+        ->arg('$urlGenerator', service('router.default'))
+        ->arg('$requestStack', service('request_stack'))
+    ;
+    $services->alias(PaginationMetadataInterface::class, 'api_scout.pagination.pagination_metadata');
 };

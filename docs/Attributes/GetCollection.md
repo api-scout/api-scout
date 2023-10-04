@@ -8,7 +8,7 @@ final class GetCollectionDummyController extends AbstractController
     #[GetCollection('/dummies')]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,
-        PaginatorRequestFactoryInterface $paginatorRequestFactory
+        PaginatorRequestInterface $paginatorRequestFactory
     ): DummyCollectionOutput {
         // Your code here
         $pinkFloydCollection = $getFromDataSourceOrService;

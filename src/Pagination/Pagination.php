@@ -32,8 +32,8 @@ class Pagination implements PaginationInterface
         public readonly int $currentPage,
         public readonly int $itemsPerPage,
         public readonly ?int $totalItems = null,
-        public ?string $next = null,
         public ?string $prev = null,
+        public ?string $next = null,
     ) {
         if (count((array) $this->items) > $itemsPerPage) {
             throw new LogicException(sprintf('Total items %d should not be superior to %d', count((array) $this->items), $itemsPerPage));
@@ -54,5 +54,20 @@ class Pagination implements PaginationInterface
             'next' => $this->next,
             'prev' => $this->prev,
         ];
+    }
+
+    public function getCurrentPage(): int
+    {
+        return $this->currentPage;
+    }
+
+    public function getItemsPerPage(): int
+    {
+        return $this->itemsPerPage;
+    }
+
+    public function getTotalItems(): ?int
+    {
+        return $this->totalItems;
     }
 }

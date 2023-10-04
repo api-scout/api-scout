@@ -15,8 +15,6 @@ namespace ApiScout\Serializer;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
-use function is_object;
-
 /**
  * The ApiScout response Serializer.
  *
@@ -27,7 +25,6 @@ final class SymfonyResponseSerializer implements ResponseSerializerInterface
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly string $responseItemKey,
     ) {
     }
 
@@ -38,10 +35,6 @@ final class SymfonyResponseSerializer implements ResponseSerializerInterface
      */
     public function serialize(mixed $data, array $context): string
     {
-        if (is_object($data)) {
-            $data = [$this->responseItemKey => $data];
-        }
-
         return $this->serializer->serialize(
             data: $data,
             format: 'json',
