@@ -15,13 +15,11 @@ namespace ApiScout\Bridge\Symfony\EventListener;
 
 use ApiScout\Attribute\CollectionOperationInterface;
 use ApiScout\HttpOperation;
-use ApiScout\Operation;
-use ApiScout\Pagination\PaginationInterface;
-use ApiScout\Pagination\PaginationProviderInterface;
-use ApiScout\ResponseGeneratorInterface;
-use ApiScout\Serializer\ResponseSerializerInterface;
+use ApiScout\Response\Pagination\PaginationInterface;
+use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\ResponseGeneratorInterface;
+use ApiScout\Response\Serializer\ResponseSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
 use function is_object;
@@ -36,7 +34,7 @@ final class SerializeResponseListener
     public function __construct(
         private readonly PaginationProviderInterface $paginationProvider,
         private readonly ResponseSerializerInterface $responseSerializer,
-        private readonly ResponseGeneratorInterface $prepareResponse,
+        private readonly ResponseGeneratorInterface $responseGenerator,
     ) {
     }
 
@@ -65,7 +63,7 @@ final class SerializeResponseListener
         $event->setResponse(
             new JsonResponse(
                 data: $this->responseSerializer->serialize(
-                    data: $this->prepareResponse->generate($data, $operation),
+                    data: $this->responseGenerator->generate($data, $operation),
                     context: $operation->getNormalizationContext()
                 ),
                 status: $operation->getStatusCode(),

@@ -18,12 +18,15 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 // Put parameters here that don't need to change on each machine where the app is deployed
 // https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-use ApiScout\Pagination\PaginationMetadata;
-use ApiScout\Pagination\PaginationMetadataInterface;
-use ApiScout\Pagination\PaginationProvider;
-use ApiScout\Pagination\PaginationProviderInterface;
-use ApiScout\Pagination\PaginatorRequest;
-use ApiScout\Pagination\PaginatorRequestInterface;
+use ApiScout\Response\Pagination\PaginationMetadata;
+use ApiScout\Response\Pagination\PaginationMetadataInterface;
+use ApiScout\Response\Pagination\PaginationProvider;
+use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\Pagination\PaginatorRequest;
+use ApiScout\Response\Pagination\PaginatorRequestInterface;
+use ApiScout\Response\ResponseGenerator;
+use ApiScout\Response\ResponseGeneratorInterface;
+use ApiScout\Response\Serializer\SymfonyResponseSerializer;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
@@ -49,4 +52,15 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$requestStack', service('request_stack'))
     ;
     $services->alias(PaginationMetadataInterface::class, 'api_scout.pagination.pagination_metadata');
+
+    $services->set('api_scout.response_serializer', SymfonyResponseSerializer::class)
+        ->arg('$serializer', service('serializer'))
+    ;
+
+    $services->set('api_scout.api.prepare_response', ResponseGenerator::class)
+        ->arg('$paginationMetadata', service(PaginationMetadataInterface::class))
+        ->arg('$responseItemKey', param('api_scout.response_item_key'))
+        ->arg('$responsePaginationKey', param('api_scout.response_pagination_key'))
+    ;
+    $services->alias(ResponseGeneratorInterface::class, 'api_scout.api.prepare_response');
 };

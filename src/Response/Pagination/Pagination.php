@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Pagination;
+namespace ApiScout\Response\Pagination;
 
 use LogicException;
 

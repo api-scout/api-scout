@@ -21,7 +21,8 @@ use ApiScout\Bridge\Symfony\EventListener\PayloadValidationExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
 use ApiScout\Bridge\Symfony\Routing\ApiLoader;
 use ApiScout\OperationProviderInterface;
-use ApiScout\Pagination\PaginationProviderInterface;
+use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\ResponseGeneratorInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -59,7 +60,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(SerializeResponseListener::class)
         ->arg('$paginationProvider', service(PaginationProviderInterface::class))
         ->arg('$responseSerializer', service('api_scout.response_serializer'))
-        ->arg('$prepareResponse', service('api_scout.api.prepare_response'))
+        ->arg('$responseGenerator', service(ResponseGeneratorInterface::class))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 15])
     ;
 

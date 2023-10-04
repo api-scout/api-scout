@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionDummy;
 
 use ApiScout\Attribute\GetCollection;
-use ApiScout\Pagination\Pagination;
-use ApiScout\Pagination\PaginatorRequestInterface;
+use ApiScout\Response\Pagination\Pagination;
+use ApiScout\Response\Pagination\PaginatorRequestInterface;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;

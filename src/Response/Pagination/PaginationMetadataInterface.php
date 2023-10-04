@@ -11,18 +11,17 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Pagination;
+namespace ApiScout\Response\Pagination;
 
 use ApiScout\Operation;
 
 /**
- * The Paginator Request Factory interface.
+ * The ApiScout Pagination Metadata interface.
  *
+ * @author Jérémy Romey <jeremy@free-agent.fr>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-interface PaginatorRequestInterface
+interface PaginationMetadataInterface
 {
-    public function getCurrentPage(): int;
-
-    public function getItemsPerPage(Operation $operation): int;
+    public function getMetadata(PaginationInterface $pagination, Operation $operation): array;
 }

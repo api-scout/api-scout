@@ -11,10 +11,11 @@
 
 declare(strict_types=1);
 
-namespace ApiScout;
+namespace ApiScout\Response;
 
-use ApiScout\Pagination\PaginationInterface;
-use ApiScout\Pagination\PaginationMetadataInterface;
+use ApiScout\Operation;
+use ApiScout\Response\Pagination\PaginationInterface;
+use ApiScout\Response\Pagination\PaginationMetadataInterface;
 
 use function is_object;
 

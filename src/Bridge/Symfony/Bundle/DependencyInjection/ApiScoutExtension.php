@@ -47,8 +47,8 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
 
         $loader->load('api.php');
         $loader->load('openapi.php');
-        $loader->load('pagination.php');
         $loader->load('resource.php');
+        $loader->load('response.php');
         $loader->load('swagger.php');
         $loader->load('symfony.php');
     }

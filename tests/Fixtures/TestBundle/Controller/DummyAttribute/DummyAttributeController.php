@@ -21,7 +21,7 @@ use ApiScout\Attribute\Patch;
 use ApiScout\Attribute\Post;
 use ApiScout\Attribute\Put;
 use ApiScout\OpenApi\Model;
-use ApiScout\Pagination\Pagination;
+use ApiScout\Response\Pagination\Pagination;
 use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

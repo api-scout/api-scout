@@ -11,20 +11,17 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Serializer;
+namespace ApiScout\Response\Pagination;
+
+use ApiScout\Operation;
 
 /**
- * The ApiScout response Serializer interface.
+ * The Pagination data provider interface.
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-interface ResponseSerializerInterface
+interface PaginationProviderInterface
 {
-    /**
-     * Serializes data in the appropriate format.
-     *
-     * @param array<string, mixed> $context Options normalizers/encoders have access to
-     */
-    public function serialize(mixed $data, array $context): string;
+    public function provide(object|iterable $data, Operation $operation): PaginationInterface;
 }

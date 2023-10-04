@@ -11,7 +11,9 @@
 
 declare(strict_types=1);
 
-namespace ApiScout;
+namespace ApiScout\Response;
+
+use ApiScout\Operation;
 
 interface ResponseGeneratorInterface
 {

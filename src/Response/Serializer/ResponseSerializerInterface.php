@@ -11,23 +11,20 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Pagination;
+namespace ApiScout\Response\Serializer;
 
 /**
- * The ApiScout Pagination Interface.
+ * The ApiScout response Serializer interface.
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-interface PaginationInterface
+interface ResponseSerializerInterface
 {
-    public function getItems(): iterable;
-
-    public function getMetadata(): array;
-
-    public function getCurrentPage(): int;
-
-    public function getItemsPerPage(): int;
-
-    public function getTotalItems(): ?int;
+    /**
+     * Serializes data in the appropriate format.
+     *
+     * @param array<string, mixed> $context Options normalizers/encoders have access to
+     */
+    public function serialize(mixed $data, array $context): string;
 }
