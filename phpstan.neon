@@ -16,9 +16,6 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/tests/Fixtures/app/var
         - %currentWorkingDirectory%/src/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php
-        # TODO: To remove once the pagination will be correctly implemented
-        - %currentWorkingDirectory%/tests/Fixtures/TestBundle/Controller/Dummy/GetCollectionDummy/DummyCollectionOutput.php
-        - %currentWorkingDirectory%/tests/Fixtures/TestBundle/Controller/DummyAttribute/DummyAttributeCollectionOutput.php
     ignoreErrors:
         -
           messages:
