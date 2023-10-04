@@ -15,8 +15,8 @@ namespace ApiScout\Bridge\Symfony\Routing;
 
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\HttpOperation;
-use ApiScout\OperationProviderInterface;
 use ApiScout\Operations;
+use ApiScout\Resource\OperationProviderInterface;
 use LogicException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\Loader;

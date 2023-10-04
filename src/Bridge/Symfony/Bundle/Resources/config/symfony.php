@@ -20,7 +20,7 @@ use ApiScout\Bridge\Symfony\EventListener\OperationRequestListener;
 use ApiScout\Bridge\Symfony\EventListener\PayloadValidationExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
 use ApiScout\Bridge\Symfony\Routing\ApiLoader;
-use ApiScout\OperationProviderInterface;
+use ApiScout\Resource\OperationProviderInterface;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
 use ApiScout\Response\ResponseGeneratorInterface;
 use Symfony\Component\HttpKernel\KernelInterface;

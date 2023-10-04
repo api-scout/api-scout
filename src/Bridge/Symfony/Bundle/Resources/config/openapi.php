@@ -27,7 +27,7 @@ use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactoryInterface;
 use ApiScout\OpenApi\Options;
 use ApiScout\OpenApi\PaginationOptionsConfigurator;
 use ApiScout\OpenApi\Serializer\OpenApiNormalizer;
-use ApiScout\OperationProviderInterface;
+use ApiScout\Resource\OperationProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;

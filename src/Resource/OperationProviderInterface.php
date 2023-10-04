@@ -11,7 +11,10 @@
 
 declare(strict_types=1);
 
-namespace ApiScout;
+namespace ApiScout\Resource;
+
+use ApiScout\Operation;
+use ApiScout\Operations;
 
 /**
  * Interface to build the Operations.

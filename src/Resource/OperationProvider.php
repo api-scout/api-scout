@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace ApiScout;
+namespace ApiScout\Resource;
 
 use ApiScout\Attribute\ApiProperty;
 use ApiScout\Exception\ParamShouldBeTypedException;
 use ApiScout\Exception\ResourceClassNotFoundException;
-use ApiScout\Resource\DirectoryClassesExtractor;
+use ApiScout\Operation;
+use ApiScout\Operations;
 use LogicException;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -27,7 +28,6 @@ use ReflectionProperty;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Contracts\Cache\CacheInterface;
-
 use function function_exists;
 use function is_int;
 

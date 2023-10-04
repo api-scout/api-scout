@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ApiScout\OperationProvider;
-use ApiScout\OperationProviderInterface;
 use ApiScout\Resource\DirectoryClassesExtractor;
+use ApiScout\Resource\OperationProvider;
+use ApiScout\Resource\OperationProviderInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
