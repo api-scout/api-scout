@@ -18,6 +18,7 @@ use ApiScout\Exception\ParamShouldBeTypedException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Operation;
 use ApiScout\Operations;
+use ApiScout\Response\Pagination\Pagination;
 use LogicException;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -140,8 +141,10 @@ final class OperationProvider implements OperationProviderInterface
         }
 
         if ($method->getReturnType() !== null && $operation->getOutput() === null) {
-            /** @phpstan-ignore-next-line getName is an existing method */
-            $operation->setOutput($method->getReturnType()->getName());
+            $operation->setOutput(
+                /** @phpstan-ignore-next-line getName is an existing method */
+                $this->buildOutput($method->getReturnType()->getName())
+            );
         }
 
         if ($operation->getUriVariables() === []) {
@@ -243,6 +246,24 @@ final class OperationProvider implements OperationProviderInterface
             description: $apiProperty->getDescription(),
             deprecated: $apiProperty->isDeprecated()
         );
+    }
+
+    /**
+     * @param class-string $output
+     */
+    private function buildOutput(string $output): string
+    {
+        if (!class_exists($output)) {
+            throw new ResourceClassNotFoundException($output);
+        }
+
+        $outputClass = new ReflectionClass($output);
+
+        if ($outputClass->isIterable()) {
+            return Pagination::class;
+        }
+
+        return $output;
     }
 
     /**

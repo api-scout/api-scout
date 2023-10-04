@@ -162,6 +162,6 @@ Feature: Get Dummy Collection resource
   @swagger
   Scenario: Build a dummy operation
     When one get the swagger json
-    Then get paginated collection dummy filters should be configured
-    And get paginated collection dummy should be configured
+    Then get collection dummy filters should be configured
+    And get collection dummy should be configured
 
