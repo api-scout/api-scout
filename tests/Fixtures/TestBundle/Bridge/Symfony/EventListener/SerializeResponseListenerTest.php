@@ -15,8 +15,8 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Bridge\Symfony\EventListener;
 
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\ResponseGeneratorInterface;
 use ApiScout\Response\Serializer\ResponseSerializerInterface;
-use ApiScout\ResponseGeneratorInterface;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,12 +29,12 @@ final class SerializeResponseListenerTest extends TestCase
     {
         $paginationProvider = $this->createStub(PaginationProviderInterface::class);
         $responseSerializer = $this->createStub(ResponseSerializerInterface::class);
-        $prepareResponse = $this->createStub(ResponseGeneratorInterface::class);
+        $responseGenerator = $this->createStub(ResponseGeneratorInterface::class);
 
         $listener = new SerializeResponseListener(
             $paginationProvider,
             $responseSerializer,
-            $prepareResponse
+            $responseGenerator
         );
 
         $event = new ViewEvent(
