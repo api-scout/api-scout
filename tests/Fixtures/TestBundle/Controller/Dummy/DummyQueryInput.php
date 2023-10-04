@@ -22,8 +22,6 @@ final class DummyQueryInput
         public readonly ?string $name = '',
         /** @var string|null $city The name of the city */
         public readonly ?string $city = '',
-        #[ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate')]
-        public readonly int $page = 1,
     ) {
     }
 }

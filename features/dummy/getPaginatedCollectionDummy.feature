@@ -2,9 +2,9 @@ Feature: Get Dummy Collection resource
 
   @http
   Scenario: Get a dummy collection resource
-    When one get a dummy collection
+    When one get a paginated dummy collection
     Then success
-    And get dummy collection response should be:
+    And get paginated dummy collection response should be:
     """
     {
       "data": [
@@ -152,8 +152,8 @@ Feature: Get Dummy Collection resource
       "pagination": {
         "currentPage": 1,
         "itemsPerPage": 10,
-        "totalItems": null,
-        "next": "/dummies?page=2",
+        "totalItems": 31,
+        "next": "/paginated_dummies?page=2",
         "prev": null
       }
     }
@@ -162,6 +162,6 @@ Feature: Get Dummy Collection resource
   @swagger
   Scenario: Build a dummy operation
     When one get the swagger json
-    Then get paginated collection dummy filters should be configured
-    And get paginated collection dummy should be configured
+    Then get collection dummy filters should be configured
+    And get collection dummy should be configured
 

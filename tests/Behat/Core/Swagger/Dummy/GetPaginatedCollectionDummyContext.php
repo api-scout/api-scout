@@ -21,18 +21,18 @@ use PHPUnit\Framework\Assert;
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class GetCollectionDummyContext extends BaseContext
+final class GetPaginatedCollectionDummyContext extends BaseContext
 {
     /**
-     * @Then get collection dummy filters should be configured
+     * @Then get paginated collection dummy filters should be configured
      */
     public function thenDummyFiltersShouldBeConfigured(): void
     {
         $response = $this->getResponse()->toArray();
 
-        Assert::assertNotEmpty($response['paths']['/dummies']['get']);
+        Assert::assertNotEmpty($response['paths']['/paginated_dummies']['get']);
 
-        $parameters = $response['paths']['/dummies']['get']['parameters'];
+        $parameters = $response['paths']['/paginated_dummies']['get']['parameters'];
         Assert::assertCount(2, $parameters);
 
         Assert::assertSame('name', $parameters[0]['name']);
@@ -51,13 +51,13 @@ final class GetCollectionDummyContext extends BaseContext
     }
 
     /**
-     * @Then get collection dummy should be configured
+     * @Then get paginated collection dummy should be configured
      */
     public function then(): void
     {
         $response = $this->getResponse()->toArray();
 
-        Assert::assertNotEmpty($response['paths']['/dummies']['get']);
-        Assert::assertNotEmpty($response['components']['schemas']['Dummy.ArrayObject']);
+        Assert::assertNotEmpty($response['paths']['/paginated_dummies']['get']);
+        Assert::assertNotEmpty($response['components']['schemas']['Dummy.Pagination']);
     }
 }

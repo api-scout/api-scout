@@ -30,6 +30,7 @@ use ApiScout\Resource\OperationProviderInterface;
 use ArrayObject;
 use LogicException;
 use Throwable;
+
 use function in_array;
 use function is_object;
 

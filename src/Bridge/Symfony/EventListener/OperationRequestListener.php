@@ -18,6 +18,7 @@ use ApiScout\Resource\OperationProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+
 use function is_string;
 
 /**

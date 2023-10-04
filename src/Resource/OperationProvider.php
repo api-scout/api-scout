@@ -28,6 +28,7 @@ use ReflectionProperty;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Contracts\Cache\CacheInterface;
+
 use function function_exists;
 use function is_int;
 
