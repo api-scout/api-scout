@@ -30,14 +30,12 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Contracts\Cache\CacheInterface;
 
-use function array_key_exists;
 use function function_exists;
 use function is_int;
 
 /**
  * Build the Operations.
  *
- * @author Jules Pietri <jules@heahprod.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class OperationProvider implements OperationProviderInterface

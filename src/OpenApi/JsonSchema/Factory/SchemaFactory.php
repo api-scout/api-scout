@@ -29,6 +29,7 @@ final class SchemaFactory implements SchemaFactoryInterface
 {
     use ClassNameNormalizerTrait;
     use PropertyTypeBuilderTrait;
+
     private const BASE_TEMPLATE = [
         'type' => 'object',
         'description' => '',

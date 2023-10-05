@@ -107,4 +107,6 @@ return static function (ContainerConfigurator $container): void {
         ->set('api_scout.openapi.schema_factory', SchemaFactory::class)
         ->arg('$metadata', service(ClassMetadataFactoryInterface::class))
     ;
+
+    $services->alias(SchemaFactoryInterface::class, 'api_scout.openapi.schema_factory');
 };

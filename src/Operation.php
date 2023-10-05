@@ -22,8 +22,6 @@ use LogicException;
 use RuntimeException;
 use Throwable;
 
-use function array_key_exists;
-
 /**
  * Attribute to build the Operation.
  *
@@ -282,10 +280,6 @@ abstract class Operation
 
     public function setDenormalizationContext(array $denormalizationContext): void
     {
-        if ($denormalizationContext !== [] && !array_key_exists('groups', $denormalizationContext)) {
-            throw new LogicException('DenormalizationContext shoud be builded with a "group" key');
-        }
-
         $this->denormalizationContext = $denormalizationContext;
     }
 
