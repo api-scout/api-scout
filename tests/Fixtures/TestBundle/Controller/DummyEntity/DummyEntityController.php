@@ -24,7 +24,6 @@ final class DummyEntityController
         name: 'app_add_dummy_entity',
         resource: DummyEntity::class,
         normalizationContext: ['groups' => ['dummy::read']],
-        denormalizationContext: ['groups' => ['dummy::write']]
     )]
     public function __invoke(
         #[MapRequestPayload(

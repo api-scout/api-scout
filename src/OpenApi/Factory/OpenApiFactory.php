@@ -284,9 +284,9 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 'Output'
             );
 
-            //            if ($operation->getName() === 'app_add_dummy_entity') {
-            //                dd($operationOutputSchema);
-            //            }
+            if ($operation->getName() === 'app_add_dummy_entity') {
+                dd($operation);
+            }
             $this->appendSchemaDefinitions($schemas, $operationOutputSchema);
         }
 

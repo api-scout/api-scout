@@ -17,7 +17,6 @@ use ApiScout\OpenApi\JsonSchema\JsonSchema;
 use ApiScout\OpenApi\JsonSchema\Trait\PropertyTypeBuilderTrait;
 use ApiScout\OpenApi\Trait\ClassNameNormalizerTrait;
 use ReflectionClass;
-use ReflectionProperty;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 
@@ -60,53 +59,20 @@ final class SchemaFactory implements SchemaFactoryInterface
 
         $this->groups = $groups['groups'] ?? [];
 
-        $schemaProperties = [
-            ...self::BASE_TEMPLATE,
-            ...$this->buildOpenApiPropertiesFromClass($className),
-        ];
-
         $schemaKey = $this->buildDefinitionName($className, $entityName);
+
+        dd();
 
         $schema->offsetSet(
             $schemaKey,
-            $schemaProperties
+            [
+                ...self::BASE_TEMPLATE,
+                ...$this->buildOpenApiPropertiesFromClass($className),
+            ]
         );
 
         return $schema;
     }
-    //
-    //    /**
-    //     * @param array<ReflectionProperty> $properties
-    //     * @param array<string>             $groups
-    //     *
-    //     * @return array<ReflectionProperty>
-    //     */
-    //    private function buildPropertiesFromGroup(string $className, array $properties, array $groups): array
-    //    {
-    //        $classMetadata = $this->metadata->getMetadataFor($className);
-    //
-    //        /**
-    //         * @var array<ReflectionProperty> $propertiesReflection
-    //         */
-    //        $propertiesReflection = $classMetadata->getReflectionClass()->getProperties();
-    //        $attributesMetadata   = $classMetadata->getAttributesMetadata();
-    //
-    //        foreach ($propertiesReflection as $property) {
-    //            if (array_diff($groups, $attributesMetadata[$property->getName()]->getGroups()) !== []) {
-    //                continue;
-    //            }
-    //
-    //            if ($property->getType() === null) {
-    //                continue;
-    //            }
-    //
-    //            $properties[$property->getName()] = class_exists($property->getType()->getName())
-    //                ? $this->buildPropertiesFromGroup($property->getType()->getName(), [], $groups)
-    //                : $property;
-    //        }
-    //
-    //        return $properties;
-    //    }
 
     /**
      * @param class-string $className
