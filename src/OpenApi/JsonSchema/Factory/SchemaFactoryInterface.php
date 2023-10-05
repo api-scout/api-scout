@@ -23,7 +23,8 @@ use ApiScout\OpenApi\JsonSchema\JsonSchema;
 interface SchemaFactoryInterface
 {
     /**
-     * @param class-string $className
+     * @param class-string                 $className
+     * @param array<string, array<string>> $groups
      */
-    public function buildSchema(string $className, string $entityName): JsonSchema;
+    public function buildSchema(string $className, string $entityName, array $groups, string $prefix = 'Input'): JsonSchema;
 }

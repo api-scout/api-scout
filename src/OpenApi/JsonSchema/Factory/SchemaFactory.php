@@ -17,7 +17,9 @@ use ApiScout\OpenApi\JsonSchema\JsonSchema;
 use ApiScout\OpenApi\JsonSchema\Trait\PropertyTypeBuilderTrait;
 use ApiScout\OpenApi\Trait\ClassNameNormalizerTrait;
 use ReflectionClass;
+use ReflectionProperty;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 
 /**
  * Build the Input and Output OpenApi Specification schema.
@@ -36,40 +38,98 @@ final class SchemaFactory implements SchemaFactoryInterface
         'properties' => [],
     ];
 
+    private array $groups;
+
+    public function __construct(
+        private readonly ClassMetadataFactoryInterface $metadata
+    ) {
+        $this->groups = [];
+    }
+
     /**
-     * @param class-string $className
+     * @param class-string                 $className
+     * @param array<string, array<string>> $groups
      */
-    public function buildSchema(string $className, string $entityName): JsonSchema
-    {
+    public function buildSchema(
+        string $className,
+        string $entityName,
+        array $groups,
+        string $prefix = 'Input'
+    ): JsonSchema {
         $schema = new JsonSchema();
+
+        $this->groups = $groups['groups'] ?? [];
 
         $schemaProperties = [
             ...self::BASE_TEMPLATE,
             ...$this->buildOpenApiPropertiesFromClass($className),
         ];
 
+        $schemaKey = $this->buildDefinitionName($className, $entityName);
+
         $schema->offsetSet(
-            $this->buildDefinitionName($className, $entityName),
+            $schemaKey,
             $schemaProperties
         );
 
         return $schema;
     }
+    //
+    //    /**
+    //     * @param array<ReflectionProperty> $properties
+    //     * @param array<string>             $groups
+    //     *
+    //     * @return array<ReflectionProperty>
+    //     */
+    //    private function buildPropertiesFromGroup(string $className, array $properties, array $groups): array
+    //    {
+    //        $classMetadata = $this->metadata->getMetadataFor($className);
+    //
+    //        /**
+    //         * @var array<ReflectionProperty> $propertiesReflection
+    //         */
+    //        $propertiesReflection = $classMetadata->getReflectionClass()->getProperties();
+    //        $attributesMetadata   = $classMetadata->getAttributesMetadata();
+    //
+    //        foreach ($propertiesReflection as $property) {
+    //            if (array_diff($groups, $attributesMetadata[$property->getName()]->getGroups()) !== []) {
+    //                continue;
+    //            }
+    //
+    //            if ($property->getType() === null) {
+    //                continue;
+    //            }
+    //
+    //            $properties[$property->getName()] = class_exists($property->getType()->getName())
+    //                ? $this->buildPropertiesFromGroup($property->getType()->getName(), [], $groups)
+    //                : $property;
+    //        }
+    //
+    //        return $properties;
+    //    }
 
     /**
      * @param class-string $className
      */
     private function buildOpenApiPropertiesFromClass(string $className): array
     {
-        $reflectionClass = new ReflectionClass($className);
+        $properties = (new ReflectionClass($className))->getProperties();
+        $classMetadata = $this->metadata->getMetadataFor($className);
+        $attributesMetadata = $classMetadata->getAttributesMetadata();
 
         $schemaProperties = [];
-        foreach ($reflectionClass->getProperties() as $property) {
-            $schemaProperty = [];
+
+        foreach ($properties as $property) {
+            if ($this->groups !== []
+                && array_diff($this->groups, $attributesMetadata[$property->getName()]->getGroups()) !== []) {
+                continue;
+            }
 
             if ($property->getType() === null) {
                 continue;
             }
+
+            $schemaProperty = [];
 
             if ($property->isReadOnly()) {
                 $schemaProperty['readonly'] = true;

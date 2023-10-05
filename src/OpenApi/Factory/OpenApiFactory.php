@@ -176,12 +176,18 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     [HttpOperation::METHOD_PATCH, HttpOperation::METHOD_PUT, HttpOperation::METHOD_POST],
                     true
                 )) {
+                //                if ($operation->getName() === 'app_add_dummy_entity') {
+                //                if ($operation->getName() === 'app_add_dummy') {
+                //                    dump($operation);
+
                 $operationInputSchema = $this->schemaFactory->buildSchema(
                     /** @phpstan-ignore-next-line up to this point if input is set then it has a class-string */
                     $operation->getInput(),
-                    $operation->getResource()
+                    $operation->getResource(),
+                    $operation->getDenormalizationContext()
                 );
                 $this->appendSchemaDefinitions($schemas, $operationInputSchema);
+                //                                }
 
                 $openapiOperation = $openapiOperation->withRequestBody(
                     new Model\RequestBody(
@@ -269,8 +275,18 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $operation,
         );
 
-        if ($operation->getOutput() !== null && class_exists($operation->getOutput())) {
-            $operationOutputSchema = $this->schemaFactory->buildSchema($operation->getOutput(), $operation->getResource());
+        if ($operation->getOutput() !== null
+            && class_exists($operation->getOutput())) {
+            $operationOutputSchema = $this->schemaFactory->buildSchema(
+                $operation->getOutput(),
+                $operation->getResource(),
+                $operation->getNormalizationContext(),
+                'Output'
+            );
+
+            //            if ($operation->getName() === 'app_add_dummy_entity') {
+            //                dd($operationOutputSchema);
+            //            }
             $this->appendSchemaDefinitions($schemas, $operationOutputSchema);
         }
 

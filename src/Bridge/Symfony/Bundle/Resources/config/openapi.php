@@ -30,6 +30,7 @@ use ApiScout\OpenApi\Serializer\OpenApiNormalizer;
 use ApiScout\Resource\OperationProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 return static function (ContainerConfigurator $container): void {
@@ -100,5 +101,10 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set('api_scout.openapi.normalizer', OpenApiNormalizer::class)
         ->arg('$decorated', service('api_scout.openapi.object_normalizer'))
+    ;
+
+    $services
+        ->set('api_scout.openapi.schema_factory', SchemaFactory::class)
+        ->arg('$metadata', service(ClassMetadataFactoryInterface::class))
     ;
 };
