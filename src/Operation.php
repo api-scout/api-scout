@@ -278,6 +278,11 @@ abstract class Operation
         return $this->denormalizationContext;
     }
 
+    public function setDenormalizationContext(array $denormalizationContext): void
+    {
+        $this->denormalizationContext = $denormalizationContext;
+    }
+
     public function getDeprecationReason(): ?string
     {
         return $this->deprecationReason;

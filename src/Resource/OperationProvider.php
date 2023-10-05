@@ -36,7 +36,6 @@ use function is_int;
 /**
  * Build the Operations.
  *
- * @author Jules Pietri <jules@heahprod.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class OperationProvider implements OperationProviderInterface
@@ -126,18 +125,27 @@ final class OperationProvider implements OperationProviderInterface
             );
         }
 
-        if ($operation->getFilters() === []
-            && ($payload = $this->isPayloadResource($method->getParameters())) !== null) {
-            $operation->setFilters(
-                $this->buildParameterFilters($payload)
-            );
+        $payloadResource = $this->isPayloadResource($method->getParameters());
 
-            if ($payload->getType() === null) {
-                throw new ParamShouldBeTypedException($payload->name);
+        if ($payloadResource !== null) {
+            if ($operation->getFilters() === []) {
+                $operation->setFilters(
+                    $this->buildParameterFilters($payloadResource)
+                );
+
+                if ($payloadResource->getType() === null) {
+                    throw new ParamShouldBeTypedException($payloadResource->name);
+                }
+
+                /** @phpstan-ignore-next-line getName is an existing method */
+                $operation->setInput($payloadResource->getType()->getName());
             }
 
-            /** @phpstan-ignore-next-line getName is an existing method */
-            $operation->setInput($payload->getType()->getName());
+            if ($operation->getDenormalizationContext() === []) {
+                $operation->setDenormalizationContext(
+                    $this->buildDenormalizationContext($payloadResource)
+                );
+            }
         }
 
         if ($method->getReturnType() !== null && $operation->getOutput() === null) {
@@ -157,6 +165,22 @@ final class OperationProvider implements OperationProviderInterface
         $operation->setControllerMethod($method->getName());
 
         return $operation;
+    }
+
+    private function buildDenormalizationContext(ReflectionParameter $payload): array
+    {
+        foreach ($payload->getAttributes() as $attribute) {
+            if ($attribute->getName() === MapRequestPayload::class || $attribute->getName() === MapQueryString::class) {
+                /**
+                 * @var MapRequestPayload|MapQueryString $mapRequestOrQuery
+                 */
+                $mapRequestOrQuery = $attribute->newInstance();
+
+                return $mapRequestOrQuery->serializationContext;
+            }
+        }
+
+        return [];
     }
 
     /**

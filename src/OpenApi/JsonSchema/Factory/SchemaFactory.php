@@ -18,6 +18,7 @@ use ApiScout\OpenApi\JsonSchema\Trait\PropertyTypeBuilderTrait;
 use ApiScout\OpenApi\Trait\ClassNameNormalizerTrait;
 use ReflectionClass;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 
 /**
  * Build the Input and Output OpenApi Specification schema.
@@ -28,6 +29,7 @@ final class SchemaFactory implements SchemaFactoryInterface
 {
     use ClassNameNormalizerTrait;
     use PropertyTypeBuilderTrait;
+
     private const BASE_TEMPLATE = [
         'type' => 'object',
         'description' => '',
@@ -36,21 +38,39 @@ final class SchemaFactory implements SchemaFactoryInterface
         'properties' => [],
     ];
 
+    private array $groups;
+
+    public function __construct(
+        private readonly ClassMetadataFactoryInterface $metadata
+    ) {
+        $this->groups = [];
+    }
+
     /**
-     * @param class-string $className
+     * @param class-string                 $className
+     * @param array<string, array<string>> $groups
      */
-    public function buildSchema(string $className, string $entityName): JsonSchema
-    {
+    public function buildSchema(
+        string $className,
+        string $entityName,
+        array $groups,
+    ): JsonSchema {
         $schema = new JsonSchema();
 
-        $schemaProperties = [
-            ...self::BASE_TEMPLATE,
-            ...$this->buildOpenApiPropertiesFromClass($className),
-        ];
+        $this->groups = $groups['groups'] ?? [];
+
+        $schemaKey = $this->buildDefinitionName($className, $entityName);
+
+        if ($this->groups !== []) {
+            $schemaKey = $this->buildDefinitionName($this->buildPrefixName(), $entityName);
+        }
 
         $schema->offsetSet(
-            $this->buildDefinitionName($className, $entityName),
-            $schemaProperties
+            $schemaKey,
+            [
+                ...self::BASE_TEMPLATE,
+                ...$this->buildOpenApiPropertiesFromClass($className),
+            ]
         );
 
         return $schema;
@@ -61,15 +81,23 @@ final class SchemaFactory implements SchemaFactoryInterface
      */
     private function buildOpenApiPropertiesFromClass(string $className): array
     {
-        $reflectionClass = new ReflectionClass($className);
+        $properties = (new ReflectionClass($className))->getProperties();
+        $classMetadata = $this->metadata->getMetadataFor($className);
+        $attributesMetadata = $classMetadata->getAttributesMetadata();
 
         $schemaProperties = [];
-        foreach ($reflectionClass->getProperties() as $property) {
-            $schemaProperty = [];
+
+        foreach ($properties as $property) {
+            if ($this->groups !== []
+                && array_diff($this->groups, $attributesMetadata[$property->getName()]->getGroups()) !== []) {
+                continue;
+            }
 
             if ($property->getType() === null) {
                 continue;
             }
+
+            $schemaProperty = [];
 
             if ($property->isReadOnly()) {
                 $schemaProperty['readonly'] = true;
@@ -121,5 +149,21 @@ final class SchemaFactory implements SchemaFactoryInterface
     private function buildDefinitionName(string $className, string $entityName): string
     {
         return $this->normalizeClassName($entityName).'.'.$this->normalizeClassName($className);
+    }
+
+    private function buildPrefixName(): string
+    {
+        $name = preg_replace('/[^A-Za-z0-9\-]/', '-', $this->groups[0]);
+        $names = explode('-', $name);
+
+        $prefixName = '';
+
+        foreach ($names as $explodedName) {
+            if ($explodedName !== '') {
+                $prefixName .= ucwords($explodedName);
+            }
+        }
+
+        return $prefixName;
     }
 }

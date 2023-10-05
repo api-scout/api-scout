@@ -179,7 +179,8 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 $operationInputSchema = $this->schemaFactory->buildSchema(
                     /** @phpstan-ignore-next-line up to this point if input is set then it has a class-string */
                     $operation->getInput(),
-                    $operation->getResource()
+                    $operation->getResource(),
+                    $operation->getDenormalizationContext()
                 );
                 $this->appendSchemaDefinitions($schemas, $operationInputSchema);
 
@@ -270,7 +271,12 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         );
 
         if ($operation->getOutput() !== null && class_exists($operation->getOutput())) {
-            $operationOutputSchema = $this->schemaFactory->buildSchema($operation->getOutput(), $operation->getResource());
+            $operationOutputSchema = $this->schemaFactory->buildSchema(
+                $operation->getOutput(),
+                $operation->getResource(),
+                $operation->getNormalizationContext(),
+            );
+
             $this->appendSchemaDefinitions($schemas, $operationOutputSchema);
         }
 
