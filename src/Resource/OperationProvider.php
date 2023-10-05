@@ -178,9 +178,7 @@ final class OperationProvider implements OperationProviderInterface
                  */
                 $mapRequestOrQuery = $attribute->newInstance();
 
-                return array_key_exists('groups', $mapRequestOrQuery->serializationContext)
-                    ? ['groups' => $mapRequestOrQuery->serializationContext['groups']]
-                    : [];
+                return $mapRequestOrQuery->serializationContext;
             }
         }
 
