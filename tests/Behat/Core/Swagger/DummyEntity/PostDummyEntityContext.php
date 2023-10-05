@@ -31,7 +31,28 @@ final class PostDummyEntityContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/api/dummies_entity']['post']);
-        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyEntity']);
-        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyEntity']);
+        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyRead']);
+
+        $dummyReadProperties = $response['components']['schemas']['DummyEntity.DummyRead']['properties'];
+        Assert::assertArrayNotHasKey('id', $dummyReadProperties);
+        Assert::assertArrayHasKey('firstName', $dummyReadProperties);
+        Assert::assertArrayHasKey('lastName', $dummyReadProperties);
+        Assert::assertArrayHasKey('addressEntity', $dummyReadProperties);
+
+        $addressEntityProperties = $dummyReadProperties['addressEntity']['properties'];
+        Assert::assertArrayHasKey('id', $addressEntityProperties);
+        Assert::assertArrayHasKey('name', $addressEntityProperties);
+        Assert::assertArrayHasKey('description', $addressEntityProperties);
+
+        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyWrite']);
+        $dummyWriteProperties = $response['components']['schemas']['DummyEntity.DummyWrite']['properties'];
+        Assert::assertArrayNotHasKey('id', $dummyWriteProperties);
+        Assert::assertArrayHasKey('firstName', $dummyWriteProperties);
+        Assert::assertArrayHasKey('lastName', $dummyWriteProperties);
+        Assert::assertArrayHasKey('addressEntity', $dummyWriteProperties);
+        $addressEntityProperties = $dummyWriteProperties['addressEntity']['properties'];
+        Assert::assertArrayNotHasKey('id', $addressEntityProperties);
+        Assert::assertArrayHasKey('name', $addressEntityProperties);
+        Assert::assertArrayHasKey('description', $addressEntityProperties);
     }
 }

@@ -53,7 +53,6 @@ final class SchemaFactory implements SchemaFactoryInterface
         string $className,
         string $entityName,
         array $groups,
-        string $prefix = 'Input'
     ): JsonSchema {
         $schema = new JsonSchema();
 
@@ -61,7 +60,9 @@ final class SchemaFactory implements SchemaFactoryInterface
 
         $schemaKey = $this->buildDefinitionName($className, $entityName);
 
-        dd();
+        if ($this->groups !== []) {
+            $schemaKey = $this->buildDefinitionName($this->buildPrefixName(), $entityName);
+        }
 
         $schema->offsetSet(
             $schemaKey,
@@ -147,5 +148,21 @@ final class SchemaFactory implements SchemaFactoryInterface
     private function buildDefinitionName(string $className, string $entityName): string
     {
         return $this->normalizeClassName($entityName).'.'.$this->normalizeClassName($className);
+    }
+
+    private function buildPrefixName(): string
+    {
+        $name = preg_replace('/[^A-Za-z0-9\-]/', '-', $this->groups[0]);
+        $names = explode('-', $name);
+
+        $prefixName = '';
+
+        foreach ($names as $explodedName) {
+            if ($explodedName !== '') {
+                $prefixName .= ucwords($explodedName);
+            }
+        }
+
+        return $prefixName;
     }
 }
