@@ -18,7 +18,8 @@ use ApiScout\HttpOperation;
 use ApiScout\Response\Pagination\PaginationInterface;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
 use ApiScout\Response\ResponseGeneratorInterface;
-use ApiScout\Response\Serializer\ResponseSerializerInterface;
+use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
+use ApiScout\Response\Serializer\Serializer\ResponseSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
@@ -35,6 +36,7 @@ final class SerializeResponseListener
         private readonly PaginationProviderInterface $paginationProvider,
         private readonly ResponseSerializerInterface $responseSerializer,
         private readonly ResponseGeneratorInterface $responseGenerator,
+        private readonly NormalizerInterface $normalizer,
     ) {
     }
 
@@ -59,6 +61,8 @@ final class SerializeResponseListener
         if ($operation instanceof CollectionOperationInterface && $operation->isPaginationEnabled()) {
             $data = $this->paginationProvider->provide($data, $operation);
         }
+
+        $data = $this->normalizer->normalize($data, $operation);
 
         $event->setResponse(
             new JsonResponse(

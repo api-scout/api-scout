@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Response\Serializer;
+namespace ApiScout\Response\Serializer\Serializer;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
