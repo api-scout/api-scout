@@ -15,6 +15,9 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy;
 
 use ApiScout\Attribute\ApiProperty;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyQueryInput
 {
     public function __construct(

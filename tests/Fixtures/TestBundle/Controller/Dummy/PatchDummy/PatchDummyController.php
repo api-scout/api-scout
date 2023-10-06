@@ -21,6 +21,9 @@ use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyPayloadInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PatchDummyController extends AbstractController
 {
     #[Patch('/dummies', name: 'app_update_patch_dummy', resource: Dummy::class)]

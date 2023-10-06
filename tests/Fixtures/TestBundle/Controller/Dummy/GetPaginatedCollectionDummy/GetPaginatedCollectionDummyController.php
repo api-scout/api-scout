@@ -25,6 +25,9 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use function array_slice;
 use function count;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetPaginatedCollectionDummyController extends AbstractController
 {
     #[GetCollection('/paginated_dummies', name: 'app_get_dummy_paginated_collection', resource: Dummy::class)]

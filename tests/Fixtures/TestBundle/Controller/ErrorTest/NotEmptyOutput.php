@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\ErrorTest;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class NotEmptyOutput
 {
     public function __construct(

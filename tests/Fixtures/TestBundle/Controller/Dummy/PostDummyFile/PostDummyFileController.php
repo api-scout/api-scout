@@ -18,6 +18,9 @@ use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyFileController
 {
     #[Post(

@@ -16,6 +16,9 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyEntity
 {
     public function __construct(
