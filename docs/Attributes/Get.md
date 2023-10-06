@@ -3,12 +3,19 @@
 ## Basic installation
 
 ```php
-final class GetDummyController extends AbstractController
+use ApiScout\Attribute\Get;
+
+final class GetBookController
 {
-    #[Get(path: '/dummies/{id}')]
-    public function __invoke(
-        int $id,
-    ): DummyOutput
+    #[Get('/books/{id}')]
+    public function __invoke(int $id): BookOutput
+    {
+        // Write your code here
+        
+        return new BookOutput(
+            // Populate your properties
+        );
+    }
 ```
 
 ## Advanced installation
@@ -18,15 +25,21 @@ You could override those or add more information using the following parameters.
 
 In the case below you could retrieve your uriVariable using the request and not the symfony binding parameters.
 ```php
+use ApiScout\Attribute\ApiProperty;
+use ApiScout\Attribute\Get;
+
+final class GetBookController extends AbstractController
+{
     #[Get(
-        path: '/dummies/{id}',
-        name: 'app_get_dummy_attribute',
-        output: DummyAttributeOutput::class,
-        resource: DummyAttribute::class,
+        path: '/books/{id}',
+        name: 'app_get_book_attribute',
+        output: BookAttributeOutput::class,
+        resource: BookAttribute::class,
         uriVariables: [
             new ApiProperty('id', 'string'),
         ],
         deprecationReason: 'Do not use this route anymore', // If you want to deprecate this route
     )]
-    public function getDummy():
+    public function getBook():
+}
 ```
