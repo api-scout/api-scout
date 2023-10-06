@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace ApiScout\Response;
 
+use ApiScout\Attribute\CollectionOperationInterface;
 use ApiScout\Operation;
-use ApiScout\Response\Pagination\PaginationInterface;
-use ApiScout\Response\Pagination\PaginationMetadataInterface;
-
-use function is_object;
 
 /**
  * The ApiScout Response preparation Interface.
@@ -28,25 +25,16 @@ use function is_object;
 final class ResponseGenerator implements ResponseGeneratorInterface
 {
     public function __construct(
-        private readonly PaginationMetadataInterface $paginationMetadata,
         private readonly string $responseItemKey,
-        private readonly string $responsePaginationKey,
     ) {
     }
 
-    public function generate(object|array $data, Operation $operation): array
+    public function generate(array $data, Operation $operation): array
     {
-        if ($data instanceof PaginationInterface) {
-            return [
-                $this->responseItemKey => $data->getItems(),
-                $this->responsePaginationKey => $this->paginationMetadata->getMetadata($data, $operation),
-            ];
+        if ($operation instanceof CollectionOperationInterface) {
+            return $data;
         }
 
-        if (is_object($data)) {
-            return [$this->responseItemKey => $data];
-        }
-
-        return $data;
+        return [$this->responseItemKey => $data];
     }
 }

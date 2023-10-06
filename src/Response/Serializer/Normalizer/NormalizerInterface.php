@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Response;
+namespace ApiScout\Response\Serializer\Normalizer;
 
 use ApiScout\Operation;
 
-interface ResponseGeneratorInterface
+interface NormalizerInterface
 {
-    public function generate(array $data, Operation $operation): array;
+    public function normalize(mixed $object, Operation $operation): array;
 }

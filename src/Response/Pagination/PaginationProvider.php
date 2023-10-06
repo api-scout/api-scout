@@ -26,10 +26,23 @@ final class PaginationProvider implements PaginationProviderInterface
 {
     public function __construct(
         private readonly PaginatorRequestInterface $paginatorRequestFactory,
+        private readonly PaginationMetadataInterface $paginationMetadata,
+        private readonly string $responseItemKey,
+        private readonly string $responsePaginationKey,
     ) {
     }
 
-    public function provide(mixed $data, Operation $operation): PaginationInterface
+    public function provide(mixed $data, Operation $operation): array
+    {
+        $pagination = $this->getPagination($data, $operation);
+
+        return [
+            $this->responseItemKey => $pagination->getItems(),
+            $this->responsePaginationKey => $this->paginationMetadata->getMetadata($pagination, $operation),
+        ];
+    }
+
+    private function getPagination(mixed $data, Operation $operation): PaginationInterface
     {
         if ($data instanceof PaginationInterface) {
             return $data;
