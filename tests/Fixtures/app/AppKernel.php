@@ -28,7 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 final class AppKernel extends Kernel

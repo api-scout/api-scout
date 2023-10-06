@@ -325,7 +325,6 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     );
                 }
             }
-
         }
 
         return $openapiOperation;
@@ -341,8 +340,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         return $operation->getMethod() === HttpOperation::METHOD_POST
             || $operation->getMethod() === HttpOperation::METHOD_PUT
             || $operation->getMethod() === HttpOperation::METHOD_PATCH
-            || $operation->getMethod() === HttpOperation::METHOD_DELETE
-        ;
+            || $operation->getMethod() === HttpOperation::METHOD_DELETE;
     }
 
     /**
@@ -401,10 +399,11 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $content[$mimeType] = new Model\MediaType(
                 new ArrayObject(
                     [
-                        '$ref' => '#/components/schemas/' . SchemaRefNameGenerator::generate(
+                        '$ref' => '#/components/schemas/'.SchemaRefNameGenerator::generate(
                             $operation->getResource(),
-                            $operation->getInput()
-                        )
+                            $operation->getInput(),
+                            $operation->getDenormalizationContext()
+                        ),
                     ]
                 )
             );
@@ -429,8 +428,9 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     [
                         '$ref' => '#/components/schemas/'.SchemaRefNameGenerator::generate(
                             $operation->getResource(),
-                            $operation->getOutput()
-                        )
+                            $operation->getOutput(),
+                            $operation->getNormalizationContext()
+                        ),
                     ]
                 )
             );

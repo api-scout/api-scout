@@ -61,7 +61,7 @@ final class SchemaFactory implements SchemaFactoryInterface
         $this->groups = $groups['groups'] ?? [];
 
         $schema->offsetSet(
-            SchemaRefNameGenerator::generate($className, $entityName),
+            SchemaRefNameGenerator::generate($className, $entityName, $groups),
             [
                 ...self::BASE_TEMPLATE,
                 ...$this->buildOpenApiPropertiesFromClass($className),
@@ -139,31 +139,5 @@ final class SchemaFactory implements SchemaFactoryInterface
         }
 
         return ['type' => 'string'];
-    }
-
-    private function buildSchemaRef()
-    {
-
-    }
-
-    private function buildDefinitionName(string $className, string $entityName): string
-    {
-        return $this->normalizeClassName($entityName).'.'.$this->normalizeClassName($className);
-    }
-
-    private function buildPrefixName(): string
-    {
-        $name = preg_replace('/[^A-Za-z0-9\-]/', '-', $this->groups[0]);
-        $names = explode('-', $name);
-
-        $prefixName = '';
-
-        foreach ($names as $explodedName) {
-            if ($explodedName !== '') {
-                $prefixName .= ucwords($explodedName);
-            }
-        }
-
-        return $prefixName;
     }
 }

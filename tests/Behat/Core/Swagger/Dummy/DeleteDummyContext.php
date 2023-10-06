@@ -39,7 +39,7 @@ final class DeleteDummyContext extends BaseContext
         Assert::assertArrayHasKey('400', $deleteDummyOperation['responses']);
         Assert::assertArrayHasKey('404', $deleteDummyOperation['responses']);
 
-//        Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyOutput']);
+        //        Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyOutput']);
 
         Assert::assertNotEmpty($response['paths']['/dummies/{name}']['delete']['parameters']);
         $parameter = array_shift($response['paths']['/dummies/{name}']['delete']['parameters']);

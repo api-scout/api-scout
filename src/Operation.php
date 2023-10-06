@@ -19,7 +19,6 @@ use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use LogicException;
-use RuntimeException;
 use Throwable;
 
 /**

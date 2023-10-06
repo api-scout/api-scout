@@ -31,20 +31,24 @@ final class PostDummyEntityContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/api/dummies_entity']['post']);
-
         $postDummyEntityOperation = $response['paths']['/api/dummies_entity']['post'];
 
-        dd($postDummyEntityOperation);
-
+        Assert::assertArrayHasKey('requestBody', $postDummyEntityOperation);
+        $componentsSchemasKeyInput = $this->getSchemaRefKey(
+            $postDummyEntityOperation['requestBody']['content']['application/json']['schema']['$ref']
+        );
+        Assert::assertArrayHasKey($componentsSchemasKeyInput, $response['components']['schemas']);
 
         Assert::assertArrayHasKey('responses', $postDummyEntityOperation);
+        $componentsSchemasKeyOutput = $this->getSchemaRefKey(
+            $postDummyEntityOperation['responses']['201']['content']['application/json']['schema']['$ref']
+        );
+        Assert::assertArrayHasKey($componentsSchemasKeyOutput, $response['components']['schemas']);
         Assert::assertCount(2, $postDummyEntityOperation['responses']);
         Assert::assertArrayHasKey('201', $postDummyEntityOperation['responses']);
         Assert::assertArrayHasKey('400', $postDummyEntityOperation['responses']);
 
-
-        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyRead']);
-        $dummyReadProperties = $response['components']['schemas']['DummyEntity.DummyRead']['properties'];
+        $dummyReadProperties = $response['components']['schemas'][$componentsSchemasKeyInput]['properties'];
         Assert::assertArrayNotHasKey('id', $dummyReadProperties);
         Assert::assertArrayHasKey('firstName', $dummyReadProperties);
         Assert::assertArrayHasKey('lastName', $dummyReadProperties);
@@ -55,8 +59,7 @@ final class PostDummyEntityContext extends BaseContext
         Assert::assertArrayHasKey('name', $addressEntityProperties);
         Assert::assertArrayHasKey('description', $addressEntityProperties);
 
-        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyWrite']);
-        $dummyWriteProperties = $response['components']['schemas']['DummyEntity.DummyWrite']['properties'];
+        $dummyWriteProperties = $response['components']['schemas'][$componentsSchemasKeyOutput]['properties'];
         Assert::assertArrayNotHasKey('id', $dummyWriteProperties);
         Assert::assertArrayHasKey('firstName', $dummyWriteProperties);
         Assert::assertArrayHasKey('lastName', $dummyWriteProperties);

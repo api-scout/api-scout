@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\ErrorTest;
 
 use ApiScout\Attribute\Post;
-use ApiScout\Tests\Behat\Symfony\HttpClient\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Serializer\Exception\RuntimeException;
 
 /**
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
