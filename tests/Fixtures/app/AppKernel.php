@@ -102,6 +102,21 @@ final class AppKernel extends Kernel
         $container->prependExtensionConfig('twig', $twigConfig);
 
         $container->prependExtensionConfig('api_scout', [
+            'title' => 'ApiScout',
+            'description' => 'A library with a few tools, to auto document your api',
+            'version' => '1.0.0',
+            'openapi' => [
+                'contact' => [
+                    'name' => 'Marvin',
+                    'url' => 'https://github.com/api-scout/api-scout',
+                    'email' => 'marvincourcier.dev@gmail.com',
+                ],
+                'terms_of_service' => 'This will do',
+                'license' => [
+                    'name' => 'MIT',
+                    'url' => 'https://fr.wikipedia.org/wiki/Licence_MIT',
+                ],
+            ],
             'mapping' => [
                 'paths' => [
                     '%kernel.project_dir%/../TestBundle/Controller',

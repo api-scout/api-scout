@@ -57,10 +57,22 @@ final class SwaggerJsonContext extends BaseContext
         Assert::assertIsArray($response['info']);
         Assert::assertArrayHasKey('title', $response['info']);
         Assert::assertArrayHasKey('description', $response['info']);
+        Assert::assertArrayHasKey('termsOfService', $response['info']);
+        Assert::assertArrayHasKey('contact', $response['info']);
+        Assert::assertIsArray($response['info']['contact']);
+        Assert::assertArrayHasKey('license', $response['info']);
+        Assert::assertIsArray($response['info']['license']);
         Assert::assertArrayHasKey('version', $response['info']);
-        Assert::assertSame($response['info']['title'], '');
-        Assert::assertSame($response['info']['description'], '');
-        Assert::assertSame($response['info']['version'], '0.0.0');
+
+        Assert::assertSame($response['info']['title'], 'ApiScout');
+        Assert::assertSame($response['info']['description'], 'A library with a few tools, to auto document your api');
+        Assert::assertSame($response['info']['termsOfService'], 'This will do');
+        Assert::assertSame($response['info']['contact']['name'], 'Marvin');
+        Assert::assertSame($response['info']['contact']['url'], 'https://github.com/api-scout/api-scout');
+        Assert::assertSame($response['info']['contact']['email'], 'marvincourcier.dev@gmail.com');
+        Assert::assertSame($response['info']['license']['name'], 'MIT');
+        Assert::assertSame($response['info']['license']['url'], 'https://fr.wikipedia.org/wiki/Licence_MIT');
+        Assert::assertSame($response['info']['version'], '1.0.0');
 
         Assert::assertIsArray($response['servers']);
         Assert::assertArrayHasKey('url', $response['servers'][0]);
@@ -68,7 +80,7 @@ final class SwaggerJsonContext extends BaseContext
         Assert::assertSame($response['servers'][0]['url'], '/');
         Assert::assertSame($response['servers'][0]['description'], '');
 
-        Assert::assertCount(9, $response['paths']);
+        Assert::assertCount(10, $response['paths']);
         Assert::assertCount(7, $response['components']);
     }
 }

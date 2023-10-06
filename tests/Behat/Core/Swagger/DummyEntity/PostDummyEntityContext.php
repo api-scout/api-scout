@@ -48,24 +48,24 @@ final class PostDummyEntityContext extends BaseContext
         Assert::assertArrayHasKey('201', $postDummyEntityOperation['responses']);
         Assert::assertArrayHasKey('400', $postDummyEntityOperation['responses']);
 
-        $dummyReadProperties = $response['components']['schemas'][$componentsSchemasKeyInput]['properties'];
-        Assert::assertArrayNotHasKey('id', $dummyReadProperties);
-        Assert::assertArrayHasKey('firstName', $dummyReadProperties);
-        Assert::assertArrayHasKey('lastName', $dummyReadProperties);
-        Assert::assertArrayHasKey('addressEntity', $dummyReadProperties);
-
-        $addressEntityProperties = $dummyReadProperties['addressEntity']['properties'];
-        Assert::assertArrayHasKey('id', $addressEntityProperties);
-        Assert::assertArrayHasKey('name', $addressEntityProperties);
-        Assert::assertArrayHasKey('description', $addressEntityProperties);
-
-        $dummyWriteProperties = $response['components']['schemas'][$componentsSchemasKeyOutput]['properties'];
+        $dummyWriteProperties = $response['components']['schemas'][$componentsSchemasKeyInput]['properties'];
         Assert::assertArrayNotHasKey('id', $dummyWriteProperties);
         Assert::assertArrayHasKey('firstName', $dummyWriteProperties);
         Assert::assertArrayHasKey('lastName', $dummyWriteProperties);
         Assert::assertArrayHasKey('addressEntity', $dummyWriteProperties);
+
         $addressEntityProperties = $dummyWriteProperties['addressEntity']['properties'];
         Assert::assertArrayNotHasKey('id', $addressEntityProperties);
+        Assert::assertArrayHasKey('name', $addressEntityProperties);
+        Assert::assertArrayHasKey('description', $addressEntityProperties);
+
+        $dummyReadProperties = $response['components']['schemas'][$componentsSchemasKeyOutput]['properties'];
+        Assert::assertArrayNotHasKey('id', $dummyReadProperties);
+        Assert::assertArrayHasKey('firstName', $dummyReadProperties);
+        Assert::assertArrayHasKey('lastName', $dummyReadProperties);
+        Assert::assertArrayHasKey('addressEntity', $dummyReadProperties);
+        $addressEntityProperties = $dummyReadProperties['addressEntity']['properties'];
+        Assert::assertArrayHasKey('id', $addressEntityProperties);
         Assert::assertArrayHasKey('name', $addressEntityProperties);
         Assert::assertArrayHasKey('description', $addressEntityProperties);
     }

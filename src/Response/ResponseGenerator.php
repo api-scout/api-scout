@@ -31,7 +31,7 @@ final class ResponseGenerator implements ResponseGeneratorInterface
 
     public function generate(array $data, Operation $operation): array
     {
-        if ($operation instanceof CollectionOperationInterface) {
+        if ($operation instanceof CollectionOperationInterface && $operation->isPaginationEnabled()) {
             return $data;
         }
 

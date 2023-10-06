@@ -15,8 +15,11 @@ namespace ApiScout\OpenApi\Model;
 
 final class License
 {
-    public function __construct(private string $name, private ?string $url = null, private ?string $identifier = null)
-    {
+    public function __construct(
+        private string $name,
+        private ?string $url = null,
+        private ?string $identifier = null
+    ) {
     }
 
     public function getName(): string
@@ -32,29 +35,5 @@ final class License
     public function getIdentifier(): ?string
     {
         return $this->identifier;
-    }
-
-    public function withName(string $name): self
-    {
-        $clone = clone $this;
-        $clone->name = $name;
-
-        return $clone;
-    }
-
-    public function withUrl(?string $url): self
-    {
-        $clone = clone $this;
-        $clone->url = $url;
-
-        return $clone;
-    }
-
-    public function withIdentifier(?string $identifier): self
-    {
-        $clone = clone $this;
-        $clone->identifier = $identifier;
-
-        return $clone;
     }
 }
