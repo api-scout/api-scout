@@ -277,7 +277,7 @@ final class OperationProvider implements OperationProviderInterface
     /**
      * @param class-string $output
      */
-    private function buildOutput(string $output): string
+    private function buildOutput(string $output): ?string
     {
         if (!class_exists($output)) {
             throw new ResourceClassNotFoundException($output);
@@ -290,7 +290,7 @@ final class OperationProvider implements OperationProviderInterface
         }
 
         if ($output === Response::class || $output === JsonResponse::class) {
-            return '';
+            return null;
         }
 
         return $output;
