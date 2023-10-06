@@ -210,10 +210,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
             ->arrayNode('exception_to_status')
-            ->defaultValue([
-                SerializerExceptionInterface::class => Response::HTTP_BAD_REQUEST,
-                ValidationFailedException::class => Response::HTTP_BAD_REQUEST,
-            ])
+            ->defaultValue([])
             ->info('The list of exceptions mapped to their HTTP status code.')
             ->normalizeKeys(false)
             ->useAttributeAsKey('exception_class')

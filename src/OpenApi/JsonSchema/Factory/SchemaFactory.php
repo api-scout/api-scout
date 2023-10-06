@@ -15,6 +15,7 @@ namespace ApiScout\OpenApi\JsonSchema\Factory;
 
 use ApiScout\OpenApi\JsonSchema\JsonSchema;
 use ApiScout\OpenApi\JsonSchema\Trait\PropertyTypeBuilderTrait;
+use ApiScout\OpenApi\SchemaRefNameGenerator;
 use ApiScout\OpenApi\Trait\ClassNameNormalizerTrait;
 use ReflectionClass;
 use Symfony\Component\PropertyInfo\Type;
@@ -59,14 +60,8 @@ final class SchemaFactory implements SchemaFactoryInterface
 
         $this->groups = $groups['groups'] ?? [];
 
-        $schemaKey = $this->buildDefinitionName($className, $entityName);
-
-        if ($this->groups !== []) {
-            $schemaKey = $this->buildDefinitionName($this->buildPrefixName(), $entityName);
-        }
-
         $schema->offsetSet(
-            $schemaKey,
+            SchemaRefNameGenerator::generate($className, $entityName),
             [
                 ...self::BASE_TEMPLATE,
                 ...$this->buildOpenApiPropertiesFromClass($className),
@@ -144,6 +139,11 @@ final class SchemaFactory implements SchemaFactoryInterface
         }
 
         return ['type' => 'string'];
+    }
+
+    private function buildSchemaRef()
+    {
+
     }
 
     private function buildDefinitionName(string $className, string $entityName): string

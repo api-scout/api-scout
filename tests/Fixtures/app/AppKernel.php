@@ -24,10 +24,12 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Serializer\Exception\RuntimeException;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 final class AppKernel extends Kernel
 {
@@ -107,7 +109,7 @@ final class AppKernel extends Kernel
                 ],
             ],
             'exception_to_status' => [
-                RuntimeException::class => 413,
+                ValidationFailedException::class => Response::HTTP_BAD_REQUEST,
             ],
         ]);
     }

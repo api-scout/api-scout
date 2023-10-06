@@ -31,8 +31,19 @@ final class PostDummyEntityContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/api/dummies_entity']['post']);
-        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyRead']);
 
+        $postDummyEntityOperation = $response['paths']['/api/dummies_entity']['post'];
+
+        dd($postDummyEntityOperation);
+
+
+        Assert::assertArrayHasKey('responses', $postDummyEntityOperation);
+        Assert::assertCount(2, $postDummyEntityOperation['responses']);
+        Assert::assertArrayHasKey('201', $postDummyEntityOperation['responses']);
+        Assert::assertArrayHasKey('400', $postDummyEntityOperation['responses']);
+
+
+        Assert::assertNotEmpty($response['components']['schemas']['DummyEntity.DummyRead']);
         $dummyReadProperties = $response['components']['schemas']['DummyEntity.DummyRead']['properties'];
         Assert::assertArrayNotHasKey('id', $dummyReadProperties);
         Assert::assertArrayHasKey('firstName', $dummyReadProperties);

@@ -144,10 +144,6 @@ abstract class Operation
 
     public function setOutput(string $output): void
     {
-        if (!class_exists($output)) {
-            throw new RuntimeException('Given output should be a valid object.');
-        }
-
         $this->output = $output;
     }
 

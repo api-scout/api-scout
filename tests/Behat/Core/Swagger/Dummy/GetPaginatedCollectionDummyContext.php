@@ -31,8 +31,13 @@ final class GetPaginatedCollectionDummyContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/paginated_dummies']['get']);
+        $getPaginatedDummyOperation = $response['paths']['/paginated_dummies']['get'];
 
-        $parameters = $response['paths']['/paginated_dummies']['get']['parameters'];
+        Assert::assertArrayHasKey('responses', $getPaginatedDummyOperation);
+        Assert::assertCount(1, $getPaginatedDummyOperation['responses']);
+        Assert::assertArrayHasKey('200', $getPaginatedDummyOperation['responses']);
+
+        $parameters = $getPaginatedDummyOperation['parameters'];
         Assert::assertCount(2, $parameters);
 
         Assert::assertSame('name', $parameters[0]['name']);

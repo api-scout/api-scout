@@ -26,6 +26,8 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -285,6 +287,10 @@ final class OperationProvider implements OperationProviderInterface
 
         if ($outputClass->isIterable()) {
             return Pagination::class;
+        }
+
+        if ($output === Response::class || $output === JsonResponse::class) {
+            return '';
         }
 
         return $output;

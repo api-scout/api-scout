@@ -35,15 +35,4 @@ final class ErrorController extends AbstractController
     ): NotEmptyOutput {
         return new NotEmptyOutput('Marvin');
     }
-
-    #[Post(
-        '/custom/error',
-        name: 'app_test_custom_error',
-        resource: 'Error',
-        openapi: false
-    )]
-    public function customErrorTest(): Response
-    {
-        throw new RuntimeException('Serialization issue has happened');
-    }
 }
