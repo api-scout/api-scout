@@ -23,9 +23,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SerializeResponseListenerTest extends TestCase
 {
-    public function testDoNotHandleResponse(): void
+    public function testDoNotHandleResponseWhenRequestHasNoOperation(): void
     {
         $paginationProvider = $this->createStub(PaginationProviderInterface::class);
         $responseSerializer = $this->createStub(ResponseSerializerInterface::class);

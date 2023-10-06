@@ -17,6 +17,9 @@ use ApiScout\Attribute\Post;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyEntityController
 {
     #[Post(

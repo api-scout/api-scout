@@ -15,6 +15,9 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyEntity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyCompanyEntity
 {
     public function __construct(

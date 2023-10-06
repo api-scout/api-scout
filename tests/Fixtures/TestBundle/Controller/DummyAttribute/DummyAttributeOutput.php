@@ -15,6 +15,9 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyAttribute;
 
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyAttributeOutput
 {
     public function __construct(

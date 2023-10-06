@@ -24,6 +24,9 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 use function array_slice;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetCollectionDummyController extends AbstractController
 {
     #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]

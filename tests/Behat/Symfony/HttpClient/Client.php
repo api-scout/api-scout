@@ -30,6 +30,9 @@ use function is_array;
 use function json_decode;
 use function json_encode;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class Client implements HttpClientInterface
 {
     use HttpClientTrait;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Bridge\Symfony\EventListener;
+namespace ApiScout\Tests\Fixtures\Symfony\EventListener;
 
 use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -11,10 +11,13 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Assert;
+namespace ApiScout\Tests\Fixtures\Assert;
 
 use Assert\Assertion as BaseAssertion;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class Assertion extends BaseAssertion
 {
 }

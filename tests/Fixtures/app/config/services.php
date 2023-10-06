@@ -31,7 +31,8 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->load('ApiScout\\Tests\\Behat\\', __DIR__.'/../../../../tests/Behat/*')
-        ->load('ApiScout\\Tests\\Fixtures\\TestBundle\\', __DIR__.'/../../../../tests/Fixtures/TestBundle')
+        ->load('ApiScout\\Tests\\Fixtures\\', __DIR__.'/../../../../tests/Fixtures/*')
+        ->exclude(__DIR__.'/../../../../tests/Fixtures/app')
     ;
 
     $services->set('app.api_loader.kernel_browser', KernelBrowser::class);

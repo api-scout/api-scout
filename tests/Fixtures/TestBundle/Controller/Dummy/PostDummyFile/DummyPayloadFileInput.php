@@ -15,6 +15,9 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\PostDummyFile;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyPayloadFileInput
 {
     public function __construct(
