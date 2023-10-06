@@ -15,6 +15,7 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetPaginatedCollec
 
 use ApiScout\Attribute\GetCollection;
 use ApiScout\Response\Pagination\Pagination;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
@@ -33,6 +34,7 @@ final class GetPaginatedCollectionDummyController extends AbstractController
     #[GetCollection('/paginated_dummies', name: 'app_get_dummy_paginated_collection', resource: Dummy::class)]
     public function __invoke(
         #[MapQueryString] ?DummyQueryInput $query,
+        #[MapQueryString] PaginationQueryInput $paginationInput,
     ): Pagination {
         $pinkFloydCollection = [];
 
@@ -62,8 +64,8 @@ final class GetPaginatedCollectionDummyController extends AbstractController
 
         return new Pagination(
             $slicedPinkFloydCollection,
-            1,
-            10,
+            $paginationInput->page,
+            $paginationInput->itemsPerPage,
             count($pinkFloydCollection)
         );
     }

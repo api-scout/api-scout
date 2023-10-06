@@ -35,6 +35,12 @@ final class GetPaginatedCollectionDummyContext extends BaseContext
         $this->request(
             HttpOperation::METHOD_GET,
             self::GET_PAGINATED_COLLECTION_DUMMY_PATH,
+            [
+                'query' => [
+                    'name' => 'name',
+                    'page' => 2,
+                ],
+            ]
         );
     }
 
