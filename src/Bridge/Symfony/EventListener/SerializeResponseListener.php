@@ -22,6 +22,7 @@ use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
 use ApiScout\Response\Serializer\Serializer\ResponseSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
+
 use function is_object;
 
 /**
