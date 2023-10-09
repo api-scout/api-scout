@@ -50,14 +50,17 @@ api_scout:
   type: api_scout
 ```
 
-#### Enable Swagger routes
-- [OpenApi](docs/OpenApi.md)
+Your api specification should be available at: `/api/docs`
 
 #### Operations
 - [GetCollection](docs/Attributes/GetCollection.md)
-- [Get](docs/Attributes/Get.md)
-- [Post, Put, Patch](docs/Attributes/Update.md)
-- [Delete](docs/Attributes/Delete.md)
+- [Get](docs/Attributes/BasicOperations.md#get)
+- [Post, Put, Patch](docs/Attributes/BasicOperations.md#post-put-patch)
+- [Delete](docs/Attributes/BasicOperations.md#delete)
+
+#### OpenApi
+- [OpenApi Configuration](docs/OpenApi/OpenApiConfiguration.md)
+- [OpenApi Specification Support]()
 
 #### Advanced
 - [FileUpload](docs/FileUpload.md)

@@ -32,8 +32,8 @@ api_scout_swagger_ui:
 ```
 
 ## Disabling Swagger UI or ReDoc
-To disable Swagger UI (ReDoc will be shown by default):
 
+To disable Swagger UI (ReDoc will be shown by default):
 ```yaml
 # config/packages/api_scout.yaml
 api_scout:
@@ -42,10 +42,18 @@ api_scout:
 ```
 
 To disable ReDoc:
-
 ```yaml
 # config/packages/api_scout.yaml
 api_scout:
   # ...
+  enable_re_doc: false
+```
+
+Disabling Swagger UI at the API Location
+```yaml
+# api/config/packages/api_scout.yaml
+api_scout:
+  # ...
+  enable_swagger_ui: false
   enable_re_doc: false
 ```
