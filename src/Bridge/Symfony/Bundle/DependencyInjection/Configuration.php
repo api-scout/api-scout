@@ -84,20 +84,10 @@ final class Configuration implements ConfigurationInterface
 
         $this->addExceptionToStatusSection($rootNode);
         $this->addSwaggerUiContextSection($rootNode);
-        $this->addPaginationSection($rootNode);
         $this->addOpenApiSection($rootNode);
         $this->addOAuthSection($rootNode);
 
         return $treeBuilder;
-    }
-
-    private function addPaginationSection(ArrayNodeDefinition $rootNode): void
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('pagination')->canBeDisabled()->addDefaultsIfNotSet()
-            ->end()
-        ;
     }
 
     private function addOpenApiSection(ArrayNodeDefinition $rootNode): void

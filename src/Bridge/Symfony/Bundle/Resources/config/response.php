@@ -22,8 +22,6 @@ use ApiScout\Response\Pagination\PaginationMetadata;
 use ApiScout\Response\Pagination\PaginationMetadataInterface;
 use ApiScout\Response\Pagination\PaginationProvider;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
-use ApiScout\Response\Pagination\PaginatorRequest;
-use ApiScout\Response\Pagination\PaginatorRequestInterface;
 use ApiScout\Response\ResponseGenerator;
 use ApiScout\Response\ResponseGeneratorInterface;
 use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;

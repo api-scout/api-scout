@@ -25,7 +25,6 @@ use ApiScout\OpenApi\JsonSchema\Factory\FilterFactoryInterface;
 use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactory;
 use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactoryInterface;
 use ApiScout\OpenApi\Options;
-use ApiScout\OpenApi\PaginationOptionsConfigurator;
 use ApiScout\OpenApi\Serializer\OpenApiNormalizer;
 use ApiScout\Resource\OperationProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
