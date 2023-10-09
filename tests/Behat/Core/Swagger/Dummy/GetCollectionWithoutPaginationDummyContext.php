@@ -36,11 +36,11 @@ final class GetCollectionWithoutPaginationDummyContext extends BaseContext
         Assert::assertArrayHasKey('summary', $getDummiesWithoutPaginationResponse);
         Assert::assertArrayHasKey('description', $getDummiesWithoutPaginationResponse);
         Assert::assertSame(
-            'Retrieves the collection of Dummy resources.',
+            'Retrieve the Collection of a Dummy resource without pagination',
             $getDummiesWithoutPaginationResponse['summary']
         );
         Assert::assertSame(
-            'Retrieves the collection of Dummy resources.',
+            'Retrieve the Collection of a Dummy resource without pagination',
             $getDummiesWithoutPaginationResponse['description']
         );
 
