@@ -231,6 +231,11 @@ abstract class Operation
         return $this->paginationEnabled;
     }
 
+    public function setIsPaginationEnabled(bool $isPaginationEnabled): void
+    {
+        $this->paginationEnabled = $isPaginationEnabled;
+    }
+
     public function getPaginationItemsPerPage(): ?int
     {
         return $this->paginationItemsPerPage;

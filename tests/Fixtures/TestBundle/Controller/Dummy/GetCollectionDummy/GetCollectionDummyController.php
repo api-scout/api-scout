@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionDummy;
 
 use ApiScout\Attribute\GetCollection;
-use ApiScout\Response\Pagination\QueryInput\PaginationQueryInput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
@@ -32,8 +31,7 @@ final class GetCollectionDummyController extends AbstractController
 {
     #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]
     public function __invoke(
-        #[MapQueryString] ?DummyQueryInput $query,
-        #[MapQueryString] PaginationQueryInput $paginationInput,
+        #[MapQueryString] DummyQueryInput $query,
     ): ArrayObject {
         $pinkFloydCollection = [];
 
@@ -57,8 +55,8 @@ final class GetCollectionDummyController extends AbstractController
 
         return new ArrayObject(array_slice(
             $pinkFloydCollection,
-            ($paginationInput->getPage() - 1) * $paginationInput->getItemsPerPage(),
-            $paginationInput->getItemsPerPage()
+            ($query->getPage() - 1) * $query->getItemsPerPage(),
+            $query->getItemsPerPage()
         ));
     }
 }

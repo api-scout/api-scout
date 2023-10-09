@@ -18,7 +18,6 @@ use ApiScout\OpenApi\Model;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyQueryInput;
 use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -41,7 +40,7 @@ final class GetCollectionWithoutPaginationDummyController extends AbstractContro
         paginationEnabled: false
     )]
     public function __invoke(
-        #[MapQueryString] ?DummyQueryInput $query,
+        #[MapQueryString] ?DummyQueryWithoutPaginationInput $query,
     ): ArrayObject {
         $pinkFloydCollection = [];
 

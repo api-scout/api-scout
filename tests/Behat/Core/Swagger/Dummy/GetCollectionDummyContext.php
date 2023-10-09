@@ -33,7 +33,7 @@ final class GetCollectionDummyContext extends BaseContext
         Assert::assertNotEmpty($response['paths']['/dummies']['get']);
 
         $parameters = $response['paths']['/dummies']['get']['parameters'];
-        Assert::assertCount(2, $parameters);
+        Assert::assertCount(4, $parameters);
 
         Assert::assertSame('name', $parameters[0]['name']);
         Assert::assertSame('query', $parameters[0]['in']);
