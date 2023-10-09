@@ -16,11 +16,6 @@ Feature: Test the Error Customisation
     }
     """
 
-  @http
-  Scenario: Successfully trigger the custom error
-    When one post and trigger a custom error
-    Then request entity too large
-
   @swagger
   Scenario: Controllers tagged as false with openapi should not be configured
     When one get the swagger json

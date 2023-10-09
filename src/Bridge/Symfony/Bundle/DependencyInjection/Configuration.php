@@ -18,9 +18,6 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
-use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 use function is_array;
 
@@ -210,10 +207,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
             ->arrayNode('exception_to_status')
-            ->defaultValue([
-                SerializerExceptionInterface::class => Response::HTTP_BAD_REQUEST,
-                ValidationFailedException::class => Response::HTTP_BAD_REQUEST,
-            ])
+            ->defaultValue([])
             ->info('The list of exceptions mapped to their HTTP status code.')
             ->normalizeKeys(false)
             ->useAttributeAsKey('exception_class')

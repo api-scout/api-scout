@@ -26,6 +26,8 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -275,7 +277,7 @@ final class OperationProvider implements OperationProviderInterface
     /**
      * @param class-string $output
      */
-    private function buildOutput(string $output): string
+    private function buildOutput(string $output): ?string
     {
         if (!class_exists($output)) {
             throw new ResourceClassNotFoundException($output);
@@ -285,6 +287,10 @@ final class OperationProvider implements OperationProviderInterface
 
         if ($outputClass->isIterable()) {
             return Pagination::class;
+        }
+
+        if ($output === Response::class || $output === JsonResponse::class) {
+            return null;
         }
 
         return $output;

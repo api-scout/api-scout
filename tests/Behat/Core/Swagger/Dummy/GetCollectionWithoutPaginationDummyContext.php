@@ -21,23 +21,30 @@ use PHPUnit\Framework\Assert;
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class GetPaginatedCollectionDummyContext extends BaseContext
+final class GetCollectionWithoutPaginationDummyContext extends BaseContext
 {
     /**
-     * @Then get paginated collection dummy filters should be configured
+     * @Then get collection without pagination dummy should be configured
      */
-    public function thenDummyFiltersShouldBeConfigured(): void
+    public function then(): void
     {
         $response = $this->getResponse()->toArray();
 
-        Assert::assertNotEmpty($response['paths']['/paginated_dummies']['get']);
-        $getPaginatedDummyOperation = $response['paths']['/paginated_dummies']['get'];
+        Assert::assertNotEmpty($response['paths']['/dummies_without_pagination']['get']);
+        $getDummiesWithoutPaginationResponse = $response['paths']['/dummies_without_pagination']['get'];
 
-        Assert::assertArrayHasKey('responses', $getPaginatedDummyOperation);
-        Assert::assertCount(1, $getPaginatedDummyOperation['responses']);
-        Assert::assertArrayHasKey('200', $getPaginatedDummyOperation['responses']);
+        Assert::assertArrayHasKey('summary', $getDummiesWithoutPaginationResponse);
+        Assert::assertArrayHasKey('description', $getDummiesWithoutPaginationResponse);
+        Assert::assertSame(
+            'Retrieve the Collection of a Dummy resource without pagination',
+            $getDummiesWithoutPaginationResponse['summary']
+        );
+        Assert::assertSame(
+            'Retrieve the Collection of a Dummy resource without pagination',
+            $getDummiesWithoutPaginationResponse['description']
+        );
 
-        $parameters = $getPaginatedDummyOperation['parameters'];
+        $parameters = $response['paths']['/dummies_without_pagination']['get']['parameters'];
         Assert::assertCount(2, $parameters);
 
         Assert::assertSame('name', $parameters[0]['name']);
@@ -53,16 +60,5 @@ final class GetPaginatedCollectionDummyContext extends BaseContext
         Assert::assertSame(false, $parameters[1]['required']);
         Assert::assertSame(false, $parameters[1]['deprecated']);
         Assert::assertSame('string', $parameters[1]['schema']['type']);
-    }
-
-    /**
-     * @Then get paginated collection dummy should be configured
-     */
-    public function then(): void
-    {
-        $response = $this->getResponse()->toArray();
-
-        Assert::assertNotEmpty($response['paths']['/paginated_dummies']['get']);
-        Assert::assertNotEmpty($response['components']['schemas']['Dummy.Pagination']);
     }
 }

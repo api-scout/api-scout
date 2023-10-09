@@ -96,4 +96,9 @@ abstract class BaseContext implements Context
 
         return $jsonDecodeResult;
     }
+
+    protected function getSchemaRefKey(string $schemaRef): string
+    {
+        return str_replace('#/components/schemas/', '', $schemaRef);
+    }
 }
