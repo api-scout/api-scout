@@ -11,27 +11,35 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionDummy;
+namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Pagination\GetCollectionWithoutPaginationDummy;
 
 use ApiScout\Attribute\GetCollection;
+use ApiScout\OpenApi\Model;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
-use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyQueryInput;
 use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-
 use function array_slice;
 
 /**
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class GetCollectionDummyController extends AbstractController
+final class GetCollectionWithoutPaginationDummyController extends AbstractController
 {
-    #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]
+    #[GetCollection(
+        '/dummies_without_pagination',
+        name: 'app_get_dummy_collection_without_pagination',
+        resource: Dummy::class,
+        openapi: new Model\Operation(
+            summary: 'Retrieve the Collection of a Dummy resource without pagination',
+            description: 'Retrieve the Collection of a Dummy resource without pagination'
+        ),
+        paginationEnabled: false
+    )]
     public function __invoke(
-        #[MapQueryString] DummyQueryInput $query,
+        #[MapQueryString] ?DummyQueryWithoutPaginationInput $query,
     ): ArrayObject {
         $pinkFloydCollection = [];
 
@@ -55,8 +63,8 @@ final class GetCollectionDummyController extends AbstractController
 
         return new ArrayObject(array_slice(
             $pinkFloydCollection,
-            ($query->getPage() - 1) * $query->getItemsPerPage(),
-            $query->getItemsPerPage()
+            0,
+            10
         ));
     }
 }

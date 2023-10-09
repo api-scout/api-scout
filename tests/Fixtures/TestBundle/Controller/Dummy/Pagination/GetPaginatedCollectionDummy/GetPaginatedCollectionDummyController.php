@@ -11,37 +11,28 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionWithoutPaginationDummy;
+namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Pagination\GetPaginatedCollectionDummy;
 
 use ApiScout\Attribute\GetCollection;
-use ApiScout\OpenApi\Model;
+use ApiScout\Response\Pagination\Pagination;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
-use ArrayObject;
+use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyQueryInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-
 use function array_slice;
+use function count;
 
 /**
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class GetCollectionWithoutPaginationDummyController extends AbstractController
+final class GetPaginatedCollectionDummyController extends AbstractController
 {
-    #[GetCollection(
-        '/dummies_without_pagination',
-        name: 'app_get_dummy_collection_without_pagination',
-        resource: Dummy::class,
-        openapi: new Model\Operation(
-            summary: 'Retrieve the Collection of a Dummy resource without pagination',
-            description: 'Retrieve the Collection of a Dummy resource without pagination'
-        ),
-        paginationEnabled: false
-    )]
+    #[GetCollection('/paginated_dummies', name: 'app_get_dummy_paginated_collection', resource: Dummy::class)]
     public function __invoke(
-        #[MapQueryString] ?DummyQueryWithoutPaginationInput $query,
-    ): ArrayObject {
+        #[MapQueryString] DummyQueryInput $query,
+    ): Pagination {
         $pinkFloydCollection = [];
 
         for ($i = 0; $i < 31; ++$i) {
@@ -62,10 +53,17 @@ final class GetCollectionWithoutPaginationDummyController extends AbstractContro
                 );
         }
 
-        return new ArrayObject(array_slice(
+        $slicedPinkFloydCollection = array_slice(
             $pinkFloydCollection,
-            0,
-            10
-        ));
+            ($query->getPage() - 1) * $query->getItemsPerPage(),
+            $query->getItemsPerPage()
+        );
+
+        return new Pagination(
+            $slicedPinkFloydCollection,
+            $query->getPage(),
+            $query->getItemsPerPage(),
+            count($pinkFloydCollection)
+        );
     }
 }
