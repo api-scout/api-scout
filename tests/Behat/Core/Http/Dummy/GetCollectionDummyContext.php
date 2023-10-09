@@ -28,13 +28,19 @@ final class GetCollectionDummyContext extends BaseContext
     private const GET_COLLECTION_DUMMY_PATH = 'dummies';
 
     /**
-     * @When one get a dummy collection
+     * @When one get a dummy collection with :name at page :page
      */
-    public function when(): void
+    public function when(string $name, int $page): void
     {
         $this->request(
             HttpOperation::METHOD_GET,
             self::GET_COLLECTION_DUMMY_PATH,
+            [
+                'query' => [
+                    'name' => $name,
+                    'page' => $page,
+                ],
+            ]
         );
     }
 

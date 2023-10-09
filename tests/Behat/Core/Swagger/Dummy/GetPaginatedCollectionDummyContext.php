@@ -38,7 +38,7 @@ final class GetPaginatedCollectionDummyContext extends BaseContext
         Assert::assertArrayHasKey('200', $getPaginatedDummyOperation['responses']);
 
         $parameters = $getPaginatedDummyOperation['parameters'];
-        Assert::assertCount(2, $parameters);
+        Assert::assertCount(4, $parameters);
 
         Assert::assertSame('name', $parameters[0]['name']);
         Assert::assertSame('query', $parameters[0]['in']);

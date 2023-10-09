@@ -36,7 +36,9 @@ final class OperationRequestListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [KernelEvents::REQUEST => ['setOperation', 30]];
+        return [
+            KernelEvents::REQUEST => ['setOperation', 30],
+        ];
     }
 
     public function setOperation(RequestEvent $event): void

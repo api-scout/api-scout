@@ -31,7 +31,7 @@ final class GetCollectionDummyController extends AbstractController
 {
     #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]
     public function __invoke(
-        #[MapQueryString] ?DummyQueryInput $query,
+        #[MapQueryString] DummyQueryInput $query,
     ): ArrayObject {
         $pinkFloydCollection = [];
 
@@ -55,8 +55,8 @@ final class GetCollectionDummyController extends AbstractController
 
         return new ArrayObject(array_slice(
             $pinkFloydCollection,
-            0,
-            10
+            ($query->getPage() - 1) * $query->getItemsPerPage(),
+            $query->getItemsPerPage()
         ));
     }
 }

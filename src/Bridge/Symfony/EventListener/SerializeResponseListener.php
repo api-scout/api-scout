@@ -17,9 +17,11 @@ use ApiScout\Attribute\CollectionOperationInterface;
 use ApiScout\HttpOperation;
 use ApiScout\Response\Pagination\PaginationInterface;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
 use ApiScout\Response\ResponseGeneratorInterface;
 use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
 use ApiScout\Response\Serializer\Serializer\ResponseSerializerInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 
@@ -59,7 +61,11 @@ final class SerializeResponseListener
         }
 
         if ($operation instanceof CollectionOperationInterface && $operation->isPaginationEnabled()) {
-            $data = $this->paginationProvider->provide($data, $operation);
+            $data = $this->paginationProvider->provide(
+                $data,
+                $operation,
+                $this->getPaginationQueryInput($event)
+            );
         }
 
         $data = $this->normalizer->normalize($data, $operation);
@@ -74,5 +80,20 @@ final class SerializeResponseListener
                 json: true
             ),
         );
+    }
+
+    private function getPaginationQueryInput(ViewEvent $event): PaginationQueryInputInterface
+    {
+        if ($event->controllerArgumentsEvent === null) {
+            throw new RuntimeException('Pagination cannot be enabled without implementing PaginationQueryInputInterface.');
+        }
+
+        foreach ($event->controllerArgumentsEvent->getArguments() as $argument) {
+            if ($argument instanceof PaginationQueryInputInterface) {
+                return $argument;
+            }
+        }
+
+        throw new RuntimeException('Pagination cannot be enabled without implementing PaginationQueryInputInterface.');
     }
 }

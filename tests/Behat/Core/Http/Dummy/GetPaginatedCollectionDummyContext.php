@@ -28,13 +28,19 @@ final class GetPaginatedCollectionDummyContext extends BaseContext
     private const GET_PAGINATED_COLLECTION_DUMMY_PATH = 'paginated_dummies';
 
     /**
-     * @When one get a paginated dummy collection
+     * @When one get a paginated dummy collection with :name at page :page
      */
-    public function when(): void
+    public function when(string $name, int $page): void
     {
         $this->request(
             HttpOperation::METHOD_GET,
             self::GET_PAGINATED_COLLECTION_DUMMY_PATH,
+            [
+                'query' => [
+                    'name' => $name,
+                    'page' => $page,
+                ],
+            ]
         );
     }
 

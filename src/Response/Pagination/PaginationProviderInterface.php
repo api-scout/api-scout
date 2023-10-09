@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Response\Pagination;
 
 use ApiScout\Operation;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
 
 /**
  * The Pagination data provider interface.
@@ -23,5 +24,9 @@ use ApiScout\Operation;
  */
 interface PaginationProviderInterface
 {
-    public function provide(mixed $data, Operation $operation): array;
+    public function provide(
+        mixed $data,
+        Operation $operation,
+        PaginationQueryInputInterface $paginationQueryInput
+    ): array;
 }

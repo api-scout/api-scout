@@ -32,7 +32,7 @@ final class GetPaginatedCollectionDummyController extends AbstractController
 {
     #[GetCollection('/paginated_dummies', name: 'app_get_dummy_paginated_collection', resource: Dummy::class)]
     public function __invoke(
-        #[MapQueryString] ?DummyQueryInput $query,
+        #[MapQueryString] DummyQueryInput $query,
     ): Pagination {
         $pinkFloydCollection = [];
 
@@ -56,14 +56,14 @@ final class GetPaginatedCollectionDummyController extends AbstractController
 
         $slicedPinkFloydCollection = array_slice(
             $pinkFloydCollection,
-            0,
-            10
+            ($query->getPage() - 1) * $query->getItemsPerPage(),
+            $query->getItemsPerPage()
         );
 
         return new Pagination(
             $slicedPinkFloydCollection,
-            1,
-            10,
+            $query->getPage(),
+            $query->getItemsPerPage(),
             count($pinkFloydCollection)
         );
     }

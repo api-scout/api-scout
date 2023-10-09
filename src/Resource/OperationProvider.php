@@ -19,9 +19,11 @@ use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Operation;
 use ApiScout\Operations;
 use ApiScout\Response\Pagination\Pagination;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
 use LogicException;
 use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -32,6 +34,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Contracts\Cache\CacheInterface;
 
+use function array_key_exists;
 use function function_exists;
 use function is_int;
 
@@ -140,7 +143,13 @@ final class OperationProvider implements OperationProviderInterface
                 }
 
                 /** @phpstan-ignore-next-line getName is an existing method */
-                $operation->setInput($payloadResource->getType()->getName());
+                $inputTypeClassname = $payloadResource->getType()->getName();
+
+                $operation->setIsPaginationEnabled(
+                    $this->buildIsPaginationActivated($inputTypeClassname)
+                );
+
+                $operation->setInput($inputTypeClassname);
             }
 
             if ($operation->getDenormalizationContext() === []) {
@@ -167,6 +176,18 @@ final class OperationProvider implements OperationProviderInterface
         $operation->setControllerMethod($method->getName());
 
         return $operation;
+    }
+
+    /**
+     * @param  class-string        $className
+     * @throws ReflectionException
+     */
+    private function buildIsPaginationActivated(string $className): bool
+    {
+        return array_key_exists(
+            PaginationQueryInputInterface::class,
+            (new ReflectionClass($className))->getInterfaces()
+        );
     }
 
     private function buildDenormalizationContext(ReflectionParameter $payload): array
