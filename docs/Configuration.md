@@ -14,13 +14,11 @@ api_scout:
   mapping:
     paths:
       - '%kernel.project_dir%/src/Controller'
-  asset_package: null
   enable_swagger: true
   # Enable Swagger UI.
   enable_swagger_ui: true
   enable_re_doc: true
   enable_docs: true
-  swagger_ui_extra_configuration: {  }
   pagination:
     # Enable the pagination
     enabled: true
