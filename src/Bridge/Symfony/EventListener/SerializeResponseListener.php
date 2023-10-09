@@ -17,6 +17,7 @@ use ApiScout\Attribute\CollectionOperationInterface;
 use ApiScout\HttpOperation;
 use ApiScout\Response\Pagination\PaginationInterface;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
 use ApiScout\Response\ResponseGeneratorInterface;
 use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
 use ApiScout\Response\Serializer\Serializer\ResponseSerializerInterface;
@@ -58,8 +59,10 @@ final class SerializeResponseListener
             return;
         }
 
-        if ($operation instanceof CollectionOperationInterface && $operation->isPaginationEnabled()) {
-            $data = $this->paginationProvider->provide($data, $operation);
+        $paginationQueryInput = $this->getPaginationQueryInput($event);
+
+        if ($operation instanceof CollectionOperationInterface && $paginationQueryInput !== null) {
+            $data = $this->paginationProvider->provide($data, $operation, $paginationQueryInput);
         }
 
         $data = $this->normalizer->normalize($data, $operation);
@@ -74,5 +77,20 @@ final class SerializeResponseListener
                 json: true
             ),
         );
+    }
+
+    private function getPaginationQueryInput(ViewEvent $event): ?PaginationQueryInputInterface
+    {
+        if ($event->controllerArgumentsEvent === null) {
+            return null;
+        }
+
+        foreach ($event->controllerArgumentsEvent->getArguments() as $argument) {
+            if ($argument instanceof PaginationQueryInputInterface) {
+                return $argument;
+            }
+        }
+
+        return null;
     }
 }

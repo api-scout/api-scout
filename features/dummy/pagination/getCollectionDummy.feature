@@ -2,7 +2,7 @@ Feature: Get Dummy Collection resource
 
   @http
   Scenario: Get a dummy collection resource
-    When one get a dummy collection
+    When one get a dummy collection with "dummy" at page 1
     Then success
     And get dummy collection response should be:
     """
@@ -153,7 +153,7 @@ Feature: Get Dummy Collection resource
         "currentPage": 1,
         "itemsPerPage": 10,
         "totalItems": null,
-        "next": "/dummies?page=2",
+        "next": "/dummies?name=dummy&page=2",
         "prev": null
       }
     }

@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace ApiScout\Response\Pagination\QueryInput;
 
-use ApiScout\Attribute\ApiProperty;
-
 /**
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 class PaginationQueryInput implements PaginationQueryInputInterface
 {
     public function __construct(
-        public readonly int $page = 1,
-        public readonly int $itemsPerPage = 10,
+        protected readonly int $page = 1,
+        protected readonly int $itemsPerPage = 10,
     ) {
     }
 
@@ -30,7 +28,17 @@ class PaginationQueryInput implements PaginationQueryInputInterface
     {
         return [
             $this->page,
-            $this->itemsPerPage
+            $this->itemsPerPage,
         ];
+    }
+
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    public function getItemsPerPage(): int
+    {
+        return $this->itemsPerPage;
     }
 }

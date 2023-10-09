@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Response\Pagination;
 
 use ApiScout\Operation;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
 use LogicException;
 
 /**
@@ -32,18 +33,27 @@ final class PaginationProvider implements PaginationProviderInterface
     ) {
     }
 
-    public function provide(mixed $data, Operation $operation): array
-    {
-        $pagination = $this->getPagination($data, $operation);
+    public function provide(
+        mixed $data,
+        Operation $operation,
+        PaginationQueryInputInterface $paginationQueryInput
+    ): array {
+        $pagination = $this->getPagination($data, $operation, $paginationQueryInput);
 
         return [
             $this->responseItemKey => $pagination->getItems(),
-            $this->responsePaginationKey => $this->paginationMetadata->getMetadata($pagination, $operation),
+            $this->responsePaginationKey => $this->paginationMetadata->getMetadata(
+                $pagination,
+                $operation,
+            ),
         ];
     }
 
-    private function getPagination(mixed $data, Operation $operation): PaginationInterface
-    {
+    private function getPagination(
+        mixed $data,
+        Operation $operation,
+        PaginationQueryInputInterface $paginationQueryInput
+    ): PaginationInterface {
         if ($data instanceof PaginationInterface) {
             return $data;
         }
@@ -54,8 +64,8 @@ final class PaginationProvider implements PaginationProviderInterface
 
         return new Pagination(
             $data,
-            $this->paginatorRequestFactory->getCurrentPage(),
-            $this->paginatorRequestFactory->getItemsPerPage($operation),
+            $paginationQueryInput->getPage(),
+            $paginationQueryInput->getItemsPerPage(),
             null
         );
     }
