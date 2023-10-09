@@ -24,10 +24,11 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Serializer\Exception\RuntimeException;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 final class AppKernel extends Kernel
 {
@@ -101,13 +102,28 @@ final class AppKernel extends Kernel
         $container->prependExtensionConfig('twig', $twigConfig);
 
         $container->prependExtensionConfig('api_scout', [
+            'title' => 'ApiScout',
+            'description' => 'A library with a few tools, to auto document your api',
+            'version' => '1.0.0',
+            'openapi' => [
+                'contact' => [
+                    'name' => 'Marvin',
+                    'url' => 'https://github.com/api-scout/api-scout',
+                    'email' => 'marvincourcier.dev@gmail.com',
+                ],
+                'terms_of_service' => 'This will do',
+                'license' => [
+                    'name' => 'MIT',
+                    'url' => 'https://fr.wikipedia.org/wiki/Licence_MIT',
+                ],
+            ],
             'mapping' => [
                 'paths' => [
                     '%kernel.project_dir%/../TestBundle/Controller',
                 ],
             ],
             'exception_to_status' => [
-                RuntimeException::class => 413,
+                ValidationFailedException::class => Response::HTTP_BAD_REQUEST,
             ],
         ]);
     }

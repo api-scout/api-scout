@@ -23,6 +23,7 @@ use ApiScout\Bridge\Symfony\Routing\ApiLoader;
 use ApiScout\Resource\OperationProviderInterface;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
 use ApiScout\Response\ResponseGeneratorInterface;
+use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -61,6 +62,7 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$paginationProvider', service(PaginationProviderInterface::class))
         ->arg('$responseSerializer', service('api_scout.response_serializer'))
         ->arg('$responseGenerator', service(ResponseGeneratorInterface::class))
+        ->arg('$normalizer', service(NormalizerInterface::class))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 15])
     ;
 

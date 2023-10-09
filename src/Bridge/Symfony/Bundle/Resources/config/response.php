@@ -26,7 +26,9 @@ use ApiScout\Response\Pagination\PaginatorRequest;
 use ApiScout\Response\Pagination\PaginatorRequestInterface;
 use ApiScout\Response\ResponseGenerator;
 use ApiScout\Response\ResponseGeneratorInterface;
-use ApiScout\Response\Serializer\SymfonyResponseSerializer;
+use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
+use ApiScout\Response\Serializer\Normalizer\SymfonyNormalizer;
+use ApiScout\Response\Serializer\Serializer\SymfonyResponseSerializer;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
@@ -44,6 +46,9 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set('api_scout.pagination.pagination_provider', PaginationProvider::class)
         ->arg('$paginatorRequestFactory', service(PaginatorRequestInterface::class))
+        ->arg('$paginationMetadata', service(PaginationMetadataInterface::class))
+        ->arg('$responseItemKey', param('api_scout.response_item_key'))
+        ->arg('$responsePaginationKey', param('api_scout.response_pagination_key'))
     ;
     $services->alias(PaginationProviderInterface::class, 'api_scout.pagination.pagination_provider');
 
@@ -57,10 +62,14 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$serializer', service('serializer'))
     ;
 
+    $services->set('api_scout.response.normalizer', SymfonyNormalizer::class)
+        ->arg('$normalizer', service('serializer'))
+    ;
+
+    $services->alias(NormalizerInterface::class, 'api_scout.response.normalizer');
+
     $services->set('api_scout.api.prepare_response', ResponseGenerator::class)
-        ->arg('$paginationMetadata', service(PaginationMetadataInterface::class))
         ->arg('$responseItemKey', param('api_scout.response_item_key'))
-        ->arg('$responsePaginationKey', param('api_scout.response_pagination_key'))
     ;
     $services->alias(ResponseGeneratorInterface::class, 'api_scout.api.prepare_response');
 };

@@ -23,6 +23,7 @@ use ApiScout\OpenApi\JsonSchema\JsonSchema;
 use ApiScout\OpenApi\Model;
 use ApiScout\OpenApi\OpenApi;
 use ApiScout\OpenApi\Options;
+use ApiScout\OpenApi\SchemaRefNameGenerator;
 use ApiScout\OpenApi\Trait\ClassNameNormalizerTrait;
 use ApiScout\Operation;
 use ApiScout\Operations;
@@ -306,17 +307,40 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         $exceptionsToStatuses = $operation->formatExceptionToStatusWithConfiguration($this->exceptionsToStatuses);
 
         foreach ($exceptionsToStatuses as $exception => $status) {
-            if (!isset($openapiOperation->getResponses()[$status]) && $status >= 200 && $status < 500) {
-                $openapiOperation = $this->buildResponseContent(
-                    $status,
-                    $this->exceptionClassnameToMessageError($exception),
-                    null,
-                    $openapiOperation
-                );
+            if (!isset($openapiOperation->getResponses()[$status])) {
+                if ($status >= 200 && $status < 400 && $this->isReadOperation($operation)) {
+                    $openapiOperation = $this->buildResponseContent(
+                        $status,
+                        $this->exceptionClassnameToMessageError($exception),
+                        null,
+                        $openapiOperation
+                    );
+                }
+                if ($status >= 200 && $status < 500 && $this->isWriteOperation($operation)) {
+                    $openapiOperation = $this->buildResponseContent(
+                        $status,
+                        $this->exceptionClassnameToMessageError($exception),
+                        null,
+                        $openapiOperation
+                    );
+                }
             }
         }
 
         return $openapiOperation;
+    }
+
+    private function isReadOperation(Operation $operation): bool
+    {
+        return $operation->getMethod() === HttpOperation::METHOD_GET;
+    }
+
+    private function isWriteOperation(Operation $operation): bool
+    {
+        return $operation->getMethod() === HttpOperation::METHOD_POST
+            || $operation->getMethod() === HttpOperation::METHOD_PUT
+            || $operation->getMethod() === HttpOperation::METHOD_PATCH
+            || $operation->getMethod() === HttpOperation::METHOD_DELETE;
     }
 
     /**
@@ -374,8 +398,12 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
             $content[$mimeType] = new Model\MediaType(
                 new ArrayObject(
-                    ['$ref' => '#/components/schemas/'.
-                        $this->normalizeClassName($operation->getResource()).'.'.$this->normalizeClassName($operation->getInput()),
+                    [
+                        '$ref' => '#/components/schemas/'.SchemaRefNameGenerator::generate(
+                            $operation->getResource(),
+                            $operation->getInput(),
+                            $operation->getDenormalizationContext()
+                        ),
                     ]
                 )
             );
@@ -398,8 +426,11 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $content[$mimeType] = new Model\MediaType(
                 new ArrayObject(
                     [
-                        '$ref' => '#/components/schemas/'.
-                            $this->normalizeClassName($operation->getResource()).'.'.$this->normalizeClassName($operation->getOutput()),
+                        '$ref' => '#/components/schemas/'.SchemaRefNameGenerator::generate(
+                            $operation->getResource(),
+                            $operation->getOutput(),
+                            $operation->getNormalizationContext()
+                        ),
                     ]
                 )
             );

@@ -19,7 +19,6 @@ use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use LogicException;
-use RuntimeException;
 use Throwable;
 
 /**
@@ -142,12 +141,8 @@ abstract class Operation
         return $this->output;
     }
 
-    public function setOutput(string $output): void
+    public function setOutput(?string $output): void
     {
-        if (!class_exists($output)) {
-            throw new RuntimeException('Given output should be a valid object.');
-        }
-
         $this->output = $output;
     }
 

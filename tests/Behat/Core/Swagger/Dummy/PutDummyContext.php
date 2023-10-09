@@ -30,7 +30,15 @@ final class PutDummyContext extends BaseContext
     {
         $response = $this->getResponse()->toArray();
 
-        Assert::assertNotEmpty($response['paths']['/dummies']['post']);
+        Assert::assertNotEmpty($response['paths']['/dummies']['put']);
+        $putDummyOperation = $response['paths']['/dummies']['put'];
+
+        Assert::assertArrayHasKey('responses', $putDummyOperation);
+        Assert::assertCount(3, $putDummyOperation['responses']);
+        Assert::assertArrayHasKey('200', $putDummyOperation['responses']);
+        Assert::assertArrayHasKey('400', $putDummyOperation['responses']);
+        Assert::assertArrayHasKey('404', $putDummyOperation['responses']);
+
         Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyOutput']);
         Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyPayloadInput']);
     }
