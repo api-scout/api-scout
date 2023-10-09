@@ -31,6 +31,18 @@ final class GetCollectionWithoutPaginationDummyContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/dummies_without_pagination']['get']);
+        $getDummiesWithoutPaginationResponse = $response['paths']['/dummies_without_pagination']['get'];
+
+        Assert::assertArrayHasKey('summary', $getDummiesWithoutPaginationResponse);
+        Assert::assertArrayHasKey('description', $getDummiesWithoutPaginationResponse);
+        Assert::assertSame(
+            'Retrieves the collection of Dummy resources.',
+            $getDummiesWithoutPaginationResponse['summary']
+        );
+        Assert::assertSame(
+            'Retrieves the collection of Dummy resources.',
+            $getDummiesWithoutPaginationResponse['description']
+        );
 
         $parameters = $response['paths']['/dummies_without_pagination']['get']['parameters'];
         Assert::assertCount(2, $parameters);

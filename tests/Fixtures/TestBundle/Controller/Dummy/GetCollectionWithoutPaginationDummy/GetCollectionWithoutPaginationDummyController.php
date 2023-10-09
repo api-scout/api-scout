@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionWithoutPaginationDummy;
 
 use ApiScout\Attribute\GetCollection;
+use ApiScout\OpenApi\Model;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
@@ -33,6 +34,10 @@ final class GetCollectionWithoutPaginationDummyController extends AbstractContro
         '/dummies_without_pagination',
         name: 'app_get_dummy_collection_without_pagination',
         resource: Dummy::class,
+        openapi: new Model\Operation(
+            summary: 'Retrieve the Collection of a Dummy resource without pagination',
+            description: 'Retrieve the Collection of a Dummy resource without pagination'
+        ),
         paginationEnabled: false
     )]
     public function __invoke(
