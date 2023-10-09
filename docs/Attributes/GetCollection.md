@@ -1,102 +1,71 @@
-# GetCollection
+# GetCollection Operation
 
-## Working with Collection
+## Working with Pagination
 
-#### Paginated collection
+Create an input which must either implements PaginationQueryInputInterface
+or extends our custom class which itself extends this interface
 ```php
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use ApiScout\Attribute\GetCollection;
+use ApiScout\Attribute\ApiProperty;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInput;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
 
-final class GetCollectionBookController
-{
-    #[GetCollection('/books')]
-    public function __invoke(
-        #[MapQueryString] ?BookQueryInput $query,
-    ): \ArrayObject {
-        // Your code here
-        return new \ArrayObject($myCollection);
-    }
-```
-
-#### Deactivated pagination for collection
-```php
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use ApiScout\Attribute\GetCollection;
-
-final class GetCollectionBookController
-{
-    #[GetCollection('/books', paginationEnabled: false)]
-    public function __invoke(
-        #[MapQueryString] ?BookQueryInput $query,
-    ): \ArrayObject {
-        // Your code here
-        return new \ArrayObject($myCollection);
-    }
-```
-
-## Working with pagination
-
-```php
-use Symfony\Component\HttpKernel\Attribute\MapQueryString;
-use ApiScout\Response\Pagination\Pagination;
-use ApiScout\Attribute\GetCollection;
-
-final class GetPaginatedCollectionBookController
-{
-    #[GetCollection('/books')]
-    public function __invoke(
-        #[MapQueryString] ?BookQueryInput $query,
-    ): Pagination {
-        // Your code here
-        
-        return new Pagination(
-            $myCollection,
-            1,
-            10,
-            count($myCollection)
-        );
-    }
-```
-
-## Advanced installation
-
-### ApiProperty Attribute
-You can add more information to the doc regarding your `input` or `output` using the `ApiProperty` attribute
-```php
-final class BookQueryInput
+final class BookQueryInput extends PaginationQueryInput // Or implements PaginationQueryInputInterface
 {
     public function __construct(
         #[ApiProperty(description: 'The name of the champion')]
         public readonly ?string $name = '',
         public readonly ?string $city = '',
-        #[ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate')]
-        public readonly int $page = 1,
+        int $page = 1,
+        int $itemsPerPage = 10
+    ) {
+        parent::__construct($page, $itemsPerPage);
+    }
+}
+```
+This will activate the pagination weither you are working with our Paginator or an iterable
+
+```php
+use ApiScout\Attribute\GetCollection;
+use ArrayObject;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+
+final class GetPaginatedCollectionBookController
+{
+    #[GetCollection('/books', resource: Book::class)]
+    public function __invoke(
+        #[MapQueryString] BookQueryInput $query,
+    ): ArrayObject {
+```
+
+```php
+use ApiScout\Attribute\GetCollection;
+use ApiScout\Response\Pagination\Pagination;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+
+final class GetPaginatedCollectionBookController extends AbstractController
+{
+    #[GetCollection('/paginated_books', resource: Book::class)]
+    public function __invoke(
+        #[MapQueryString] BookQueryInput $query,
+    ): Pagination {
+```
+
+## Working without Pagination
+
+Create an Input which does not extends our
+`PaginationQueryInput` or implements our `PaginationQueryInputInterface`
+
+```php
+final class BookQueryInput
+{
+    public function __construct(
+        public readonly ?string $name = '',
+        public readonly ?string $city = '',
     ) {
     }
 }
 ```
 
-### Working only with attribute
-You could override those or add more information using the following parameters
 
-```php
-    #[GetCollection(
-        path: '/books',
-        name: 'app_get_book_collection',
-        resource: Book::class,
-        filters: [
-            new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
-            new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
-        ],
-        input: BookInput::class,
-        output: BookOutput::class,
-        statusCode: 200,
-        paginationEnable: true, // If you want to enable or disable the pagination
-        paginationItemsPerPage: 20, // The number of item you want per pages
-        deprecationReason: 'Do not use this route anymore', // If you want to deprecate this route
-        // You could also add all the parameters you would need to add from a normal #[Route] attribute
-    )]
-    public function getBookAttributeCollection(): Response
-    {}
-```
-If `input` and `output` are specified your parameters and return type will be ignored.
+
+

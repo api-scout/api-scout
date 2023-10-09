@@ -11,29 +11,28 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetPaginatedCollectionDummy;
+namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Pagination\GetCollectionDummy;
 
 use ApiScout\Attribute\GetCollection;
-use ApiScout\Response\Pagination\Pagination;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Dummy;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyQueryInput;
+use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 use function array_slice;
-use function count;
 
 /**
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class GetPaginatedCollectionDummyController extends AbstractController
+final class GetCollectionDummyController extends AbstractController
 {
-    #[GetCollection('/paginated_dummies', name: 'app_get_dummy_paginated_collection', resource: Dummy::class)]
+    #[GetCollection('/dummies', name: 'app_get_dummy_collection', resource: Dummy::class)]
     public function __invoke(
         #[MapQueryString] DummyQueryInput $query,
-    ): Pagination {
+    ): ArrayObject {
         $pinkFloydCollection = [];
 
         for ($i = 0; $i < 31; ++$i) {
@@ -54,17 +53,10 @@ final class GetPaginatedCollectionDummyController extends AbstractController
                 );
         }
 
-        $slicedPinkFloydCollection = array_slice(
+        return new ArrayObject(array_slice(
             $pinkFloydCollection,
             ($query->getPage() - 1) * $query->getItemsPerPage(),
             $query->getItemsPerPage()
-        );
-
-        return new Pagination(
-            $slicedPinkFloydCollection,
-            $query->getPage(),
-            $query->getItemsPerPage(),
-            count($pinkFloydCollection)
-        );
+        ));
     }
 }
