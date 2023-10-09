@@ -61,7 +61,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         private readonly array $exceptionsToStatuses,
         ?Options $openApiOptions = null
     ) {
-        $this->openApiOptions = $openApiOptions ?: new Options('Alximy OpenApi Documentation');
+        $this->openApiOptions = $openApiOptions ?: new Options('OpenApi Documentation');
     }
 
     public function __invoke(array $context = []): OpenApi

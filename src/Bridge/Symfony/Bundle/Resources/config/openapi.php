@@ -50,13 +50,6 @@ return static function (ContainerConfigurator $container): void {
 
     $services->alias(FilterFactoryInterface::class, 'api_scout.openapi.filter_factory');
 
-    $services->set(PaginationOptionsConfigurator::class)
-        ->arg('$paginationEnabled', param('api_scout.pagination.enabled'))
-        ->arg('$paginationPageParameterName', param('api_scout.pagination.page_parameter_name'))
-        ->arg('$paginationItemsPerPage', param('api_scout.pagination.items_per_page'))
-        ->arg('$paginationMaximumItemsPerPage', param('api_scout.pagination.maximum_items_per_page'))
-    ;
-
     $services->set(Options::class)
         ->arg('$title', param('api_scout.title'))
         ->arg('$description', param('api_scout.description'))

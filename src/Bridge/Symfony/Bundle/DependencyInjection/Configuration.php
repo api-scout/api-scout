@@ -95,14 +95,7 @@ final class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
-            ->arrayNode('pagination')
-            ->canBeDisabled()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('page_parameter_name')->defaultValue('page')->cannotBeEmpty()->info('The default name of the parameter handling the page number.')->end()
-            ->integerNode('items_per_page')->defaultValue(10)->info('The minimum number of items per page.')->end()
-            ->integerNode('maximum_items_per_page')->defaultValue(50)->info('The name of the query parameter to enable or disable partial pagination.')->end()
-            ->end()
+                ->arrayNode('pagination')->canBeDisabled()->addDefaultsIfNotSet()
             ->end()
         ;
     }
