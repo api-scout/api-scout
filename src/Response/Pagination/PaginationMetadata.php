@@ -61,8 +61,6 @@ final class PaginationMetadata implements PaginationMetadataInterface
             throw new LogicException('Could not generate Url because the request is null');
         }
 
-        
-
         return $this->urlGenerator->generate(
             $routeName,
             array_merge(
