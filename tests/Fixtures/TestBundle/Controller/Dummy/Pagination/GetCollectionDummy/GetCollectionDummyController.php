@@ -21,6 +21,7 @@ use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyQueryInput;
 use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+
 use function array_slice;
 
 /**
