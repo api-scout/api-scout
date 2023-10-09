@@ -27,6 +27,6 @@ interface PaginationProviderInterface
     public function provide(
         mixed $data,
         Operation $operation,
-        PaginationQueryInputInterface $pagination
+        PaginationQueryInputInterface $paginationQueryInput
     ): array;
 }

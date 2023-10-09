@@ -26,7 +26,6 @@ use LogicException;
 final class PaginationProvider implements PaginationProviderInterface
 {
     public function __construct(
-        private readonly PaginatorRequestInterface $paginatorRequestFactory,
         private readonly PaginationMetadataInterface $paginationMetadata,
         private readonly string $responseItemKey,
         private readonly string $responsePaginationKey,

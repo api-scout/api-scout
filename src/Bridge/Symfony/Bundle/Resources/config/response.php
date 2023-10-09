@@ -34,18 +34,7 @@ return static function (ContainerConfigurator $container): void {
     $services = $container->services()
         ->defaults()
     ;
-
-    $services->set('api_scout.pagination.paginator_request_factory', PaginatorRequest::class)
-        ->arg(
-            '$paginationOptions',
-            expr("service('ApiScout\\\\OpenApi\\\\PaginationOptionsConfigurator').getPaginationOptions()")
-        )
-        ->arg('$requestStack', service('request_stack'))
-    ;
-    $services->alias(PaginatorRequestInterface::class, 'api_scout.pagination.paginator_request_factory');
-
     $services->set('api_scout.pagination.pagination_provider', PaginationProvider::class)
-        ->arg('$paginatorRequestFactory', service(PaginatorRequestInterface::class))
         ->arg('$paginationMetadata', service(PaginationMetadataInterface::class))
         ->arg('$responseItemKey', param('api_scout.response_item_key'))
         ->arg('$responsePaginationKey', param('api_scout.response_pagination_key'))
