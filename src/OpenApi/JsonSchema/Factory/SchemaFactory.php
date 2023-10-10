@@ -61,7 +61,7 @@ final class SchemaFactory implements SchemaFactoryInterface
         $this->groups = $groups['groups'] ?? [];
 
         $schema->offsetSet(
-            SchemaRefNameGenerator::generate($className, $entityName, $groups),
+            SchemaRefNameGenerator::generate($entityName, $className, $groups),
             [
                 ...self::BASE_TEMPLATE,
                 ...$this->buildOpenApiPropertiesFromClass($className),

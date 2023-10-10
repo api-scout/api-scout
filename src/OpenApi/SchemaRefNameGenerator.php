@@ -23,7 +23,7 @@ final class SchemaRefNameGenerator
             return self::buildDefinitionName(self::buildPrefixName($groups['groups']), $entityName);
         }
 
-        return self::buildDefinitionName($className, $entityName);
+        return self::buildDefinitionName($entityName, $className);
     }
 
     private static function buildDefinitionName(string $className, string $entityName): string
