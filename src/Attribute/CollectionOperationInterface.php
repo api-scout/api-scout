@@ -15,6 +15,11 @@ namespace ApiScout\Attribute;
 
 /**
  * The Operation returns a collection.
+ *
+ * Inspired by ApiPlatform\Metadata\Operation
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 interface CollectionOperationInterface
 {

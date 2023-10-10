@@ -10,15 +10,15 @@ api_scout:
   description: 'API description'
   # The version of the API.
   version: '0.0.0'
-  # Controller directory you need to be documented
-  path: '%kernel.project_dir%/src/Controller/'
-  asset_package: null
+  # Controller directories you need to be documented
+  mapping:
+    paths:
+      - '%kernel.project_dir%/src/Controller'
   enable_swagger: true
   # Enable Swagger UI.
   enable_swagger_ui: true
   enable_re_doc: true
   enable_docs: true
-  swagger_ui_extra_configuration: {  }
   pagination:
     # Enable the pagination
     enabled: true

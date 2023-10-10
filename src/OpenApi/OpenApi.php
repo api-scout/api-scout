@@ -18,6 +18,14 @@ use ApiScout\OpenApi\Model\Info;
 use ApiScout\OpenApi\Model\Paths;
 use ArrayObject;
 
+/**
+ * OpenApi.
+ *
+ * Inspired by ApiPlatform\OpenApi\OpenApi
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class OpenApi
 {
     public const VERSION = '3.1.0';

@@ -19,11 +19,6 @@ parameters:
     ignoreErrors:
         -
           messages:
-            - '#Call to an undefined method ApiScout\\Operation::get[a-zA-Z]+\(\)#'
-          paths:
-            - src/Bridge/Symfony/Routing
-        -
-          messages:
             - '#Method ApiScout\\Tests\\Fixtures\\app\\AppKernel::getBundlesPath\(\) is unused.#'
           paths:
             - tests/Fixtures/app/AppKernel.php

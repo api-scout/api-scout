@@ -136,7 +136,7 @@ final class Token
      */
     public function equals($other, bool $caseSensitive = true): bool
     {
-        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition with new MAJOR release 4.0
+        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
             if ('&' === $other) {
                 return '&' === $this->content && (null === $this->id || $this->isGivenKind([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
             }
@@ -186,7 +186,7 @@ final class Token
         // detect unknown keys
         unset($otherPrototype[0], $otherPrototype[1]);
 
-        return empty($otherPrototype);
+        return [] === $otherPrototype;
     }
 
     /**

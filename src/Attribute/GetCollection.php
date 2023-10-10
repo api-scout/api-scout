@@ -15,9 +15,18 @@ namespace ApiScout\Attribute;
 
 use ApiScout\HttpOperation;
 use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
-#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+/**
+ * GetCollection Operation.
+ *
+ * Inspired by ApiPlatform\Metadata\GetCollection
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
+#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
 final class GetCollection extends HttpOperation implements CollectionOperationInterface
 {
     public function __construct(
@@ -28,7 +37,8 @@ final class GetCollection extends HttpOperation implements CollectionOperationIn
         int $statusCode = AbstractResponse::HTTP_OK,
         string $resource = 'Default',
         array $filters = [],
-        bool $openApi = true,
+        bool|OpenApiOperation|null $openapi = null,
+        ?array $exceptionToStatus = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],
@@ -65,7 +75,8 @@ final class GetCollection extends HttpOperation implements CollectionOperationIn
             statusCode: $statusCode,
             resource: $resource,
             filters: $filters,
-            openApi: $openApi,
+            openapi: $openapi,
+            exceptionToStatus: $exceptionToStatus,
             formats: $formats,
             inputFormats: $inputFormats,
             outputFormats: $outputFormats,
@@ -85,7 +96,7 @@ final class GetCollection extends HttpOperation implements CollectionOperationIn
             priority: $priority,
             locale: $locale,
             format: $format,
-            stateless: $stateless
+            stateless: $stateless,
         );
     }
 }

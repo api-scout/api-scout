@@ -19,6 +19,9 @@ use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetDummyController extends AbstractController
 {
     #[Get('/dummies/{id}', name: 'app_get_dummy', resource: Dummy::class)]

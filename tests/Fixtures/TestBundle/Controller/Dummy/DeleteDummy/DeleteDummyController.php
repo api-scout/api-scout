@@ -19,11 +19,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DeleteDummyController extends AbstractController
 {
     #[Delete('/dummies/{name}', resource: Dummy::class)]
     public function __invoke(string $name): JsonResponse
     {
-        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 }

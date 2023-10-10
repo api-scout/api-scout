@@ -25,11 +25,11 @@ use ApiScout\OpenApi\JsonSchema\Factory\FilterFactoryInterface;
 use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactory;
 use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactoryInterface;
 use ApiScout\OpenApi\Options;
-use ApiScout\OpenApi\PaginationOptionsConfigurator;
 use ApiScout\OpenApi\Serializer\OpenApiNormalizer;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\Resource\OperationProviderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 return static function (ContainerConfigurator $container): void {
@@ -48,13 +48,6 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->alias(FilterFactoryInterface::class, 'api_scout.openapi.filter_factory');
-
-    $services->set(PaginationOptionsConfigurator::class)
-        ->arg('$paginationEnabled', param('api_scout.pagination.enabled'))
-        ->arg('$paginationPageParameterName', param('api_scout.pagination.page_parameter_name'))
-        ->arg('$paginationItemsPerPage', param('api_scout.pagination.items_per_page'))
-        ->arg('$paginationMaximumItemsPerPage', param('api_scout.pagination.maximum_items_per_page'))
-    ;
 
     $services->set(Options::class)
         ->arg('$title', param('api_scout.title'))
@@ -78,9 +71,10 @@ return static function (ContainerConfigurator $container): void {
 
     $services
         ->set('api_scout.openapi.openapi_factory', OpenApiFactory::class)
-        ->arg('$resourceCollection', service(ResourceCollectionFactoryInterface::class))
+        ->arg('$resourceCollection', service(OperationProviderInterface::class))
         ->arg('$schemaFactory', service(SchemaFactoryInterface::class))
         ->arg('$filterFactory', service(FilterFactoryInterface::class))
+        ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
         ->arg('$openApiOptions', service(Options::class))
     ;
 
@@ -100,4 +94,11 @@ return static function (ContainerConfigurator $container): void {
         ->set('api_scout.openapi.normalizer', OpenApiNormalizer::class)
         ->arg('$decorated', service('api_scout.openapi.object_normalizer'))
     ;
+
+    $services
+        ->set('api_scout.openapi.schema_factory', SchemaFactory::class)
+        ->arg('$metadata', service(ClassMetadataFactoryInterface::class))
+    ;
+
+    $services->alias(SchemaFactoryInterface::class, 'api_scout.openapi.schema_factory');
 };

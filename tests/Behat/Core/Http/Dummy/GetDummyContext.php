@@ -15,11 +15,16 @@ namespace ApiScout\Tests\Behat\Core\Http\Dummy;
 
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
-use ApiScout\Tests\Fixtures\TestBundle\Assert\Assertion;
+use ApiScout\Tests\Fixtures\Assert\Assertion;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Get Dummy controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetDummyContext extends BaseContext
 {
     private const GET_DUMMY_PATH = 'dummies';

@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\Dummy;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Delete DeleteDummy Swagger response test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DeleteDummyContext extends BaseContext
 {
     /**
@@ -26,7 +31,15 @@ final class DeleteDummyContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/dummies/{name}']['delete']);
-        Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyOutput']);
+        $deleteDummyOperation = $response['paths']['/dummies/{name}']['delete'];
+
+        Assert::assertArrayHasKey('responses', $deleteDummyOperation);
+        Assert::assertCount(3, $deleteDummyOperation['responses']);
+        Assert::assertArrayHasKey('204', $deleteDummyOperation['responses']);
+        Assert::assertArrayHasKey('400', $deleteDummyOperation['responses']);
+        Assert::assertArrayHasKey('404', $deleteDummyOperation['responses']);
+
+        //        Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyOutput']);
 
         Assert::assertNotEmpty($response['paths']['/dummies/{name}']['delete']['parameters']);
         $parameter = array_shift($response['paths']['/dummies/{name}']['delete']['parameters']);

@@ -20,23 +20,29 @@ use ApiScout\Attribute\GetCollection;
 use ApiScout\Attribute\Patch;
 use ApiScout\Attribute\Post;
 use ApiScout\Attribute\Put;
+use ApiScout\OpenApi\Model;
+use ApiScout\Response\Pagination\Pagination;
+use ArrayObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyAttributeController extends AbstractController
 {
     #[GetCollection(
         path: '/dummies_attribute',
         name: 'app_get_dummy_attribute_collection',
-        output: DummyAttributeCollectionOutput::class,
+        output: Pagination::class,
         resource: DummyAttribute::class,
         filters: [
             new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
             new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
         ]
     )]
-    public function getDummyAttributeCollection(
-    ): Response {
+    public function getDummyAttributeCollection(): Response
+    {
         return new Response();
     }
 
@@ -62,6 +68,33 @@ final class DummyAttributeController extends AbstractController
         resource: DummyAttribute::class
     )]
     public function postDummyAttribute(): Response
+    {
+        return new Response(status: Response::HTTP_CREATED);
+    }
+
+    #[Post(
+        path: '/upload_file_dummies_attribute',
+        name: 'app_upload_file_dummy_attribute',
+        resource: DummyAttribute::class,
+        openapi: new Model\Operation(
+            requestBody: new Model\RequestBody(
+                content: new ArrayObject([
+                    'multipart/form-data' => [
+                        'schema' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'file' => [
+                                    'type' => 'string',
+                                    'format' => 'binary',
+                                ],
+                            ],
+                        ],
+                    ],
+                ])
+            )
+        ),
+    )]
+    public function uploadFileDummyAttribute(): Response
     {
         return new Response(status: Response::HTTP_CREATED);
     }

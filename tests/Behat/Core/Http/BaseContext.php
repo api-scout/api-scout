@@ -23,15 +23,28 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 use function is_array;
 
+/**
+ * Base Http Client context.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 abstract class BaseContext implements Context
 {
     protected Client $client;
+
+    protected string $workingDir;
 
     #[Required]
     public function setClient(Client $httpTestClient): void
     {
         $this->client = $httpTestClient;
         $this->client->disableReboot();
+    }
+
+    #[Required]
+    public function setWorkingDir(string $workingDir): void
+    {
+        $this->workingDir = $workingDir;
     }
 
     public function getHttpClient(): Client
@@ -68,6 +81,11 @@ abstract class BaseContext implements Context
         return $response;
     }
 
+    protected function getFilePath(string $filename): string
+    {
+        return $this->workingDir.'/'.$filename;
+    }
+
     protected function json(string $content): array
     {
         $jsonDecodeResult = json_decode($content, true, flags: \JSON_THROW_ON_ERROR);
@@ -77,5 +95,10 @@ abstract class BaseContext implements Context
         }
 
         return $jsonDecodeResult;
+    }
+
+    protected function getSchemaRefKey(string $schemaRef): string
+    {
+        return str_replace('#/components/schemas/', '', $schemaRef);
     }
 }

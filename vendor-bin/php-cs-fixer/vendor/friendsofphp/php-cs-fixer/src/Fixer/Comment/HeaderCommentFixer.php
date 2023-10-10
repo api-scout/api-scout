@@ -118,7 +118,7 @@ echo 1;
     /**
      * {@inheritdoc}
      *
-     * Must run before SingleLineCommentStyleFixer.
+     * Must run before BlankLinesBeforeNamespaceFixer, SingleBlankLineBeforeNamespaceFixer, SingleLineCommentStyleFixer.
      * Must run after DeclareStrictTypesFixer, NoBlankLinesAfterPhpdocFixer.
      */
     public function getPriority(): int
@@ -163,7 +163,7 @@ echo 1;
             $expectedLocation = $possibleLocation === $location;
 
             if (!$sameComment || !$expectedLocation) {
-                if ($expectedLocation ^ $sameComment) {
+                if ($expectedLocation xor $sameComment) {
                     $this->removeHeader($tokens, $headerCurrentIndex);
                 }
 

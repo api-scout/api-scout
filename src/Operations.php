@@ -13,28 +13,26 @@ declare(strict_types=1);
 
 namespace ApiScout;
 
+use ArrayIterator;
 use Countable;
-use Generator;
 use IteratorAggregate;
 use Traversable;
 
 use function count;
 
+/**
+ * Operations collection.
+ *
+ * @author Jules Pietri <jules@heahprod.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class Operations implements IteratorAggregate, Countable
 {
     /**
-     * @var array<string, Operation>
-     */
-    private array $operations = [];
-
-    /**
      * @param array<string, Operation> $operations
      */
-    public function __construct(array $operations = [])
+    public function __construct(private readonly array $operations = [])
     {
-        foreach ($operations as $operationName => $operation) {
-            $this->operations[$operationName] = $operation;
-        }
     }
 
     /**
@@ -45,13 +43,6 @@ final class Operations implements IteratorAggregate, Countable
         return $this->operations;
     }
 
-    public function add(string $key, Operation $value): self
-    {
-        $this->operations[$key] = $value;
-
-        return $this;
-    }
-
     public function getOperation(string $routeName): Operation
     {
         return $this->operations[$routeName];
@@ -59,15 +50,7 @@ final class Operations implements IteratorAggregate, Countable
 
     public function getIterator(): Traversable
     {
-        return (function (): Generator {
-            //            foreach ($this->operations as $operationName => $operation) {
-            //                dump($operationName);
-            //            }
-            //          die;
-            foreach ($this->operations as $operationName => $operation) {
-                yield $operationName => $operation;
-            }
-        })();
+        return new ArrayIterator($this->operations);
     }
 
     public function count(): int

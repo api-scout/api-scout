@@ -11,11 +11,6 @@ parameters:
 			path: src/Ast/NodeTraverser.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between 2 and 2 will always evaluate to true\\.$#"
-			count: 2
-			path: src/Ast/NodeTraverser.php
-
-		-
 			message: "#^Variable property access on PHPStan\\\\PhpDocParser\\\\Ast\\\\Node\\.$#"
 			count: 1
 			path: src/Ast/NodeTraverser.php
@@ -24,3 +19,8 @@ parameters:
 			message: "#^Method PHPStan\\\\PhpDocParser\\\\Parser\\\\StringUnescaper\\:\\:parseEscapeSequences\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/Parser/StringUnescaper.php
+
+		-
+			message: "#^Variable property access on PHPStan\\\\PhpDocParser\\\\Ast\\\\Node\\.$#"
+			count: 2
+			path: src/Printer/Printer.php

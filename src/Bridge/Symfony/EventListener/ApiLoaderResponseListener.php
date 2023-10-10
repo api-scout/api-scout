@@ -19,6 +19,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * OpenApi Json response.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ApiLoaderResponseListener
 {
     public function __construct(

@@ -32,7 +32,7 @@ final class IncludeFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Include/Require and file path should be divided with a single space. File path should not be placed under brackets.',
+            'Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.',
             [
                 new CodeSample(
                     '<?php
@@ -64,7 +64,7 @@ include_once("sample4.php");
         $blocksAnalyzer = new BlocksAnalyzer();
 
         foreach ($includies as $includy) {
-            if ($includy['end'] && !$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
+            if (!$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
                 $afterEndIndex = $tokens->getNextNonWhitespace($includy['end']);
 
                 if (null === $afterEndIndex || !$tokens[$afterEndIndex]->isComment()) {

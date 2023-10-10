@@ -15,6 +15,9 @@ namespace ApiScout\Tests\Behat\Symfony\HttpClient;
 
 use LogicException;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class HttpClient
 {
     private static ?Client $httpClient = null;

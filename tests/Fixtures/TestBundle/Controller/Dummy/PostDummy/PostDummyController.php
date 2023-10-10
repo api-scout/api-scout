@@ -21,6 +21,9 @@ use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyPayloadInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyController extends AbstractController
 {
     #[Post('/dummies', name: 'app_add_dummy', resource: Dummy::class)]

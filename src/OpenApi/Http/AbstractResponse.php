@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace ApiScout\OpenApi\Http;
 
+/**
+ * Abstract Response class for http status code.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 abstract class AbstractResponse
 {
     public const HTTP_CONTINUE = 100;

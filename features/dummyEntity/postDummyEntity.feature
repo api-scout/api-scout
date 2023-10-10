@@ -32,7 +32,7 @@ Feature: Create a Dummy resource
   @http
   Scenario: Post a resource with a wrong value
     When one post a dummy entity with:
-  """
+    """
     {
       "firstName": "Pink",
       "lastName": "",
@@ -48,7 +48,7 @@ Feature: Create a Dummy resource
   @http
   Scenario: Post a resource with a non existing attribute
     When one post a dummy entity with:
-  """
+    """
     {
       "firstName": "Pink",
       "lastName": "Floyd",

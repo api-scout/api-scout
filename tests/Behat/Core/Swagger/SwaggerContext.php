@@ -16,9 +16,14 @@ namespace ApiScout\Tests\Behat\Core\Swagger;
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
+/**
+ * Swagger json action request.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 class SwaggerContext extends BaseContext
 {
-    private const GET_DUMMY_PATH = '/api/docs.json';
+    private const GET_SWAGGER_JSON = '/api/docs.json';
 
     /**
      * @When one get the swagger json
@@ -27,7 +32,7 @@ class SwaggerContext extends BaseContext
     {
         $this->request(
             HttpOperation::METHOD_GET,
-            self::GET_DUMMY_PATH,
+            self::GET_SWAGGER_JSON,
         );
     }
 }

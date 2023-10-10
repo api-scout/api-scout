@@ -15,9 +15,18 @@ namespace ApiScout\Attribute;
 
 use ApiScout\HttpOperation;
 use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use Attribute;
 
-#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+/**
+ * Post Operation.
+ *
+ * Inspired by ApiPlatform\Metadata\Post
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
+#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
 final class Post extends HttpOperation
 {
     public function __construct(
@@ -28,7 +37,8 @@ final class Post extends HttpOperation
         int $statusCode = AbstractResponse::HTTP_CREATED,
         string $resource = 'Default',
         array $filters = [],
-        bool $openApi = true,
+        bool|OpenApiOperation|null $openapi = null,
+        ?array $exceptionToStatus = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],
@@ -65,7 +75,8 @@ final class Post extends HttpOperation
             statusCode: $statusCode,
             resource: $resource,
             filters: $filters,
-            openApi: $openApi,
+            openapi: $openapi,
+            exceptionToStatus: $exceptionToStatus,
             formats: $formats,
             inputFormats: $inputFormats,
             outputFormats: $outputFormats,
@@ -85,7 +96,7 @@ final class Post extends HttpOperation
             priority: $priority,
             locale: $locale,
             format: $format,
-            stateless: $stateless
+            stateless: $stateless,
         );
     }
 }

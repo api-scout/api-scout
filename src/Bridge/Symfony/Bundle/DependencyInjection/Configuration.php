@@ -17,9 +17,17 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
-use function is_array;
-
+/**
+ * The configuration of the bundle.
+ *
+ * Inspired by ApiPlatform\Symfony\Bundle\DependencyInjection\Configuration:
+ *
+ * @author Kévin Dunglas <dunglas@gmail.com>
+ * @author Baptiste Meyer <baptiste.meyer@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
@@ -57,47 +65,27 @@ final class Configuration implements ConfigurationInterface
             ->cannotBeEmpty()
             ->defaultValue('data')
             ->end()
-            ->scalarNode('path')
-            ->defaultValue('')
+            ->scalarNode('response_pagination_key')
+            ->info('The value for your response pagination metadata.')
             ->cannotBeEmpty()
-            ->info('Controllers path.')
+            ->defaultValue('pagination')
             ->end()
-
-//			->arrayNode('mapping')
-//				->addDefaultsIfNotSet()
-//				->children()
-//					->arrayNode('paths')
-//						->prototype('scalar')->end()
-//					->end()
-//				->end()
-//			->end()
-//			->arrayNode('resource_class_directories')
-//				->prototype('scalar')->end()
-//			->end()
+            ->arrayNode('mapping')
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->arrayNode('paths')
+            ->prototype('scalar')->end()
+            ->end()
+            ->end()
+            ->end()
         ;
 
+        $this->addExceptionToStatusSection($rootNode);
         $this->addSwaggerUiContextSection($rootNode);
-        $this->addPaginationSection($rootNode);
         $this->addOpenApiSection($rootNode);
         $this->addOAuthSection($rootNode);
 
         return $treeBuilder;
-    }
-
-    private function addPaginationSection(ArrayNodeDefinition $rootNode): void
-    {
-        $rootNode
-            ->children()
-            ->arrayNode('pagination')
-            ->canBeDisabled()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('page_parameter_name')->defaultValue('page')->cannotBeEmpty()->info('The default name of the parameter handling the page number.')->end()
-            ->integerNode('items_per_page')->defaultValue(10)->info('The minimum number of items per page.')->end()
-            ->integerNode('maximum_items_per_page')->defaultValue(50)->info('The name of the query parameter to enable or disable partial pagination.')->end()
-            ->end()
-            ->end()
-        ;
     }
 
     private function addOpenApiSection(ArrayNodeDefinition $rootNode): void
@@ -126,7 +114,7 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('api_keys')
             ->useAttributeAsKey('key')
             ->validate()
-            ->ifTrue(static fn ($v): bool => (bool) array_filter(array_keys($v), fn ($item) => !preg_match('/^[a-zA-Z0-9._-]+$/', $item)))
+            ->ifTrue(static fn ($v): bool => (bool) array_filter(array_keys($v), static fn ($item) => !preg_match('/^[a-zA-Z0-9._-]+$/', $item)))
             ->thenInvalid('The api keys "key" is not valid according to the pattern enforced by OpenAPI 3.1 ^[a-zA-Z0-9._-]+$.')
             ->end()
             ->prototype('array')
@@ -178,19 +166,36 @@ final class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
-            ->booleanNode('show_webby')->defaultTrue()->info('If true, show Webby on the documentation page')->end()
-            ->scalarNode('asset_package')->defaultNull()->info('Specify an asset package name to use.')->end()
             ->booleanNode('enable_swagger')->defaultTrue()->info('Enable the Swagger documentation and export.')->end()
             ->booleanNode('enable_swagger_ui')->defaultValue(class_exists(TwigBundle::class))->info('Enable Swagger UI')->end()
             ->booleanNode('enable_re_doc')->defaultValue(class_exists(TwigBundle::class))->info('Enable ReDoc')->end()
             ->booleanNode('enable_docs')->defaultTrue()->info('Enable the docs')->end()
-            ->variableNode('swagger_ui_extra_configuration')
-            ->defaultValue([])
-            ->validate()
-            ->ifTrue(static fn ($v): bool => false === is_array($v))
-            ->thenInvalid('The swagger_ui_extra_configuration parameter must be an array.')
             ->end()
-            ->info('To pass extra configuration to Swagger UI, like docExpansion or filter.')
+        ;
+    }
+
+    private function addExceptionToStatusSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->children()
+            ->arrayNode('exception_to_status')
+            ->defaultValue([])
+            ->info('The list of exceptions mapped to their HTTP status code.')
+            ->normalizeKeys(false)
+            ->useAttributeAsKey('exception_class')
+            ->prototype('integer')->end()
+            ->validate()
+            ->ifArray()
+            ->then(static function (array $exceptionToStatus): array {
+                foreach ($exceptionToStatus as $httpStatusCode) {
+                    if ($httpStatusCode < 100 || $httpStatusCode >= 600) {
+                        throw new InvalidConfigurationException(sprintf('The HTTP status code "%s" is not valid.', $httpStatusCode));
+                    }
+                }
+
+                return $exceptionToStatus;
+            })
+            ->end()
             ->end()
             ->end()
         ;

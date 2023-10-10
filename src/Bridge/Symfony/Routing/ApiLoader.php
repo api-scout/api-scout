@@ -16,27 +16,32 @@ namespace ApiScout\Bridge\Symfony\Routing;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\HttpOperation;
 use ApiScout\Operations;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\Resource\OperationProviderInterface;
 use LogicException;
-use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * Add routes with all the found controllers using the HttpOperation ApiScout attributes.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ApiLoader extends Loader
 {
     private PhpFileLoader $fileLoader;
 
     public function __construct(
         KernelInterface $kernel,
-        private readonly ResourceCollectionFactoryInterface $resourceCollection,
+        private readonly OperationProviderInterface $resourceCollection,
         private readonly bool $docsEnabled,
     ) {
         parent::__construct($kernel->getEnvironment());
 
-        /** @var string[]|string $paths */
+        /** @var array<string>|string $paths */
         $paths = $kernel->locateResource('@ApiScoutBundle/Resources/config/routes');
         $this->fileLoader = new PhpFileLoader(new FileLocator($paths));
     }
@@ -46,13 +51,13 @@ final class ApiLoader extends Loader
         /**
          * @var Operations<HttpOperation> $operations
          */
-        $operations = $this->resourceCollection->create();
+        $operations = $this->resourceCollection->getCollection();
 
         $routeCollection = new RouteCollection();
 
         $this->loadExternalFiles($routeCollection);
 
-        foreach ($operations->getOperations() as $operation) {
+        foreach ($operations as $operation) {
             if (!class_exists($operation->getController())) {
                 throw new ResourceClassNotFoundException($operation->getController());
             }

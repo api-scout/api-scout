@@ -24,22 +24,31 @@ use function count;
 use function defined;
 use function in_array;
 
+/**
+ * Extract class name from files.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DirectoryClassesExtractor
 {
     public function __construct(
-        private readonly string $path
+        private readonly array $paths
     ) {
     }
 
     public function extract(): array
     {
-        $files = iterator_to_array(new RecursiveIteratorIterator(
-            new RecursiveCallbackFilterIterator(
-                new RecursiveDirectoryIterator($this->path, FilesystemIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS),
-                static fn (SplFileInfo $current) => !str_starts_with($current->getBasename(), '.')
-            ),
-            RecursiveIteratorIterator::LEAVES_ONLY
-        ));
+        $files = [];
+
+        foreach ($this->paths as $path) {
+            $files += iterator_to_array(new RecursiveIteratorIterator(
+                new RecursiveCallbackFilterIterator(
+                    new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS),
+                    static fn (SplFileInfo $current) => !str_starts_with($current->getBasename(), '.')
+                ),
+                RecursiveIteratorIterator::LEAVES_ONLY
+            ));
+        }
 
         /** @phpstan-ignore-next-line Specified type are okay */
         usort($files, static fn (SplFileInfo $a, SplFileInfo $b) => (string) $a > (string) $b ? 1 : -1);

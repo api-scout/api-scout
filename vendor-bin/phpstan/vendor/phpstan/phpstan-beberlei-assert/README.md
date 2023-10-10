@@ -48,6 +48,9 @@ This extension specifies types of values passed to:
 * `Assertion::same`
 * `Assertion::notSame`
 * `Assertion::isJsonString`
+* `Assertion::keyExists`
+* `Assertion::keyNotExists`
+* `Assertion::notBlank`
 * `nullOr*` and `all*` variants of the above methods
 
 `Assert::that`, `Assert::thatNullOr` and `Assert::thatAll` chaining methods are also supported.

@@ -15,14 +15,17 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyEntity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyCompanyEntity
 {
     public function __construct(
-        #[Groups(['read'])]
+        #[Groups(['dummy::read'])]
         public ?int $id,
-        #[Groups(['read', 'write'])]
+        #[Groups(['dummy::read', 'dummy::write'])]
         public string $name,
-        #[Groups(['read', 'write'])]
+        #[Groups(['dummy::read', 'dummy::write'])]
         public string $description,
     ) {
     }

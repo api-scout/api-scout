@@ -25,6 +25,11 @@ use Symfony\Component\Uid\Uuid;
 
 use function is_string;
 
+/**
+ * Translate the builtin type to OpenApi type.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 trait PropertyTypeBuilderTrait
 {
     private function buildPropertyType(?string $type, bool $isNullable = false): array

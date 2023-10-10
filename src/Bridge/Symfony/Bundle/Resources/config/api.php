@@ -20,7 +20,5 @@ return static function (ContainerConfigurator $container): void {
         ->defaults()
     ;
 
-    $services
-        ->set('api_scout.infrastructure.negotiator', Negotiator::class)
-    ;
+    $services->set('api_scout.infrastructure.negotiator', Negotiator::class);
 };

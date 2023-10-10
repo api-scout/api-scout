@@ -19,6 +19,11 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
+/**
+ * The Symfony extension.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class ApiScoutExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -41,10 +46,9 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         );
 
         $loader->load('api.php');
-        $loader->load('documentation.php');
         $loader->load('openapi.php');
-        $loader->load('pagination.php');
         $loader->load('resource.php');
+        $loader->load('response.php');
         $loader->load('swagger.php');
         $loader->load('symfony.php');
     }
@@ -61,11 +65,10 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.description', $configs['description']);
         $container->setParameter('api_scout.version', $configs['version']);
         $container->setParameter('api_scout.response_item_key', $configs['response_item_key']);
+        $container->setParameter('api_scout.response_pagination_key', $configs['response_pagination_key']);
+        $container->setParameter('api_scout.exception_to_status', $configs['exception_to_status']);
 
-        $container->setParameter('api_scout.pagination.enabled', $configs['pagination']['enabled']);
-        $container->setParameter('api_scout.pagination.page_parameter_name', $configs['pagination']['page_parameter_name']);
-        $container->setParameter('api_scout.pagination.items_per_page', $configs['pagination']['items_per_page']);
-        $container->setParameter('api_scout.pagination.maximum_items_per_page', $configs['pagination']['maximum_items_per_page']);
+        $container->setParameter('api_scout.mapping.paths', $configs['mapping']['paths']);
 
         $container->setParameter('api_scout.oauth.enabled', $configs['oauth']['enabled']);
         $container->setParameter('api_scout.oauth.type', $configs['oauth']['type']);
@@ -83,13 +86,8 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.openapi.license.name', $configs['openapi']['license']['name']);
         $container->setParameter('api_scout.openapi.license.url', $configs['openapi']['license']['url']);
 
-        $container->setParameter('api_scout.path', $configs['path']);
-
         $container->setParameter('api_scout.enable_swagger_ui', $configs['enable_swagger_ui']);
-        $container->setParameter('api_scout.show_webby', $configs['show_webby']);
         $container->setParameter('api_scout.enable_re_doc', $configs['enable_re_doc']);
         $container->setParameter('api_scout.enable_docs', $configs['enable_docs']);
-        $container->setParameter('api_scout.asset_package', $configs['asset_package']);
-        $container->setParameter('api_scout.swagger_ui_extra_configuration', $configs['swagger_ui_extra_configuration']);
     }
 }

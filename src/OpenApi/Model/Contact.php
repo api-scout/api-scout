@@ -15,8 +15,11 @@ namespace ApiScout\OpenApi\Model;
 
 final class Contact
 {
-    public function __construct(private ?string $name = null, private ?string $url = null, private ?string $email = null)
-    {
+    public function __construct(
+        private ?string $name = null,
+        private ?string $url = null,
+        private ?string $email = null
+    ) {
     }
 
     public function getName(): ?string
@@ -32,29 +35,5 @@ final class Contact
     public function getEmail(): ?string
     {
         return $this->email;
-    }
-
-    public function withName(?string $name): self
-    {
-        $clone = clone $this;
-        $clone->name = $name;
-
-        return $clone;
-    }
-
-    public function withUrl(?string $url): self
-    {
-        $clone = clone $this;
-        $clone->url = $url;
-
-        return $clone;
-    }
-
-    public function withEmail(?string $email): self
-    {
-        $clone = clone $this;
-        $clone->email = $email;
-
-        return $clone;
     }
 }
