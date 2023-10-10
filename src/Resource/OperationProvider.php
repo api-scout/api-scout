@@ -20,6 +20,7 @@ use ApiScout\Operation;
 use ApiScout\Operations;
 use ApiScout\Response\Pagination\Pagination;
 use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePagination;
 use LogicException;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -304,14 +305,18 @@ final class OperationProvider implements OperationProviderInterface
             throw new ResourceClassNotFoundException($output);
         }
 
+        if ($output === Response::class || $output === JsonResponse::class) {
+            return null;
+        }
+
+        if ($output === DoctrinePagination::class) {
+            return Pagination::class;
+        }
+
         $outputClass = new ReflectionClass($output);
 
         if ($outputClass->isIterable()) {
             return Pagination::class;
-        }
-
-        if ($output === Response::class || $output === JsonResponse::class) {
-            return null;
         }
 
         return $output;

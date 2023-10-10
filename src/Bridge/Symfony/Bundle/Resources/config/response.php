@@ -45,6 +45,11 @@ return static function (ContainerConfigurator $container): void {
     ;
     $services->alias(PaginationMetadataInterface::class, 'api_scout.pagination.pagination_metadata');
 
+    $services->set('api_scout.api.prepare_response', ResponseGenerator::class)
+        ->arg('$responseItemKey', param('api_scout.response_item_key'))
+    ;
+    $services->alias(ResponseGeneratorInterface::class, 'api_scout.api.prepare_response');
+
     $services->set('api_scout.response_serializer', SymfonyResponseSerializer::class)
         ->arg('$serializer', service('serializer'))
     ;
@@ -54,9 +59,4 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->alias(NormalizerInterface::class, 'api_scout.response.normalizer');
-
-    $services->set('api_scout.api.prepare_response', ResponseGenerator::class)
-        ->arg('$responseItemKey', param('api_scout.response_item_key'))
-    ;
-    $services->alias(ResponseGeneratorInterface::class, 'api_scout.api.prepare_response');
 };
