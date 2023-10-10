@@ -21,7 +21,7 @@ You can choose to use those tools as well as not to use them without having to f
 ## Installation
 
 ```bash
-composer require api-scout/api-scout dev-beta
+composer require api-scout/api-scout dev-main
 ```
 
 ```php
@@ -51,8 +51,8 @@ Your api specification should be available at: `/api/docs`
 - [Delete](docs/Attributes/BasicOperations.md#delete)
 
 #### OpenApi
-- [OpenApi Configuration](docs/OpenApi/OpenApiConfiguration.md)
-- [OpenApi Specification Support]()
+- [Configuration](docs/OpenApi/Configuration.md)
+- [Specification Support](docs/OpenApi/SpecificationSupport.md)
 
 #### Advanced
 - [FileUpload](docs/FileUpload.md)
