@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\GetCollectionWithoutPaginationDummy;
+namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\Pagination\GetCollectionWithoutPaginationDummy;
 
 use ApiScout\Attribute\ApiProperty;
 

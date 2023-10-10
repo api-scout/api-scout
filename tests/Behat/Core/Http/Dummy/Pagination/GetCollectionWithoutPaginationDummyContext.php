@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Behat\Core\Http\Dummy;
+namespace ApiScout\Tests\Behat\Core\Http\Dummy\Pagination;
 
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
