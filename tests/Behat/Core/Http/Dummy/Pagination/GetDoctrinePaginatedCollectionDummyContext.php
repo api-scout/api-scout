@@ -42,8 +42,6 @@ final class GetDoctrinePaginatedCollectionDummyContext extends BaseContext
                 ],
             ]
         );
-
-        dd($this->getResponse()->toArray());
     }
 
     /**

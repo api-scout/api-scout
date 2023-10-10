@@ -25,7 +25,7 @@ use PHPUnit\Framework\Assert;
  */
 final class GetPaginatedCollectionDummyContext extends BaseContext
 {
-    private const GET_PAGINATED_COLLECTION_DUMMY_PATH = 'doctrine_paginated_dummies';
+    private const GET_PAGINATED_COLLECTION_DUMMY_PATH = 'paginated_dummies';
 
     /**
      * @When one get a paginated dummy collection with :name at page :page

@@ -80,7 +80,7 @@ final class SwaggerJsonContext extends BaseContext
         Assert::assertSame($response['servers'][0]['url'], '/');
         Assert::assertSame($response['servers'][0]['description'], '');
 
-        Assert::assertCount(10, $response['paths']);
+        Assert::assertCount(11, $response['paths']);
         Assert::assertCount(7, $response['components']);
     }
 }
