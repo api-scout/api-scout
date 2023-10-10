@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Behat\Core\Http\Dummy;
+namespace ApiScout\Tests\Behat\Core\Http\Dummy\Pagination;
 
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
@@ -45,7 +45,7 @@ final class GetPaginatedCollectionDummyContext extends BaseContext
     }
 
     /**
-     * @Then get paginated dummy collection response should be:
+     * @Then get doctrine paginated dummy collection response should be:
      */
     public function then(PyStringNode $content): void
     {

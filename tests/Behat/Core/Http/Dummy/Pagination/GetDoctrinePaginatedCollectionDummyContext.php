@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\Tests\Behat\Core\Http\Dummy;
+namespace ApiScout\Tests\Behat\Core\Http\Dummy\Pagination;
 
 use ApiScout\HttpOperation;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
@@ -23,23 +23,29 @@ use PHPUnit\Framework\Assert;
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class GetCollectionWithoutPaginationDummyContext extends BaseContext
+final class GetDoctrinePaginatedCollectionDummyContext extends BaseContext
 {
-    private const GET_COLLECTION_WITHOUT_PAGINATION_DUMMY_PATH = 'dummies_without_pagination';
+    private const GET_DOCTRINE_PAGINATED_COLLECTION_DUMMY_PATH = 'doctrine_paginated_dummies';
 
     /**
-     * @When one get a dummy collection without pagination
+     * @When one get a doctrine paginated dummy collection with :name at page :page
      */
-    public function when(): void
+    public function when(string $name, int $page): void
     {
         $this->request(
             HttpOperation::METHOD_GET,
-            self::GET_COLLECTION_WITHOUT_PAGINATION_DUMMY_PATH,
+            self::GET_DOCTRINE_PAGINATED_COLLECTION_DUMMY_PATH,
+            [
+                'query' => [
+                    'name' => $name,
+                    'page' => $page,
+                ],
+            ]
         );
     }
 
     /**
-     * @Then get dummy collection without pagination response should be:
+     * @Then get paginated dummy collection response should be:
      */
     public function then(PyStringNode $content): void
     {

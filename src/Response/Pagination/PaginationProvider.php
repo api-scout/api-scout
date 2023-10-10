@@ -15,6 +15,7 @@ namespace ApiScout\Response\Pagination;
 
 use ApiScout\Operation;
 use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use LogicException;
 
 /**
@@ -57,6 +58,10 @@ final class PaginationProvider implements PaginationProviderInterface
             return $data;
         }
 
+        if ($data instanceof DoctrinePaginator) {
+            return $this->getDoctrinePagination($data, $operation, $paginationQueryInput);
+        }
+
         if (!is_iterable($data)) {
             throw new LogicException('$data from Collection Operation should be iterable.');
         }
@@ -66,6 +71,19 @@ final class PaginationProvider implements PaginationProviderInterface
             $paginationQueryInput->getPage(),
             $paginationQueryInput->getItemsPerPage(),
             null
+        );
+    }
+
+    private function getDoctrinePagination(
+        DoctrinePaginator $data,
+        Operation $operation,
+        PaginationQueryInputInterface $paginationQueryInput
+    ): PaginationInterface {
+        return new Pagination(
+            $data->getIterator(),
+            $paginationQueryInput->getPage(),
+            $paginationQueryInput->getItemsPerPage(),
+            $data->count()
         );
     }
 }

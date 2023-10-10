@@ -15,6 +15,7 @@ namespace ApiScout\Tests\Fixtures\app;
 
 use ApiScout\Bridge\Symfony\Bundle\ApiScoutBundle;
 use ApiScout\Tests\Fixtures\TestBundle\TestBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -51,6 +52,7 @@ final class AppKernel extends Kernel
     {
         $bundles = [
             new ApiScoutBundle(),
+            new DoctrineBundle(),
             new FriendsOfBehatSymfonyExtensionBundle(),
             new TwigBundle(),
             new FrameworkBundle(),
@@ -80,6 +82,28 @@ final class AppKernel extends Kernel
         );
 
         $loader->load('services.php');
+
+        $container->prependExtensionConfig('doctrine', [
+            'dbal' => [
+                'url' => 'sqlite:///'.__DIR__.'/var/app.db',
+            ],
+            'orm' => [
+                'auto_generate_proxy_classes' => true,
+                'enable_lazy_ghost_objects' => true,
+                'report_fields_where_declared' => true,
+                'validate_xml_mapping' => true,
+                'naming_strategy' => 'doctrine.orm.naming_strategy.underscore_number_aware',
+                'auto_mapping' => true,
+                'mappings' => [
+                    'App' => [
+                        'is_bundle' => false,
+                        'dir' => __DIR__.'/../TestBundle/Entity',
+                        'prefix' => 'App\\Tests\\Entity',
+                        'alias' => 'App\\Tests',
+                    ],
+                ],
+            ],
+        ]);
 
         $container->prependExtensionConfig('framework', [
             'secret' => 'marvin.fr',
