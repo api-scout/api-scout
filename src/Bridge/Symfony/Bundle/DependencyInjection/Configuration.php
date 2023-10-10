@@ -19,8 +19,6 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
-use function is_array;
-
 /**
  * The configuration of the bundle.
  *
@@ -168,19 +166,10 @@ final class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
-            ->scalarNode('asset_package')->defaultNull()->info('Specify an asset package name to use.')->end()
             ->booleanNode('enable_swagger')->defaultTrue()->info('Enable the Swagger documentation and export.')->end()
             ->booleanNode('enable_swagger_ui')->defaultValue(class_exists(TwigBundle::class))->info('Enable Swagger UI')->end()
             ->booleanNode('enable_re_doc')->defaultValue(class_exists(TwigBundle::class))->info('Enable ReDoc')->end()
             ->booleanNode('enable_docs')->defaultTrue()->info('Enable the docs')->end()
-            ->variableNode('swagger_ui_extra_configuration')
-            ->defaultValue([])
-            ->validate()
-            ->ifTrue(static fn ($v): bool => is_array($v) === false)
-            ->thenInvalid('The swagger_ui_extra_configuration parameter must be an array.')
-            ->end()
-            ->info('To pass extra configuration to Swagger UI, like docExpansion or filter.')
-            ->end()
             ->end()
         ;
     }

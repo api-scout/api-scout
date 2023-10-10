@@ -35,8 +35,6 @@ return static function (ContainerConfigurator $container): void {
         ->set(SwaggerUiContext::class)
         ->arg('$swaggerUiEnabled', param('api_scout.enable_swagger_ui'))
         ->arg('$reDocEnabled', param('api_scout.enable_re_doc'))
-        ->arg('$assetPackage', param('api_scout.asset_package'))
-        ->arg('$extraConfiguration', param('api_scout.swagger_ui_extra_configuration'))
     ;
 
     $services

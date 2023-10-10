@@ -24,6 +24,7 @@ final class SwaggerUiContext
 {
     public function __construct(
         private readonly bool $swaggerUiEnabled = false,
+        private readonly bool $showWebby = true,
         private readonly bool $reDocEnabled = false,
         private readonly ?string $assetPackage = null,
         private readonly array $extraConfiguration = []
@@ -33,6 +34,11 @@ final class SwaggerUiContext
     public function isSwaggerUiEnabled(): bool
     {
         return $this->swaggerUiEnabled;
+    }
+
+    public function isWebbyShown(): bool
+    {
+        return $this->showWebby;
     }
 
     public function isRedocEnabled(): bool
