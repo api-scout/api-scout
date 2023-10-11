@@ -42,9 +42,34 @@ api_scout:
   type: api_scout
 ```
 
-Your api specification should be available at: `/api/docs`
+## Usage
 
-#### Operations
+Use one of the available attribute methods as follows
+```php
+<?php
+
+namespace ApiScout\Controller;
+
+use ApiScout\Attribute\Get;
+
+final class GetBookController
+{
+    #[Get('/books')]
+    public function __invoke(string $id): BookOutput
+    {
+        return new BookOutput(
+            'PHPStan',
+            'There is only one level with PHPStan. The level max.'
+        );
+    }
+}
+```
+Your api specification is now available at: `/api/docs`
+
+![Book OpenApi](docs/Images/book-openapi-ex.png)
+
+
+#### Methods
 - [GetCollection](docs/Attributes/GetCollection.md)
 - [Get](docs/Attributes/BasicOperations.md#get)
 - [Post, Put, Patch](docs/Attributes/BasicOperations.md#post-put-patch)
