@@ -19,6 +19,7 @@ use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
 use LogicException;
+use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
 /**
@@ -29,7 +30,7 @@ use Throwable;
  * @author Antoine Bluchet <soyuka@gmail.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-abstract class Operation
+abstract class Operation extends Route
 {
     private ?string $controller = null;
     private ?string $controllerMethod = null;
@@ -72,6 +73,23 @@ abstract class Operation
         ?string $format,
         ?bool $stateless,
     ) {
+        parent::__construct(
+            path: $path,
+            name: $name,
+            requirements: $requirements,
+            options: $options,
+            defaults: $defaults,
+            host: $host,
+            methods: [$method],
+            schemes: $schemes,
+            condition: $condition,
+            priority: $priority,
+            locale: $locale,
+            format: $format,
+            utf8: null,
+            stateless: null,
+            env: null,
+        );
     }
 
     public function getControllerMethod(): string

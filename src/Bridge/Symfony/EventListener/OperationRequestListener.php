@@ -52,6 +52,12 @@ final class OperationRequestListener implements EventSubscriberInterface
 
         $operation = $this->resourceCollectionFactory->get($controller);
 
+        dd(
+            'OperationRequestListener',
+            $controller,
+            $operation
+        );
+
         if ($operation instanceof Operation) {
             $request->attributes->set('_api_scout_operation', $operation);
         }

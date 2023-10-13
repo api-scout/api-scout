@@ -42,7 +42,7 @@ final class ApiLoader extends Loader
         parent::__construct($kernel->getEnvironment());
 
         /** @var array<string>|string $paths */
-        $paths = $kernel->locateResource('@ApiScoutBundle/Resources/config/routes');
+            $paths = $kernel->locateResource('@ApiScoutBundle/Resources/config/routes');
         $this->fileLoader = new PhpFileLoader(new FileLocator($paths));
     }
 
@@ -93,7 +93,7 @@ final class ApiLoader extends Loader
 
     public function supports(mixed $resource, ?string $type = null): bool
     {
-        return $type === 'api_scout';
+        return false;
     }
 
     private function loadExternalFiles(RouteCollection $routeCollection): void
