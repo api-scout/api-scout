@@ -49,46 +49,38 @@ final class OperationProvider implements OperationProviderInterface
     private const CACHE_PREFIX = 'api_scout.operation.';
 
     public function __construct(
-        private readonly DirectoryClassesExtractor $directoryClassExtractor,
+        private readonly iterable $operationMethodsMap,
         private readonly CacheInterface $cache,
     ) {
     }
 
-    public function getCollection(iterable $classes): Operations
+    public function getCollection(): Operations
     {
-//        $classes = $this->directoryClassExtractor->extract();
         $operations = [];
 
-        foreach ($classes as $controller) {
-//            dd($controller);
-            if (is_object($controller)) {
-                $controller = $controller::class;
+        foreach ($this->operationMethodsMap as $methodName) {
+            try {
+                $method = new ReflectionMethod($methodName);
+            } catch (ReflectionException) {
+                throw new ResourceClassNotFoundException($methodName);
             }
 
-            if (is_string($controller) && !class_exists($controller)) {
-                throw new ResourceClassNotFoundException($controller);
+            if ($method->getDeclaringClass()->isAbstract()) {
+                continue;
             }
 
-            $reflectionClass = new ReflectionClass($controller);
+            if ($this->isOperationResource($method)) {
+                $operationCacheKey = self::getOperationCacheKey(self::getControllerName($method));
+                $operation = $this->cache->get(
+                    $operationCacheKey,
+                    fn () => $this->buildOperationFromMethod($method)
+                );
 
-            foreach ($reflectionClass->getMethods() as $method) {
-                if ($method->class !== $controller) {
-                    // We only want the method of the current class. This line avoid reading inherited classes
-                    continue;
+                if ($operation->getName() === null) {
+                    throw new LogicException('Operation name should have been initialized before hand.');
                 }
 
-                if ($this->isOperationResource($method)) {
-                    $operation = $this->cache->get(
-                        self::getOperationCacheKey(self::getControllerName($method)),
-                        fn () => $this->buildOperationFromMethod($method, $controller)
-                    );
-
-                    if ($operation->getName() === null) {
-                        throw new LogicException('Operation name should have been initialized before hand.');
-                    }
-
-                    $operations[$operation->getName()] = $operation;
-                }
+                $operations[$operation->getName()] = $operation;
             }
         }
 
@@ -126,13 +118,13 @@ final class OperationProvider implements OperationProviderInterface
         return false;
     }
 
-    private function buildOperationFromMethod(ReflectionMethod $method, string $controller): Operation
+    private function buildOperationFromMethod(ReflectionMethod $method): Operation
     {
         $operation = $this->buildMethodOperation($method);
 
         if ($operation->getName() === null) {
             $operation->setName(
-                $this->getDefaultRouteName($method->class, $method->name)
+                $this->getDefaultRouteName($method->getDeclaringClass()->name, $method->name)
             );
         }
 
@@ -178,8 +170,8 @@ final class OperationProvider implements OperationProviderInterface
             );
         }
 
-        $operation->setController($controller);
-        $operation->setControllerMethod($method->getName());
+        $operation->setController($method->getDeclaringClass()->name);
+        $operation->setControllerMethod($method->name);
 
         return $operation;
     }

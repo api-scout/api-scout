@@ -75,7 +75,6 @@ return static function (ContainerConfigurator $container): void {
         ->arg('$schemaFactory', service(SchemaFactoryInterface::class))
         ->arg('$filterFactory', service(FilterFactoryInterface::class))
         ->arg('$exceptionsToStatuses', param('api_scout.exception_to_status'))
-        ->arg('$controllerWithOperationsClasses', tagged_iterator('api_scout.controller_operations'))
         ->arg('$openApiOptions', service(Options::class))
     ;
 

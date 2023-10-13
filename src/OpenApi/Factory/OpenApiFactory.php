@@ -30,7 +30,6 @@ use ApiScout\Operations;
 use ApiScout\Resource\OperationProviderInterface;
 use ArrayObject;
 use LogicException;
-use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Throwable;
 
 use function in_array;
@@ -60,7 +59,6 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         private readonly SchemaFactoryInterface $schemaFactory,
         private readonly FilterFactoryInterface $filterFactory,
         private readonly array $exceptionsToStatuses,
-        private readonly iterable $controllerWithOperationsClasses,
         ?Options $openApiOptions = null
     ) {
         $this->openApiOptions = $openApiOptions ?: new Options('OpenApi Documentation');
@@ -68,9 +66,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
     public function __invoke(array $context = []): OpenApi
     {
-        $collections = $this->resourceCollection->getCollection(
-            $this->controllerWithOperationsClasses
-        );
+        $collections = $this->resourceCollection->getCollection();
 
         $baseUrl = $context[self::BASE_URL] ?? '/';
         $contact = $this->openApiOptions->getContactUrl() === null || $this->openApiOptions->getContactEmail() === null ? null : new Model\Contact($this->openApiOptions->getContactName(), $this->openApiOptions->getContactUrl(), $this->openApiOptions->getContactEmail());

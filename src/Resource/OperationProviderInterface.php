@@ -24,7 +24,7 @@ use ApiScout\Operations;
  */
 interface OperationProviderInterface
 {
-    public function getCollection(iterable $classes): Operations;
+    public function getCollection(): Operations;
 
     public function get(string $controllerName): ?Operation;
 }

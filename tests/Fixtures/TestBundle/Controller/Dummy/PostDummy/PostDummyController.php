@@ -20,7 +20,6 @@ use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyOutput;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyPayloadInput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>

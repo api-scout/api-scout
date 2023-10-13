@@ -20,6 +20,8 @@ use ApiScout\Attribute\Patch;
 use ApiScout\Attribute\Post;
 use ApiScout\Attribute\Put;
 use ApiScout\Operation;
+use ArrayObject;
+use ReflectionMethod;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -69,13 +71,17 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
             Delete::class,
         ];
 
+        $operationMethodsMap = $container->register('.api_scout.operation_methods_map', ArrayObject::class);
+
         foreach ($operationAttributes as $operation) {
             $container->registerAttributeForAutoconfiguration($operation, static function (
                 ChildDefinition $definition,
                 Operation $attribute,
-                \ReflectionMethod $reflector,
-            ): void {
-                $definition->addTag('api_scout.controller_operations');
+                ReflectionMethod $reflector,
+            ) use ($operationMethodsMap): void {
+                $operationMethodsMap->addMethodCall('append', [
+                    sprintf('%s::%s', $reflector->getDeclaringClass()->name, $reflector->name),
+                ]);
             });
         }
     }
