@@ -309,7 +309,7 @@ final class OperationProvider implements OperationProviderInterface
             return null;
         }
 
-        if ($output === DoctrinePagination::class) {
+        if (class_exists(DoctrinePagination::class) && $output === DoctrinePagination::class) {
             return Pagination::class;
         }
 
