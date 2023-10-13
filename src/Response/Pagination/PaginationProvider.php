@@ -15,7 +15,7 @@ namespace ApiScout\Response\Pagination;
 
 use ApiScout\Operation;
 use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePagination;
 use LogicException;
 
 /**
@@ -58,7 +58,7 @@ final class PaginationProvider implements PaginationProviderInterface
             return $data;
         }
 
-        if ($data instanceof DoctrinePaginator) {
+        if (class_exists(DoctrinePagination::class) && $data instanceof DoctrinePagination) {
             return $this->getDoctrinePagination($data, $operation, $paginationQueryInput);
         }
 
@@ -75,7 +75,7 @@ final class PaginationProvider implements PaginationProviderInterface
     }
 
     private function getDoctrinePagination(
-        DoctrinePaginator $data,
+        DoctrinePagination $data,
         Operation $operation,
         PaginationQueryInputInterface $paginationQueryInput
     ): PaginationInterface {
