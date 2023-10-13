@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\EventListener;
 
-use ApiScout\HttpOperation;
+use ApiScout\Operation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -51,7 +51,7 @@ final class PayloadValidationExceptionListener
         $request = $event->getRequest();
         $operation = $request->attributes->get('_api_scout_operation');
 
-        if (!$operation instanceof HttpOperation) {
+        if (!$operation instanceof Operation) {
             return;
         }
 

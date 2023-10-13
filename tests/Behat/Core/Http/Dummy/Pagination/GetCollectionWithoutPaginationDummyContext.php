@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\Dummy\Pagination;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
@@ -33,7 +33,7 @@ final class GetCollectionWithoutPaginationDummyContext extends BaseContext
     public function when(): void
     {
         $this->request(
-            HttpOperation::METHOD_GET,
+            HttpRequest::METHOD_GET,
             self::GET_COLLECTION_WITHOUT_PAGINATION_DUMMY_PATH,
         );
     }

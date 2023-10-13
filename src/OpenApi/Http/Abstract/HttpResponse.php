@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace ApiScout\OpenApi\Http;
+namespace ApiScout\OpenApi\Http\Abstract;
 
 /**
  * Abstract Response class for http status code.
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-abstract class AbstractResponse
+abstract class HttpResponse
 {
     public const HTTP_CONTINUE = 100;
     public const HTTP_SWITCHING_PROTOCOLS = 101;
@@ -83,7 +83,4 @@ abstract class AbstractResponse
     public const HTTP_LOOP_DETECTED = 508;                                               // RFC5842
     public const HTTP_NOT_EXTENDED = 510;                                                // RFC2774
     public const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;                             // RFC6585
-
-    public const CONTENT_TYPE = 'Content-Type';
-    public const CONTENT_DISPOSITION = 'Content-Disposition';
 }

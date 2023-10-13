@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\DummyAttribute;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use ApiScout\Tests\Fixtures\Assert\Assertion;
 use Behat\Gherkin\Node\TableNode;
@@ -37,7 +37,7 @@ final class DeleteDummyAttributeContext extends BaseContext
         Assertion::keyExists($inputs, 'id');
 
         $this->request(
-            HttpOperation::METHOD_DELETE,
+            HttpRequest::METHOD_DELETE,
             self::DELETE_DUMMY_ATTRIBUTE_PATH.'/'.(int) $inputs['id']
         );
     }

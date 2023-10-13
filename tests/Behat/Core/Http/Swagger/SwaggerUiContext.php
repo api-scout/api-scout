@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\Swagger;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
 /**
@@ -31,7 +31,7 @@ final class SwaggerUiContext extends BaseContext
     public function when(): void
     {
         $this->request(
-            HttpOperation::METHOD_GET,
+            HttpRequest::METHOD_GET,
             self::SWAGGER_UI_PATH
         );
     }

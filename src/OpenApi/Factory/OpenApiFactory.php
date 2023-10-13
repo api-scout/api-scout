@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace ApiScout\OpenApi\Factory;
 
 use ApiScout\Attribute\CollectionOperationInterface;
-use ApiScout\HttpOperation;
-use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
+use ApiScout\OpenApi\Http\Abstract\HttpResponse;
 use ApiScout\OpenApi\JsonSchema\Factory\FilterFactory;
 use ApiScout\OpenApi\JsonSchema\Factory\FilterFactoryInterface;
 use ApiScout\OpenApi\JsonSchema\Factory\SchemaFactoryInterface;
@@ -115,7 +115,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $openapiOperation = $operation->getOpenapi();
 
             // Operation ignored from OpenApi
-            if ($operation instanceof HttpOperation && $openapiOperation === false) {
+            if ($openapiOperation === false) {
                 continue;
             }
 
@@ -175,7 +175,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 && $operation->getInput() !== null
                 && in_array(
                     $method,
-                    [HttpOperation::METHOD_PATCH, HttpOperation::METHOD_PUT, HttpOperation::METHOD_POST],
+                    [HttpRequest::METHOD_PATCH, HttpRequest::METHOD_PUT, HttpRequest::METHOD_POST],
                     true
                 )) {
                 $operationInputSchema = $this->schemaFactory->buildSchema(
@@ -188,7 +188,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
                 $openapiOperation = $openapiOperation->withRequestBody(
                     new Model\RequestBody(
-                        sprintf('The %s %s resource', $method === HttpOperation::METHOD_POST ? 'new' : 'updated', $resourceShortName),
+                        sprintf('The %s %s resource', $method === HttpRequest::METHOD_POST ? 'new' : 'updated', $resourceShortName),
                         $this->buildContent(
                             $operation
                         ),
@@ -212,9 +212,9 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
         // Create responses
         switch ($operation->getMethod()) {
-            case HttpOperation::METHOD_GET:
+            case HttpRequest::METHOD_GET:
                 $openapiOperation = $this->buildResponseContent(
-                    $operation->getStatusCode() ?: AbstractResponse::HTTP_OK,
+                    $operation->getStatusCode() ?: HttpResponse::HTTP_OK,
                     sprintf(
                         '%s %s',
                         $resourceShortName,
@@ -224,7 +224,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     $openapiOperation
                 );
                 break;
-            case HttpOperation::METHOD_POST:
+            case HttpRequest::METHOD_POST:
                 $openapiOperation = $this->buildResponseContent(
                     $operation->getStatusCode(),
                     sprintf('%s resource created', $resourceShortName),
@@ -233,15 +233,15 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 );
 
                 $openapiOperation = $this->buildResponseContent(
-                    AbstractResponse::HTTP_BAD_REQUEST,
+                    HttpResponse::HTTP_BAD_REQUEST,
                     'Invalid input',
                     null,
                     $openapiOperation
                 );
 
                 break;
-            case HttpOperation::METHOD_PATCH:
-            case HttpOperation::METHOD_PUT:
+            case HttpRequest::METHOD_PATCH:
+            case HttpRequest::METHOD_PUT:
                 $openapiOperation = $this->buildResponseContent(
                     $operation->getStatusCode(),
                     sprintf('%s resource updated', $resourceShortName),
@@ -250,13 +250,13 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 );
 
                 $openapiOperation = $this->buildResponseContent(
-                    AbstractResponse::HTTP_BAD_REQUEST,
+                    HttpResponse::HTTP_BAD_REQUEST,
                     'Invalid input',
                     null,
                     $openapiOperation
                 );
                 break;
-            case HttpOperation::METHOD_DELETE:
+            case HttpRequest::METHOD_DELETE:
                 $openapiOperation = $this->buildResponseContent(
                     $operation->getStatusCode(),
                     sprintf('%s resource deleted', $resourceShortName),
@@ -282,7 +282,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $this->appendSchemaDefinitions($schemas, $operationOutputSchema);
         }
 
-        if (!$operation instanceof CollectionOperationInterface && $operation->getMethod() !== HttpOperation::METHOD_POST) {
+        if (!$operation instanceof CollectionOperationInterface && $operation->getMethod() !== HttpRequest::METHOD_POST) {
             if (!isset($existingResponses[404])) {
                 $openapiOperation = $openapiOperation->withResponse(
                     404,
@@ -333,15 +333,15 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
     private function isReadOperation(Operation $operation): bool
     {
-        return $operation->getMethod() === HttpOperation::METHOD_GET;
+        return $operation->getMethod() === HttpRequest::METHOD_GET;
     }
 
     private function isWriteOperation(Operation $operation): bool
     {
-        return $operation->getMethod() === HttpOperation::METHOD_POST
-            || $operation->getMethod() === HttpOperation::METHOD_PUT
-            || $operation->getMethod() === HttpOperation::METHOD_PATCH
-            || $operation->getMethod() === HttpOperation::METHOD_DELETE;
+        return $operation->getMethod() === HttpRequest::METHOD_POST
+            || $operation->getMethod() === HttpRequest::METHOD_PUT
+            || $operation->getMethod() === HttpRequest::METHOD_PATCH
+            || $operation->getMethod() === HttpRequest::METHOD_DELETE;
     }
 
     /**
@@ -484,19 +484,19 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     private function getPathDescription(string $resourceShortName, string $method, bool $isCollection): string
     {
         switch ($method) {
-            case HttpOperation::METHOD_GET:
+            case HttpRequest::METHOD_GET:
                 $pathSummary = $isCollection ? 'Retrieves the collection of %s resources.' : 'Retrieves a %s resource.';
                 break;
-            case HttpOperation::METHOD_POST:
+            case HttpRequest::METHOD_POST:
                 $pathSummary = 'Creates a %s resource.';
                 break;
-            case HttpOperation::METHOD_PATCH:
+            case HttpRequest::METHOD_PATCH:
                 $pathSummary = 'Updates the %s resource.';
                 break;
-            case HttpOperation::METHOD_PUT:
+            case HttpRequest::METHOD_PUT:
                 $pathSummary = 'Replaces the %s resource.';
                 break;
-            case HttpOperation::METHOD_DELETE:
+            case HttpRequest::METHOD_DELETE:
                 $pathSummary = 'Removes the %s resource.';
                 break;
             default:

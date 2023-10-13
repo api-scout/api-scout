@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http;
 
-use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Http\Abstract\HttpResponse;
 use Assert\Assertion;
 use PHPUnit\Framework\Assert;
 
@@ -30,7 +30,7 @@ final class ResultContext extends BaseContext
      */
     public function ok(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_OK, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_OK, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -38,7 +38,7 @@ final class ResultContext extends BaseContext
      */
     public function noContent(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_NO_CONTENT, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_NO_CONTENT, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -46,7 +46,7 @@ final class ResultContext extends BaseContext
      */
     public function created(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_CREATED, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_CREATED, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -54,7 +54,7 @@ final class ResultContext extends BaseContext
      */
     public function redirect(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_FOUND, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_FOUND, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -62,7 +62,7 @@ final class ResultContext extends BaseContext
      */
     public function invalid(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_BAD_REQUEST, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_BAD_REQUEST, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -70,7 +70,7 @@ final class ResultContext extends BaseContext
      */
     public function unsupportedMediaType(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_UNSUPPORTED_MEDIA_TYPE, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_UNSUPPORTED_MEDIA_TYPE, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -78,7 +78,7 @@ final class ResultContext extends BaseContext
      */
     public function requestEntityTooLarge(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_REQUEST_ENTITY_TOO_LARGE, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_REQUEST_ENTITY_TOO_LARGE, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -86,7 +86,7 @@ final class ResultContext extends BaseContext
      */
     public function notFound(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_NOT_FOUND, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_NOT_FOUND, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -94,7 +94,7 @@ final class ResultContext extends BaseContext
      */
     public function forbidden(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_FORBIDDEN, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_FORBIDDEN, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -102,7 +102,7 @@ final class ResultContext extends BaseContext
      */
     public function accepted(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_ACCEPTED, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_ACCEPTED, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -110,7 +110,7 @@ final class ResultContext extends BaseContext
      */
     public function unauthorized(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_UNAUTHORIZED, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_UNAUTHORIZED, $this->getResponse()->getStatusCode());
     }
 
     /**
@@ -118,7 +118,7 @@ final class ResultContext extends BaseContext
      */
     public function internalError(): void
     {
-        Assert::assertSame(AbstractResponse::HTTP_INTERNAL_SERVER_ERROR, $this->getResponse()->getStatusCode());
+        Assert::assertSame(HttpResponse::HTTP_INTERNAL_SERVER_ERROR, $this->getResponse()->getStatusCode());
     }
 
     /**

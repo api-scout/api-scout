@@ -43,6 +43,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $configs = $this->processConfiguration($configuration, $configs);
 
         $this->registerCommonConfiguration($configs, $container);
+        $this->registerOperationsConfiguration($container);
 
         /**
          * @var string $env
@@ -61,29 +62,6 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $loader->load('response.php');
         $loader->load('swagger.php');
         $loader->load('symfony.php');
-
-        $operationAttributes = [
-            GetCollection::class,
-            Get::class,
-            Post::class,
-            Put::class,
-            Patch::class,
-            Delete::class,
-        ];
-
-        $operationMethodsMap = $container->register('.api_scout.operation_methods_map', ArrayObject::class);
-
-        foreach ($operationAttributes as $operation) {
-            $container->registerAttributeForAutoconfiguration($operation, static function (
-                ChildDefinition $definition,
-                Operation $attribute,
-                ReflectionMethod $reflector,
-            ) use ($operationMethodsMap): void {
-                $operationMethodsMap->addMethodCall('append', [
-                    sprintf('%s::%s', $reflector->getDeclaringClass()->name, $reflector->name),
-                ]);
-            });
-        }
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -122,5 +100,35 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.enable_swagger_ui', $configs['enable_swagger_ui']);
         $container->setParameter('api_scout.enable_re_doc', $configs['enable_re_doc']);
         $container->setParameter('api_scout.enable_docs', $configs['enable_docs']);
+    }
+
+    private function registerOperationsConfiguration(ContainerBuilder $container): void
+    {
+        $operationAttributes = [
+            GetCollection::class,
+            Get::class,
+            Post::class,
+            Put::class,
+            Patch::class,
+            Delete::class,
+        ];
+
+        $operationMethodsMap = $container->register('.api_scout.operation_methods_map', ArrayObject::class);
+
+        foreach ($operationAttributes as $operation) {
+            $container->registerAttributeForAutoconfiguration(
+                $operation,
+                /** @phpstan-ignore-next-line all operation specified attribute are instance of Operation */
+                static function (
+                    ChildDefinition $definition,
+                    Operation $attribute,
+                    ReflectionMethod $reflector,
+                ) use ($operationMethodsMap): void {
+                    $operationMethodsMap->addMethodCall('append', [
+                        sprintf('%s::%s', $reflector->getDeclaringClass()->name, $reflector->name),
+                    ]);
+                }
+            );
+        }
     }
 }
