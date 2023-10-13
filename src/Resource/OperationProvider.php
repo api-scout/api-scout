@@ -54,13 +54,18 @@ final class OperationProvider implements OperationProviderInterface
     ) {
     }
 
-    public function getCollection(): Operations
+    public function getCollection(iterable $classes): Operations
     {
-        $classes = $this->directoryClassExtractor->extract();
+//        $classes = $this->directoryClassExtractor->extract();
         $operations = [];
 
         foreach ($classes as $controller) {
-            if (!class_exists($controller)) {
+//            dd($controller);
+            if (is_object($controller)) {
+                $controller = $controller::class;
+            }
+
+            if (is_string($controller) && !class_exists($controller)) {
                 throw new ResourceClassNotFoundException($controller);
             }
 

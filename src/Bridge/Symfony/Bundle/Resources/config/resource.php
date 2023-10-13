@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ApiScout\Resource\DirectoryClassesExtractor;
-use ApiScout\Resource\OperationBuilder;
+use ApiScout\Resource\OperationCacheBuilder;
 use ApiScout\Resource\OperationProvider;
 use ApiScout\Resource\OperationProviderInterface;
 
@@ -34,7 +34,10 @@ return static function (ContainerConfigurator $container): void {
 
     $services->alias(OperationProviderInterface::class, 'api_scout.resource.factory.resource_collection_factory');
 
-    $services->set('api_scout.resource.operation_builder', OperationBuilder::class)
-        ->arg('$operationProvider', OperationProviderInterface::class)
+
+    $services->set('api_scout.resource.operation_builder', OperationCacheBuilder::class)
+        ->arg('$operationProvider', service(OperationProviderInterface::class))
+        ->arg('$controllerWithOperationsClasses', tagged_iterator('api_scout.controller_operations'))
+        ->Tag('kernel.cache_warmer', ['priority' => 0])
     ;
 };

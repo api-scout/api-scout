@@ -13,7 +13,15 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\Bundle\DependencyInjection;
 
+use ApiScout\Attribute\Delete;
+use ApiScout\Attribute\Get;
+use ApiScout\Attribute\GetCollection;
+use ApiScout\Attribute\Patch;
+use ApiScout\Attribute\Post;
+use ApiScout\Attribute\Put;
+use ApiScout\Operation;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -51,6 +59,25 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $loader->load('response.php');
         $loader->load('swagger.php');
         $loader->load('symfony.php');
+
+        $operationAttributes = [
+            GetCollection::class,
+            Get::class,
+            Post::class,
+            Put::class,
+            Patch::class,
+            Delete::class,
+        ];
+
+        foreach ($operationAttributes as $operation) {
+            $container->registerAttributeForAutoconfiguration($operation, static function (
+                ChildDefinition $definition,
+                Operation $attribute,
+                \ReflectionMethod $reflector,
+            ): void {
+                $definition->addTag('api_scout.controller_operations');
+            });
+        }
     }
 
     public function prepend(ContainerBuilder $container): void
