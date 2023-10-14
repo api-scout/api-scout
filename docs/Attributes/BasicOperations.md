@@ -1,9 +1,9 @@
 # Operations Configuration
 
-The goal of the ApiScout attributes are to look alike the `#[Route]` attribute from Symfony. <br />
-Consequently only the path is mandatory.</br>
+ApiScout attributes are extending the Symfony #[Route] attribute, and so your routes configuration will still be working !! <br />
 
-However you'll surely want to also add the `resource` property from the operations to groups by category your routes in the generated OpenApi documentation.
+However you'll surely want to also add the `resource` property from the operations
+to groups by category your routes in the generated OpenApi documentation.
 
 ## Get
 

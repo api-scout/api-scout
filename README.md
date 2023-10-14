@@ -35,11 +35,14 @@ return [
 ```
 
 ```yaml
-# config/routes/api_scout.yaml
+# config/routes.yaml
+api_scout_swagger_ui:
+  path: /api/docs
+  controller: api_scout.swagger_ui.action
 
-api_scout:
-  resource: '.'
-  type: api_scout
+api_scout_swagger_json:
+  path: /api/docs.json
+  controller: api_scout.swagger_json.action
 ```
 
 Your api specification should be available at: `/api/docs`
