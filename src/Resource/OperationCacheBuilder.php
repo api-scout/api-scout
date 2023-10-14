@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace ApiScout\Resource;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
-use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 
 final readonly class OperationCacheBuilder implements CacheWarmerInterface
-    // final readonly class OperationCacheBuilder implements WarmableInterface
 {
     public function __construct(
         private OperationProviderInterface $operationProvider,
