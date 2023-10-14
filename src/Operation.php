@@ -18,7 +18,6 @@ use ApiScout\Exception\FiltersShouldBeAnArrayOfApiPropertyException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
-use LogicException;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
@@ -129,6 +128,9 @@ abstract class Operation extends Route
         return $this->output;
     }
 
+    /**
+     * @param class-string|null $output
+     */
     public function setOutput(?string $output): void
     {
         $this->output = $output;
@@ -150,6 +152,11 @@ abstract class Operation extends Route
     public function getFilters(): array
     {
         foreach ($this->filters as $filter) {
+            /**
+             * @phpstan-ignore-next-line since we can build this property through
+             * the constructor this value must be checked.
+             * Idealistically this check should be done in the constructor
+             */
             if (!$filter instanceof ApiProperty) {
                 throw new FiltersShouldBeAnArrayOfApiPropertyException($filter);
             }
@@ -169,6 +176,7 @@ abstract class Operation extends Route
             }
         }
 
+        /** @phpstan-ignore-next-line phpstan does not understand that once here, this is and array of ApiProperty */
         $this->filters = $filters;
     }
 
