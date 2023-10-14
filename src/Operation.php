@@ -32,9 +32,6 @@ use Throwable;
  */
 abstract class Operation extends Route
 {
-    private ?string $controller = null;
-    private ?string $controllerMethod = null;
-
     /**
      * @param class-string|null  $input
      * @param class-string|null  $output
@@ -91,34 +88,6 @@ abstract class Operation extends Route
             stateless: $stateless,
             env: $env,
         );
-    }
-
-    public function getControllerMethod(): string
-    {
-        if ($this->controllerMethod === null) {
-            throw new LogicException('Controller method should always be set once the inherited class has been instantiated.');
-        }
-
-        return $this->controllerMethod;
-    }
-
-    public function setControllerMethod(string $controllerMethod): void
-    {
-        $this->controllerMethod = $controllerMethod;
-    }
-
-    public function getController(): string
-    {
-        if ($this->controller === null) {
-            throw new LogicException('Controller should always be set once the inherited class has been instantiated.');
-        }
-
-        return $this->controller;
-    }
-
-    public function setController(string $controller): void
-    {
-        $this->controller = $controller;
     }
 
     public function getPath(): string

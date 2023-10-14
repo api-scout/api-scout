@@ -170,9 +170,6 @@ final class OperationProvider implements OperationProviderInterface
             );
         }
 
-        $operation->setController($method->getDeclaringClass()->name);
-        $operation->setControllerMethod($method->name);
-
         return $operation;
     }
 
