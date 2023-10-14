@@ -40,7 +40,6 @@ abstract class Operation extends Route
      * @param class-string|null  $output
      * @param array<ApiProperty> $filters
      */
-    /** @phpstan-ignore-next-line It's okay to have some unused parameters */
     public function __construct(
         protected readonly string $path,
         protected string|null $name,
@@ -71,7 +70,9 @@ abstract class Operation extends Route
         ?int $priority,
         ?string $locale,
         ?string $format,
-        ?bool $stateless,
+        ?bool $utf8 = null,
+        ?bool $stateless = null,
+        ?string $env = null
     ) {
         parent::__construct(
             path: $path,
@@ -86,9 +87,9 @@ abstract class Operation extends Route
             priority: $priority,
             locale: $locale,
             format: $format,
-            utf8: null,
-            stateless: null,
-            env: null,
+            utf8: $utf8,
+            stateless: $stateless,
+            env: $env,
         );
     }
 

@@ -65,7 +65,9 @@ final class Post extends Operation
         ?int $priority = null,
         ?string $locale = null,
         ?string $format = null,
+        ?bool $utf8 = null,
         ?bool $stateless = null,
+        ?string $env = null
     ) {
         parent::__construct(
             path: $path,
@@ -97,7 +99,9 @@ final class Post extends Operation
             priority: $priority,
             locale: $locale,
             format: $format,
+            utf8: $utf8,
             stateless: $stateless,
+            env: $env,
         );
     }
 }
