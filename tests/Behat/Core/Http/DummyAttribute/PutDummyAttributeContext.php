@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\DummyAttribute;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 
@@ -32,7 +32,7 @@ final class PutDummyAttributeContext extends BaseContext
     public function when(PyStringNode $content): void
     {
         $this->request(
-            HttpOperation::METHOD_PUT,
+            HttpRequest::METHOD_PUT,
             self::PATCH_DUMMY_PATH,
             [
                 'json' => $this->json($content->getRaw()),

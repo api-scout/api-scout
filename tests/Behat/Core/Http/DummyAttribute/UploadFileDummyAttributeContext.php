@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\DummyAttribute;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -32,7 +32,7 @@ final class UploadFileDummyAttributeContext extends BaseContext
     public function when(string $fileName): void
     {
         $this->request(
-            HttpOperation::METHOD_POST,
+            HttpRequest::METHOD_POST,
             self::UPLOAD_FILE_DUMMY_ATTRIBUTE_PATH,
             [
                 'headers' => ['CONTENT_TYPE' => 'multipart/form-data'],

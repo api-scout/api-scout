@@ -70,14 +70,6 @@ final class Configuration implements ConfigurationInterface
             ->cannotBeEmpty()
             ->defaultValue('pagination')
             ->end()
-            ->arrayNode('mapping')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->arrayNode('paths')
-            ->prototype('scalar')->end()
-            ->end()
-            ->end()
-            ->end()
         ;
 
         $this->addExceptionToStatusSection($rootNode);

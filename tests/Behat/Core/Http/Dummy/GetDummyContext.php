@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\Dummy;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use ApiScout\Tests\Fixtures\Assert\Assertion;
 use Behat\Gherkin\Node\PyStringNode;
@@ -39,7 +39,7 @@ final class GetDummyContext extends BaseContext
         Assertion::keyExists($inputs, 'id');
 
         $this->request(
-            HttpOperation::METHOD_GET,
+            HttpRequest::METHOD_GET,
             self::GET_DUMMY_PATH.'/'.(int) $inputs['id'],
         );
     }

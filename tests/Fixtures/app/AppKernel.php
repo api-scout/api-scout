@@ -141,11 +141,6 @@ final class AppKernel extends Kernel
                     'url' => 'https://fr.wikipedia.org/wiki/Licence_MIT',
                 ],
             ],
-            'mapping' => [
-                'paths' => [
-                    '%kernel.project_dir%/../TestBundle/Controller',
-                ],
-            ],
             'exception_to_status' => [
                 ValidationFailedException::class => Response::HTTP_BAD_REQUEST,
             ],

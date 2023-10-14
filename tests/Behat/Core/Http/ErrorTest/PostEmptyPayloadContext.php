@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\ErrorTest;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
@@ -33,7 +33,7 @@ final class PostEmptyPayloadContext extends BaseContext
     public function when(): void
     {
         $this->request(
-            HttpOperation::METHOD_POST,
+            HttpRequest::METHOD_POST,
             self::POST_EMPTY_PAYLOAD_PATH,
         );
     }

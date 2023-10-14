@@ -10,10 +10,7 @@ api_scout:
   description: 'API description'
   # The version of the API.
   version: '0.0.0'
-  # Controller directories you need to be documented
-  mapping:
-    paths:
-      - '%kernel.project_dir%/src/Controller'
+  # Enable Swagger.
   enable_swagger: true
   # Enable Swagger UI.
   enable_swagger_ui: true

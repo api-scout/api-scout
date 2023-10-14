@@ -14,30 +14,19 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ApiScout\Bridge\Symfony\EventListener\AddFormatListener;
-use ApiScout\Bridge\Symfony\EventListener\ApiLoaderResponseListener;
 use ApiScout\Bridge\Symfony\EventListener\CustomExceptionListener;
+use ApiScout\Bridge\Symfony\EventListener\OpenApiLoaderResponseListener;
 use ApiScout\Bridge\Symfony\EventListener\OperationRequestListener;
 use ApiScout\Bridge\Symfony\EventListener\PayloadValidationExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
-use ApiScout\Bridge\Symfony\Routing\ApiLoader;
 use ApiScout\Resource\OperationProviderInterface;
 use ApiScout\Response\Pagination\PaginationProviderInterface;
 use ApiScout\Response\ResponseGeneratorInterface;
 use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()
         ->defaults()
-    ;
-
-    $services
-        ->set(ApiLoader::class)
-        ->private()
-        ->arg('$kernel', service(KernelInterface::class))
-        ->arg('$resourceCollection', service(OperationProviderInterface::class))
-        ->arg('$docsEnabled', param('api_scout.enable_docs'))
-        ->tag('routing.loader')
     ;
 
     $services
@@ -53,7 +42,7 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services
-        ->set(ApiLoaderResponseListener::class)
+        ->set(OpenApiLoaderResponseListener::class)
         ->arg('$apiNormalizer', service('api_scout.openapi.normalizer'))
         ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 16])
     ;

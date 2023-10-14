@@ -13,7 +13,17 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\Bundle\DependencyInjection;
 
+use ApiScout\Attribute\Delete;
+use ApiScout\Attribute\Get;
+use ApiScout\Attribute\GetCollection;
+use ApiScout\Attribute\Patch;
+use ApiScout\Attribute\Post;
+use ApiScout\Attribute\Put;
+use ApiScout\Operation;
+use ArrayObject;
+use ReflectionMethod;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -33,6 +43,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $configs = $this->processConfiguration($configuration, $configs);
 
         $this->registerCommonConfiguration($configs, $container);
+        $this->registerOperationsConfiguration($container);
 
         /**
          * @var string $env
@@ -68,8 +79,6 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.response_pagination_key', $configs['response_pagination_key']);
         $container->setParameter('api_scout.exception_to_status', $configs['exception_to_status']);
 
-        $container->setParameter('api_scout.mapping.paths', $configs['mapping']['paths']);
-
         $container->setParameter('api_scout.oauth.enabled', $configs['oauth']['enabled']);
         $container->setParameter('api_scout.oauth.type', $configs['oauth']['type']);
         $container->setParameter('api_scout.oauth.flow', $configs['oauth']['flow']);
@@ -89,5 +98,35 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.enable_swagger_ui', $configs['enable_swagger_ui']);
         $container->setParameter('api_scout.enable_re_doc', $configs['enable_re_doc']);
         $container->setParameter('api_scout.enable_docs', $configs['enable_docs']);
+    }
+
+    private function registerOperationsConfiguration(ContainerBuilder $container): void
+    {
+        $operationAttributes = [
+            GetCollection::class,
+            Get::class,
+            Post::class,
+            Put::class,
+            Patch::class,
+            Delete::class,
+        ];
+
+        $operationMethodsMap = $container->register('.api_scout.operation_methods_map', ArrayObject::class);
+
+        foreach ($operationAttributes as $operation) {
+            $container->registerAttributeForAutoconfiguration(
+                $operation,
+                /** @phpstan-ignore-next-line all operation specified attribute are instance of Operation */
+                static function (
+                    ChildDefinition $definition,
+                    Operation $attribute,
+                    ReflectionMethod $reflector,
+                ) use ($operationMethodsMap): void {
+                    $operationMethodsMap->addMethodCall('append', [
+                        sprintf('%s::%s', $reflector->getDeclaringClass()->name, $reflector->name),
+                    ]);
+                }
+            );
+        }
     }
 }

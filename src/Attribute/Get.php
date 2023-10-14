@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace ApiScout\Attribute;
 
-use ApiScout\HttpOperation;
-use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
+use ApiScout\OpenApi\Http\Abstract\HttpResponse;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
+use ApiScout\Operation;
 use Attribute;
 
 /**
@@ -27,14 +28,14 @@ use Attribute;
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
-final class Get extends HttpOperation
+final class Get extends Operation
 {
     public function __construct(
         string $path,
         ?string $name = null,
         ?string $input = null,
         ?string $output = null,
-        int $statusCode = AbstractResponse::HTTP_OK,
+        int $statusCode = HttpResponse::HTTP_OK,
         string $resource = 'Default',
         array $filters = [],
         bool|OpenApiOperation|null $openapi = null,
@@ -64,12 +65,14 @@ final class Get extends HttpOperation
         ?int $priority = null,
         ?string $locale = null,
         ?string $format = null,
+        ?bool $utf8 = null,
         ?bool $stateless = null,
+        ?string $env = null
     ) {
         parent::__construct(
             path: $path,
             name: $name,
-            method: HttpOperation::METHOD_GET,
+            method: HttpRequest::METHOD_GET,
             input: $input,
             output: $output,
             statusCode: $statusCode,
@@ -96,7 +99,9 @@ final class Get extends HttpOperation
             priority: $priority,
             locale: $locale,
             format: $format,
+            utf8: $utf8,
             stateless: $stateless,
+            env: $env,
         );
     }
 }

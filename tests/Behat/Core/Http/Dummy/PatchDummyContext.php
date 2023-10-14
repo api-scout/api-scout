@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\Dummy;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
@@ -33,7 +33,7 @@ final class PatchDummyContext extends BaseContext
     public function when(PyStringNode $content): void
     {
         $this->request(
-            HttpOperation::METHOD_PATCH,
+            HttpRequest::METHOD_PATCH,
             self::PATCH_DUMMY_PATH,
             [
                 'json' => $this->json($content->getRaw()),

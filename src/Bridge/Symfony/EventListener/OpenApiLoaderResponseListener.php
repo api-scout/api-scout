@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\Bridge\Symfony\EventListener;
 
-use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Http\Abstract\HttpResponse;
 use ApiScout\OpenApi\OpenApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class ApiLoaderResponseListener
+final class OpenApiLoaderResponseListener
 {
     public function __construct(
         private readonly NormalizerInterface $apiNormalizer
@@ -45,7 +45,7 @@ final class ApiLoaderResponseListener
         $event->setResponse(
             new JsonResponse(
                 data: $this->apiNormalizer->normalize($controllerResult),
-                status: AbstractResponse::HTTP_OK
+                status: HttpResponse::HTTP_OK
             ),
         );
     }

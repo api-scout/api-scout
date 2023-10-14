@@ -18,7 +18,7 @@ use ApiScout\Exception\FiltersShouldBeAnArrayOfApiPropertyException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
 use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
-use LogicException;
+use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
 
 /**
@@ -29,17 +29,13 @@ use Throwable;
  * @author Antoine Bluchet <soyuka@gmail.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-abstract class Operation
+abstract class Operation extends Route
 {
-    private ?string $controller = null;
-    private ?string $controllerMethod = null;
-
     /**
      * @param class-string|null  $input
      * @param class-string|null  $output
      * @param array<ApiProperty> $filters
      */
-    /** @phpstan-ignore-next-line It's okay to have some unused parameters */
     public function __construct(
         protected readonly string $path,
         protected string|null $name,
@@ -70,36 +66,27 @@ abstract class Operation
         ?int $priority,
         ?string $locale,
         ?string $format,
-        ?bool $stateless,
+        ?bool $utf8 = null,
+        ?bool $stateless = null,
+        ?string $env = null
     ) {
-    }
-
-    public function getControllerMethod(): string
-    {
-        if ($this->controllerMethod === null) {
-            throw new LogicException('Controller method should always be set once the inherited class has been instantiated.');
-        }
-
-        return $this->controllerMethod;
-    }
-
-    public function setControllerMethod(string $controllerMethod): void
-    {
-        $this->controllerMethod = $controllerMethod;
-    }
-
-    public function getController(): string
-    {
-        if ($this->controller === null) {
-            throw new LogicException('Controller should always be set once the inherited class has been instantiated.');
-        }
-
-        return $this->controller;
-    }
-
-    public function setController(string $controller): void
-    {
-        $this->controller = $controller;
+        parent::__construct(
+            path: $path,
+            name: $name,
+            requirements: $requirements,
+            options: $options,
+            defaults: $defaults,
+            host: $host,
+            methods: [$method],
+            schemes: $schemes,
+            condition: $condition,
+            priority: $priority,
+            locale: $locale,
+            format: $format,
+            utf8: $utf8,
+            stateless: $stateless,
+            env: $env,
+        );
     }
 
     public function getPath(): string
@@ -141,6 +128,9 @@ abstract class Operation
         return $this->output;
     }
 
+    /**
+     * @param class-string|null $output
+     */
     public function setOutput(?string $output): void
     {
         $this->output = $output;
@@ -162,6 +152,11 @@ abstract class Operation
     public function getFilters(): array
     {
         foreach ($this->filters as $filter) {
+            /**
+             * @phpstan-ignore-next-line since we can build this property through
+             * the constructor this value must be checked.
+             * Idealistically this check should be done in the constructor
+             */
             if (!$filter instanceof ApiProperty) {
                 throw new FiltersShouldBeAnArrayOfApiPropertyException($filter);
             }
@@ -181,6 +176,7 @@ abstract class Operation
             }
         }
 
+        /** @phpstan-ignore-next-line phpstan does not understand that once here, this is and array of ApiProperty */
         $this->filters = $filters;
     }
 
