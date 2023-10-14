@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ApiScout\Bridge\Symfony\EventListener\LoaderExceptionListener;
 use ApiScout\Tests\Behat\Symfony\HttpClient\Client;
+use ApiScout\Tests\Fixtures\Symfony\EventListener\LoaderExceptionListener;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 return static function (ContainerConfigurator $container): void {

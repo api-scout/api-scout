@@ -79,8 +79,6 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.response_pagination_key', $configs['response_pagination_key']);
         $container->setParameter('api_scout.exception_to_status', $configs['exception_to_status']);
 
-        $container->setParameter('api_scout.mapping.paths', $configs['mapping']['paths']);
-
         $container->setParameter('api_scout.oauth.enabled', $configs['oauth']['enabled']);
         $container->setParameter('api_scout.oauth.type', $configs['oauth']['type']);
         $container->setParameter('api_scout.oauth.flow', $configs['oauth']['flow']);
