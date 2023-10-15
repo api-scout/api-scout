@@ -37,12 +37,10 @@ return [
 ```yaml
 # config/routes.yaml
 api_scout_swagger_ui:
-  path: /api/docs
+  path: /api/docs.{_format}
   controller: api_scout.swagger_ui.action
-
-api_scout_swagger_json:
-  path: /api/docs.json
-  controller: api_scout.swagger_json.action
+  methods: GET
+  format: html
 ```
 
 ## Usage

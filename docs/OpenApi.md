@@ -12,8 +12,7 @@ Default route of the open api documentations are:
  --------------------------- -------- -------- ------ -------------------------
   Name                        Method   Scheme   Host   Path
  --------------------------- -------- -------- ------ -------------------------
-  api_scout_swagger_ui       GET      ANY      ANY    /api/docs
-  api_scout_swagger_json     GET      ANY      ANY    /api/docs.json
+  api_scout_swagger_ui       GET      ANY      ANY    /api/docs.{_format}
 ```
 
 ## Changing the Location of Swagger UI
@@ -27,8 +26,10 @@ Manually register the Swagger UI controller:
 ```yaml
 # config/routes.yaml
 api_scout_swagger_ui:
-    path: /api_documentation
-    controller: api_scout.swagger_ui.action
+  path: /api/docs.{_format}
+  controller: api_scout.swagger_ui.action
+  methods: GET
+  format: html
 ```
 
 ## Disabling Swagger UI or ReDoc

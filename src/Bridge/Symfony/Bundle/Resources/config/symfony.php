@@ -15,7 +15,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ApiScout\Bridge\Symfony\EventListener\AddFormatListener;
 use ApiScout\Bridge\Symfony\EventListener\CustomExceptionListener;
-use ApiScout\Bridge\Symfony\EventListener\OpenApiLoaderResponseListener;
 use ApiScout\Bridge\Symfony\EventListener\OperationRequestListener;
 use ApiScout\Bridge\Symfony\EventListener\PayloadValidationExceptionListener;
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
@@ -39,12 +38,6 @@ return static function (ContainerConfigurator $container): void {
         ->set(AddFormatListener::class)
         ->arg('$negotiator', service('api_scout.infrastructure.negotiator'))
         ->tag('kernel.event_listener', ['event' => 'kernel.request', 'method' => 'onKernelRequest', 'priority' => 27])
-    ;
-
-    $services
-        ->set(OpenApiLoaderResponseListener::class)
-        ->arg('$apiNormalizer', service('api_scout.openapi.normalizer'))
-        ->tag('kernel.event_listener', ['event' => 'kernel.view', 'method' => 'onKernelView', 'priority' => 16])
     ;
 
     $services->set(SerializeResponseListener::class)

@@ -14,17 +14,15 @@ api_scout:
   enable_swagger: true
   # Enable Swagger UI.
   enable_swagger_ui: true
+  # Enable ReDoc.
   enable_re_doc: true
+  # Enable the docs.
   enable_docs: true
-  pagination:
-    # Enable the pagination
-    enabled: true
-    # The default name of the parameter handling the page number.
-    page_parameter_name: page
-    # The number of item per page you want
-    items_per_page: 10
-    # The maximum of items per page you can show
-    maximum_items_per_page: 50
+  # Specify an asset package name to use.
+  asset_package: null
+  # The list of exceptions mapped to their HTTP status code.
+  exception_to_status:
+    Symfony\Component\Validator\Exception\ValidationFailedException: 400
   openapi:
     # The contact information for the exposed API.
     contact:

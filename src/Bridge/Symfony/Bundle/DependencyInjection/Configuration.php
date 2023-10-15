@@ -162,6 +162,7 @@ final class Configuration implements ConfigurationInterface
             ->booleanNode('enable_swagger_ui')->defaultValue(class_exists(TwigBundle::class))->info('Enable Swagger UI')->end()
             ->booleanNode('enable_re_doc')->defaultValue(class_exists(TwigBundle::class))->info('Enable ReDoc')->end()
             ->booleanNode('enable_docs')->defaultTrue()->info('Enable the docs')->end()
+            ->scalarNode('asset_package')->defaultNull()->info('Specify an asset package name to use.')->end()
             ->end()
         ;
     }
