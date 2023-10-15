@@ -42,7 +42,7 @@ final class SwaggerJsonContext extends BaseContext
      */
     public function then(): void
     {
-        $response = $this->getResponse()->toArray();
+        $response = $this->getResponse()->toArray(false);
 
         Assert::assertArrayHasKey('openapi', $response);
         Assert::assertArrayHasKey('info', $response);

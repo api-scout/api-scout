@@ -43,6 +43,9 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $configs = $this->processConfiguration($configuration, $configs);
 
         $this->registerCommonConfiguration($configs, $container);
+        $this->registerOpenApiConfiguration($container, $configs);
+        $this->registerOAuthConfiguration($container, $configs);
+
         $this->registerOperationsConfiguration($container);
 
         /**
@@ -79,25 +82,34 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $container->setParameter('api_scout.response_pagination_key', $configs['response_pagination_key']);
         $container->setParameter('api_scout.exception_to_status', $configs['exception_to_status']);
 
-        $container->setParameter('api_scout.oauth.enabled', $configs['oauth']['enabled']);
-        $container->setParameter('api_scout.oauth.type', $configs['oauth']['type']);
-        $container->setParameter('api_scout.oauth.flow', $configs['oauth']['flow']);
-        $container->setParameter('api_scout.oauth.token_url', $configs['oauth']['token_url']);
-        $container->setParameter('api_scout.oauth.authorization_url', $configs['oauth']['authorization_url']);
-        $container->setParameter('api_scout.oauth.refresh_url', $configs['oauth']['refresh_url']);
-        $container->setParameter('api_scout.oauth.scopes', $configs['oauth']['scopes']);
-
-        $container->setParameter('api_scout.openapi.api_keys', $configs['openapi']['api_keys']);
-        $container->setParameter('api_scout.openapi.contact', $configs['openapi']['contact']['name']);
-        $container->setParameter('api_scout.openapi.url', $configs['openapi']['contact']['url']);
-        $container->setParameter('api_scout.openapi.email', $configs['openapi']['contact']['email']);
-        $container->setParameter('api_scout.openapi.terms_of_service', $configs['openapi']['terms_of_service']);
-        $container->setParameter('api_scout.openapi.license.name', $configs['openapi']['license']['name']);
-        $container->setParameter('api_scout.openapi.license.url', $configs['openapi']['license']['url']);
-
         $container->setParameter('api_scout.enable_swagger_ui', $configs['enable_swagger_ui']);
         $container->setParameter('api_scout.enable_re_doc', $configs['enable_re_doc']);
         $container->setParameter('api_scout.enable_docs', $configs['enable_docs']);
+    }
+
+    private function registerOpenApiConfiguration(ContainerBuilder $container, array $config): void
+    {
+        $container->setParameter('api_scout.openapi.api_keys', $config['openapi']['api_keys']);
+        $container->setParameter('api_scout.openapi.contact', $config['openapi']['contact']['name']);
+        $container->setParameter('api_scout.openapi.url', $config['openapi']['contact']['url']);
+        $container->setParameter('api_scout.openapi.email', $config['openapi']['contact']['email']);
+        $container->setParameter('api_scout.openapi.terms_of_service', $config['openapi']['terms_of_service']);
+        $container->setParameter('api_scout.openapi.license.name', $config['openapi']['license']['name']);
+        $container->setParameter('api_scout.openapi.license.url', $config['openapi']['license']['url']);
+    }
+
+    private function registerOAuthConfiguration(ContainerBuilder $container, array $config): void
+    {
+        $container->setParameter('api_scout.oauth.enabled', $config['oauth']['enabled']);
+        $container->setParameter('api_scout.oauth.type', $config['oauth']['type']);
+        $container->setParameter('api_scout.oauth.flow', $config['oauth']['flow']);
+        $container->setParameter('api_scout.oauth.token_url', $config['oauth']['token_url']);
+        $container->setParameter('api_scout.oauth.authorization_url', $config['oauth']['authorization_url']);
+        $container->setParameter('api_scout.oauth.refresh_url', $config['oauth']['refresh_url']);
+        $container->setParameter('api_scout.oauth.scopes', $config['oauth']['scopes']);
+        $container->setParameter('api_scout.oauth.clientId', $config['oauth']['clientId']);
+        $container->setParameter('api_scout.oauth.clientSecret', $config['oauth']['clientSecret']);
+        $container->setParameter('api_scout.oauth.pkce', $config['oauth']['pkce']);
     }
 
     private function registerOperationsConfiguration(ContainerBuilder $container): void

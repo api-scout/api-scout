@@ -18,6 +18,7 @@ use ApiScout\OpenApi\OpenApi;
 use ApiScout\OpenApi\Options;
 use ArrayObject;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -36,15 +37,18 @@ use Twig\Error\SyntaxError;
  * @author Antoine Bluchet <soyuka@gmail.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
-final class SwaggerUiAction
+final readonly class SwaggerUiAction
 {
     public function __construct(
-        private readonly OpenApiFactoryInterface $openApiFactory,
-        private readonly SwaggerUiContext $swaggerUiContext,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly NormalizerInterface $apiNormalizer,
-        private readonly Options $openApiOptions,
-        private readonly ?TwigEnvironment $twig,
+        private OpenApiFactoryInterface $openApiFactory,
+        private SwaggerUiContext $swaggerUiContext,
+        private UrlGeneratorInterface $urlGenerator,
+        private NormalizerInterface $apiNormalizer,
+        private Options $openApiOptions,
+        private ?TwigEnvironment $twig,
+        private ?string $oauthClientId,
+        private ?string $oauthClientSecret,
+        private bool $oauthPkce = false,
     ) {
         if ($twig === null) {
             throw new RuntimeException('The documentation cannot be displayed since the Twig bundle is not installed. Try running "composer require symfony/twig-bundle".');
@@ -63,11 +67,16 @@ final class SwaggerUiAction
             ['base_url' => $request->getBaseUrl() ?: '/'],
         );
 
+        if ($request->getRequestFormat() === 'json') {
+            return new JsonResponse(
+                $this->apiNormalizer->normalize($openApi, 'json')
+            );
+        }
+
         $swaggerContext = [
             'formats' => [],
             'title' => $openApi->getInfo()->getTitle(),
             'description' => $openApi->getInfo()->getDescription(),
-            'showWebby' => $this->swaggerUiContext->isWebbyShown(),
             'swaggerUiEnabled' => $this->swaggerUiContext->isSwaggerUiEnabled(),
             'reDocEnabled' => $this->swaggerUiContext->isRedocEnabled(),
             'assetPackage' => $this->swaggerUiContext->getAssetPackage(),
@@ -111,7 +120,7 @@ final class SwaggerUiAction
     private function buildSwaggerData(OpenApi $openApi): array
     {
         return [
-            'url' => $this->urlGenerator->generate('api_scout_swagger_json', ['format' => 'json']),
+            'url' => $this->urlGenerator->generate('api_scout_swagger_ui', ['_format' => 'json']),
             'spec' => $this->apiNormalizer->normalize($openApi, 'json', []),
             'oauth' => [
                 'enabled' => $this->openApiOptions->getOAuthEnabled(),
@@ -120,11 +129,10 @@ final class SwaggerUiAction
                 'tokenUrl' => $this->openApiOptions->getOAuthTokenUrl(),
                 'authorizationUrl' => $this->openApiOptions->getOAuthAuthorizationUrl(),
                 'scopes' => $this->openApiOptions->getOAuthScopes(),
-                'clientId' => '$this->oauthClientId',
-                'clientSecret' => '$this->oauthClientSecret',
-                'pkce' => '$this->oauthPkce',
+                'clientId' => $this->oauthClientId,
+                'clientSecret' => $this->oauthClientSecret,
+                'pkce' => $this->oauthPkce,
             ],
-            'extraConfiguration' => $this->swaggerUiContext->getExtraConfiguration(),
         ];
     }
 }

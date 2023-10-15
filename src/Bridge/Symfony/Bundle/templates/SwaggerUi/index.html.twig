@@ -82,8 +82,8 @@
       <br>
       Other API docs:
       {% set active_ui = app.request.get('ui', 'swagger_ui') %}
-      {% if swaggerUiEnabled and active_ui != 'swagger_ui' %}<a href="{{ path('api_scout_swagger_json') }}">Swagger UI</a>{% endif %}
-      {% if reDocEnabled and active_ui != 're_doc' %}<a href="{{ path('api_scout_swagger_json', {'ui': 're_doc'}) }}">ReDoc</a>{% endif %}
+      {% if swaggerUiEnabled and active_ui != 'swagger_ui' %}<a href="{{ path('api_scout_swagger_ui') }}">Swagger UI</a>{% endif %}
+      {% if reDocEnabled and active_ui != 're_doc' %}<a href="{{ path('api_scout_swagger_ui', {'ui': 're_doc'}) }}">ReDoc</a>{% endif %}
     </div>
   </div>
 </div>
