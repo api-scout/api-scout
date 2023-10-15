@@ -21,7 +21,7 @@ You can choose to use those tools as well as not to use them without having to f
 ## Installation
 
 ```bash
-composer require api-scout/api-scout dev-main
+composer require api-scout/api-scout
 ```
 
 ```php
@@ -97,12 +97,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 For more information see the [contributing guide](CONTRIBUTING.md)
 
-## Sponsor
+## Credits
 
-<p align="center">
-  <img src="docs/Images/logo-sponsor.svg" width="250" title="alximy logo">
-</p>
+Created by [Marvin Courcier](https://www.linkedin.com/in/marvincourcier/).
 
 This library is sponsored by [Alximy](https://alximy.io)
-
->A team of passionate humans from very different backgrounds, sharing our love of PHP, Symfony and its ecosystem. Our CTO, Expert developers, tech leads, can help you learn or develop the tools you need, and perform audits or tailored workshops. We value contributing to the Open Source community and are willing to mentor new contributors in our team or yours.
