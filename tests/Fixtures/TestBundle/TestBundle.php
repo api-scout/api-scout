@@ -15,6 +15,9 @@ namespace ApiScout\Tests\Fixtures\TestBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class TestBundle extends Bundle
 {
 }

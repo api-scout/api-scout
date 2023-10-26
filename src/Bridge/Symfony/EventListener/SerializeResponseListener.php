@@ -14,22 +14,31 @@ declare(strict_types=1);
 namespace ApiScout\Bridge\Symfony\EventListener;
 
 use ApiScout\Attribute\CollectionOperationInterface;
-use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
-use ApiScout\Pagination\Paginator;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
-use LogicException;
+use ApiScout\Operation;
+use ApiScout\Response\Pagination\PaginationInterface;
+use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInputInterface;
+use ApiScout\Response\ResponseGeneratorInterface;
+use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
+use ApiScout\Response\Serializer\Serializer\ResponseSerializerInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
+use function is_object;
+
+/**
+ * Add the proper Operation to the request for further handling.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SerializeResponseListener
 {
     public function __construct(
-        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
-        private readonly PaginatorRequestFactoryInterface $paginatorRequestFactory,
-        private readonly SerializerInterface $serializer,
-        private readonly string $responseItemKey
+        private readonly PaginationProviderInterface $paginationProvider,
+        private readonly ResponseSerializerInterface $responseSerializer,
+        private readonly ResponseGeneratorInterface $responseGenerator,
+        private readonly NormalizerInterface $normalizer,
     ) {
     }
 
@@ -38,65 +47,53 @@ final class SerializeResponseListener
      */
     public function onKernelView(ViewEvent $event): void
     {
-        $controllerResult = $event->getControllerResult();
         $request = $event->getRequest();
+        $operation = $request->attributes->get('_api_scout_operation');
 
-        if (!$request->attributes->has('_route_name')) {
+        if (!$operation instanceof Operation) {
             return;
         }
 
-        $operation = $this->resourceCollectionFactory->create()->getOperation(
-            $request->attributes->get('_route_name') /** @phpstan-ignore-line this value will always be a string */
-        );
+        $data = $event->getControllerResult();
 
-        if ($operation instanceof CollectionOperationInterface
-            && $this->paginatorRequestFactory->isPaginationEnabled()
-            && !$controllerResult instanceof Paginator
-        ) {
-            if (!is_iterable($controllerResult)) {
-                throw new LogicException('Controller response from Collection Operation should be iterable.');
-            }
-
-            $paginator = new Paginator(
-                $controllerResult,
-                $this->paginatorRequestFactory->getCurrentPage(),
-                $this->paginatorRequestFactory->getItemsPerPage()
-            );
-
-            $event->setResponse(
-                new JsonResponse(
-                    data: $paginator->toArray(),
-                    status: $operation->getStatusCode()
-                ),
-            );
-
+        if (!is_iterable($data) && !is_object($data) && !$data instanceof PaginationInterface) {
             return;
         }
 
-        if ($operation instanceof CollectionOperationInterface
-            && $this->paginatorRequestFactory->isPaginationEnabled()
-            && $controllerResult instanceof Paginator
-        ) {
-            $event->setResponse(
-                new JsonResponse(
-                    data: $controllerResult->toArray(),
-                    status: $operation->getStatusCode()
-                ),
+        if ($operation instanceof CollectionOperationInterface && $operation->isPaginationEnabled()) {
+            $data = $this->paginationProvider->provide(
+                $data,
+                $operation,
+                $this->getPaginationQueryInput($event)
             );
-
-            return;
         }
+
+        $data = $this->normalizer->normalize($data, $operation);
 
         $event->setResponse(
             new JsonResponse(
-                data: $this->serializer->serialize(
-                    data: [$this->responseItemKey => $controllerResult],
-                    format: 'json',
+                data: $this->responseSerializer->serialize(
+                    data: $this->responseGenerator->generate($data, $operation),
                     context: $operation->getNormalizationContext()
                 ),
                 status: $operation->getStatusCode(),
                 json: true
             ),
         );
+    }
+
+    private function getPaginationQueryInput(ViewEvent $event): PaginationQueryInputInterface
+    {
+        if ($event->controllerArgumentsEvent === null) {
+            throw new RuntimeException('Pagination cannot be enabled without implementing PaginationQueryInputInterface.');
+        }
+
+        foreach ($event->controllerArgumentsEvent->getArguments() as $argument) {
+            if ($argument instanceof PaginationQueryInputInterface) {
+                return $argument;
+            }
+        }
+
+        throw new RuntimeException('Pagination cannot be enabled without implementing PaginationQueryInputInterface.');
     }
 }

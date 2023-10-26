@@ -17,14 +17,4 @@ parameters:
         - %currentWorkingDirectory%/tests/Fixtures/app/var
         - %currentWorkingDirectory%/src/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php
     ignoreErrors:
-        -
-          messages:
-            - '#Call to an undefined method ApiScout\\Operation::get[a-zA-Z]+\(\)#'
-          paths:
-            - src/Bridge/Symfony/Routing
-        -
-          messages:
-            - '#Method ApiScout\\Tests\\Fixtures\\app\\AppKernel::getBundlesPath\(\) is unused.#'
-          paths:
-            - tests/Fixtures/app/AppKernel.php
         - '#Short ternary operator is not allowed. Use null coalesce operator if applicable or consider using long ternary.#'

@@ -16,18 +16,21 @@ namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyEntity
 {
     public function __construct(
-        #[Groups(['toto'])]
-        public int $id = 1,
-        #[Groups(['read', 'write'])]
-        public string $firstName = '',
-        #[Groups(['read', 'write'])]
+        #[Groups(['dummy::read', 'dummy::write'])]
+        public string $firstName,
+        #[Groups(['dummy::read', 'dummy::write'])]
         #[Assert\NotBlank()]
-        public string $lastName = '',
-        #[Groups(['read', 'write'])]
-        public ?DummyCompanyEntity $addressEntity = null,
+        public string $lastName,
+        #[Groups(['dummy::read', 'dummy::write'])]
+        public ?DummyCompanyEntity $addressEntity,
+        #[Groups(['dummy::toto'])]
+        public int $id = 1,
     ) {
     }
 

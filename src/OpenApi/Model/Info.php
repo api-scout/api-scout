@@ -15,8 +15,15 @@ namespace ApiScout\OpenApi\Model;
 
 final class Info
 {
-    public function __construct(private string $title, private string $version, private string $description = '', private ?string $termsOfService = null, private ?Contact $contact = null, private ?License $license = null, private ?string $summary = null)
-    {
+    public function __construct(
+        private string $title,
+        private string $version,
+        private string $description = '',
+        private ?string $termsOfService = null,
+        private ?Contact $contact = null,
+        private ?License $license = null,
+        private ?string $summary = null
+    ) {
     }
 
     public function getTitle(): string
@@ -52,61 +59,5 @@ final class Info
     public function getSummary(): ?string
     {
         return $this->summary;
-    }
-
-    public function withTitle(string $title): self
-    {
-        $info = clone $this;
-        $info->title = $title;
-
-        return $info;
-    }
-
-    public function withDescription(string $description): self
-    {
-        $clone = clone $this;
-        $clone->description = $description;
-
-        return $clone;
-    }
-
-    public function withTermsOfService(string $termsOfService): self
-    {
-        $clone = clone $this;
-        $clone->termsOfService = $termsOfService;
-
-        return $clone;
-    }
-
-    public function withContact(Contact $contact): self
-    {
-        $clone = clone $this;
-        $clone->contact = $contact;
-
-        return $clone;
-    }
-
-    public function withLicense(License $license): self
-    {
-        $clone = clone $this;
-        $clone->license = $license;
-
-        return $clone;
-    }
-
-    public function withVersion(string $version): self
-    {
-        $clone = clone $this;
-        $clone->version = $version;
-
-        return $clone;
-    }
-
-    public function withSummary(string $summary): self
-    {
-        $clone = clone $this;
-        $clone->summary = $summary;
-
-        return $clone;
     }
 }

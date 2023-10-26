@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\DummyAttribute;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 
+/**
+ * Post DummyAttribute controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyAttributeContext extends BaseContext
 {
     private const POST_DUMMY_ATTRIBUTE_PATH = 'dummies_attribute';
@@ -27,7 +32,7 @@ final class PostDummyAttributeContext extends BaseContext
     public function when(PyStringNode $content): void
     {
         $this->request(
-            HttpOperation::METHOD_POST,
+            HttpRequest::METHOD_POST,
             self::POST_DUMMY_ATTRIBUTE_PATH,
             [
                 'json' => $this->json($content->getRaw()),

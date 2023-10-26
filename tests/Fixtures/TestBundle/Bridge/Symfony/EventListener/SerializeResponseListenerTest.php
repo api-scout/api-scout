@@ -14,31 +14,33 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Bridge\Symfony\EventListener;
 
 use ApiScout\Bridge\Symfony\EventListener\SerializeResponseListener;
-use ApiScout\Pagination\Factory\PaginatorRequestFactoryInterface;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\Response\Pagination\PaginationProviderInterface;
+use ApiScout\Response\ResponseGeneratorInterface;
+use ApiScout\Response\Serializer\Normalizer\NormalizerInterface;
+use ApiScout\Response\Serializer\Serializer\ResponseSerializerInterface;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-use Symfony\Component\Serializer\SerializerInterface;
-use function defined;
-
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SerializeResponseListenerTest extends TestCase
 {
-    public function testDoNotHandleResponse(): void
+    public function testDoNotHandleResponseWhenRequestHasNoOperation(): void
     {
-        $resourceCollectionFactory = $this->createStub(ResourceCollectionFactoryInterface::class);
-        $paginatorRequestFactory = $this->createStub(PaginatorRequestFactoryInterface::class);
-        $serializer = $this->createStub(SerializerInterface::class);
+        $paginationProvider = $this->createStub(PaginationProviderInterface::class);
+        $responseSerializer = $this->createStub(ResponseSerializerInterface::class);
+        $responseGenerator = $this->createStub(ResponseGeneratorInterface::class);
+        $normalizer = $this->createStub(NormalizerInterface::class);
 
         $listener = new SerializeResponseListener(
-            $resourceCollectionFactory,
-            $paginatorRequestFactory,
-            $serializer,
-            'data'
+            $paginationProvider,
+            $responseSerializer,
+            $responseGenerator,
+            $normalizer
         );
 
         $event = new ViewEvent(

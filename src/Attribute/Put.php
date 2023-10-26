@@ -13,22 +13,33 @@ declare(strict_types=1);
 
 namespace ApiScout\Attribute;
 
-use ApiScout\HttpOperation;
-use ApiScout\OpenApi\Http\AbstractResponse;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
+use ApiScout\OpenApi\Http\Abstract\HttpResponse;
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
+use ApiScout\Operation;
 use Attribute;
 
-#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class Put extends HttpOperation
+/**
+ * Put Operation.
+ *
+ * Inspired by ApiPlatform\Metadata\Put
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
+#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
+final class Put extends Operation
 {
     public function __construct(
         string $path,
         ?string $name = null,
         ?string $input = null,
         ?string $output = null,
-        int $statusCode = AbstractResponse::HTTP_OK,
+        int $statusCode = HttpResponse::HTTP_OK,
         string $resource = 'Default',
         array $filters = [],
-        bool $openApi = true,
+        bool|OpenApiOperation|null $openapi = null,
+        ?array $exceptionToStatus = null,
         array $formats = [],
         array $inputFormats = [
             'json' => ['application/json'],
@@ -54,18 +65,21 @@ final class Put extends HttpOperation
         ?int $priority = null,
         ?string $locale = null,
         ?string $format = null,
+        ?bool $utf8 = null,
         ?bool $stateless = null,
+        ?string $env = null
     ) {
         parent::__construct(
             path: $path,
             name: $name,
-            method: HttpOperation::METHOD_PUT,
+            method: HttpRequest::METHOD_PUT,
             input: $input,
             output: $output,
             statusCode: $statusCode,
             resource: $resource,
             filters: $filters,
-            openApi: $openApi,
+            openapi: $openapi,
+            exceptionToStatus: $exceptionToStatus,
             formats: $formats,
             inputFormats: $inputFormats,
             outputFormats: $outputFormats,
@@ -85,7 +99,9 @@ final class Put extends HttpOperation
             priority: $priority,
             locale: $locale,
             format: $format,
-            stateless: $stateless
+            utf8: $utf8,
+            stateless: $stateless,
+            env: $env,
         );
     }
 }

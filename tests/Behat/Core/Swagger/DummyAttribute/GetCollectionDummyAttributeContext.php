@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\DummyAttribute;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * GetCollection DummyAttribute Swagger response test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetCollectionDummyAttributeContext extends BaseContext
 {
     /**
@@ -53,6 +58,6 @@ final class GetCollectionDummyAttributeContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/dummies_attribute']['get']);
-        Assert::assertNotEmpty($response['components']['schemas']['DummyAttribute.DummyAttributeCollectionOutput']);
+        Assert::assertNotEmpty($response['components']['schemas']['DummyAttribute.Pagination']);
     }
 }

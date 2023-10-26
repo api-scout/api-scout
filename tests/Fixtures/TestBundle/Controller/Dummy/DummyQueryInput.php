@@ -14,16 +14,21 @@ declare(strict_types=1);
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy;
 
 use ApiScout\Attribute\ApiProperty;
+use ApiScout\Response\Pagination\QueryInput\PaginationQueryInput;
 
-final class DummyQueryInput
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
+final class DummyQueryInput extends PaginationQueryInput
 {
     public function __construct(
         #[ApiProperty(description: 'The name of the champion')]
         public readonly ?string $name = '',
         /** @var string|null $city The name of the city */
         public readonly ?string $city = '',
-        #[ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate')]
-        public readonly int $page = 1,
+        int $page = 1,
+        int $itemsPerPage = 10
     ) {
+        parent::__construct($page, $itemsPerPage);
     }
 }

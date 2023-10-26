@@ -13,11 +13,16 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\DummyEntity;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Post DummyEntity controller test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class PostDummyEntityContext extends BaseContext
 {
     private const POST_DUMMY_PATH = '/api/dummies_entity';
@@ -28,7 +33,7 @@ final class PostDummyEntityContext extends BaseContext
     public function when(PyStringNode $content): void
     {
         $this->request(
-            HttpOperation::METHOD_POST,
+            HttpRequest::METHOD_POST,
             self::POST_DUMMY_PATH,
             [
                 'json' => $this->json($content->getRaw()),

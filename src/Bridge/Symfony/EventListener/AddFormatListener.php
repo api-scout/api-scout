@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ApiScout\Bridge\Symfony\EventListener;
 
 use ApiScout\OpenApi\Http\FormatMatcher;
-use ApiScout\Resource\Factory\ResourceCollectionFactoryInterface;
+use ApiScout\Operation;
 use Negotiation\Negotiator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -24,13 +24,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Chooses the format to use according to the Accept header and supported formats.
  *
+ * Inspired by ApiPlatform\Symfony\EventListener\AddFormatListener:
+ *
+ * @author Kévin Dunglas <dunglas@gmail.com>
  * @author Marvin Courcier <marvincourcier.dev@gmail.com>
  */
 final class AddFormatListener
 {
     public function __construct(
-        private readonly ResourceCollectionFactoryInterface $resourceCollectionFactory,
-        private readonly Negotiator $negotiator
+        private readonly Negotiator $negotiator,
     ) {
     }
 
@@ -44,18 +46,11 @@ final class AddFormatListener
     {
         $request = $event->getRequest();
 
-        if (!$request->attributes->has('_route_name')
-            && $request->attributes->get('_route_name') === null
-        ) {
+        $operation = $request->attributes->get('_api_scout_operation');
+
+        if (!$operation instanceof Operation) {
             return;
         }
-
-        $operation = $this->resourceCollectionFactory->create()
-            ->getOperation(
-                /** @phpstan-ignore-next-line this value will always be a string */
-                $request->attributes->get('_route_name')
-            )
-        ;
 
         $formats = $operation->getOutputFormats();
 

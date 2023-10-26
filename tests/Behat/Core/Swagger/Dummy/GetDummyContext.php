@@ -16,6 +16,11 @@ namespace ApiScout\Tests\Behat\Core\Swagger\Dummy;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 use PHPUnit\Framework\Assert;
 
+/**
+ * Get Dummy Swagger test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class GetDummyContext extends BaseContext
 {
     /**
@@ -26,15 +31,21 @@ final class GetDummyContext extends BaseContext
         $response = $this->getResponse()->toArray();
 
         Assert::assertNotEmpty($response['paths']['/dummies/{id}']['get']);
-        Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyOutput']);
+        $getDummyOperation = $response['paths']['/dummies/{id}']['get'];
 
-        Assert::assertNotEmpty($response['paths']['/dummies/{id}']['get']['parameters']);
-        $parameter = array_shift($response['paths']['/dummies/{id}']['get']['parameters']);
+        Assert::assertCount(2, $getDummyOperation['responses']);
+        Assert::assertArrayHasKey('200', $getDummyOperation['responses']);
+        Assert::assertArrayHasKey('404', $getDummyOperation['responses']);
+
+        Assert::assertNotEmpty($getDummyOperation['parameters']);
+        $parameter = array_shift($getDummyOperation['parameters']);
         $parameterType = array_shift($parameter['schema']);
 
         Assert::assertSame('id', $parameter['name']);
         Assert::assertSame('path', $parameter['in']);
         Assert::assertTrue($parameter['required']);
         Assert::assertSame('integer', $parameterType);
+
+        Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyOutput']);
     }
 }

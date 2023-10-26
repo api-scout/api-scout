@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\ContextPathExtension\Core\Domain\Contracts\Repositories;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 interface FileRepositoryInterface
 {
     /**

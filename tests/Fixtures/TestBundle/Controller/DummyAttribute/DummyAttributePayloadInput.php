@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Fixtures\TestBundle\Controller\DummyAttribute;
 
-// use Ramsey\Uuid\Uuid;
 use ApiScout\Tests\Fixtures\TestBundle\Controller\Dummy\DummyAddressOutput;
 use DateTime;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class DummyAttributePayloadInput
 {
     public function __construct(

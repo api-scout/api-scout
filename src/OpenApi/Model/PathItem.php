@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ApiScout\OpenApi\Model;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 
 final class PathItem
 {
@@ -21,14 +21,14 @@ final class PathItem
      * @var array<int, string>
      */
     public static array $methods = [
-        HttpOperation::METHOD_GET,
-        HttpOperation::METHOD_PUT,
-        HttpOperation::METHOD_POST,
-        HttpOperation::METHOD_DELETE,
-        HttpOperation::METHOD_OPTIONS,
-        HttpOperation::METHOD_HEAD,
-        HttpOperation::METHOD_PATCH,
-        HttpOperation::METHOD_TRACE,
+        HttpRequest::METHOD_GET,
+        HttpRequest::METHOD_PUT,
+        HttpRequest::METHOD_POST,
+        HttpRequest::METHOD_DELETE,
+        HttpRequest::METHOD_OPTIONS,
+        HttpRequest::METHOD_HEAD,
+        HttpRequest::METHOD_PATCH,
+        HttpRequest::METHOD_TRACE,
     ];
 
     public function __construct(

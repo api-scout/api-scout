@@ -13,9 +13,14 @@ declare(strict_types=1);
 
 namespace ApiScout\Tests\Behat\Core\Http\Swagger;
 
-use ApiScout\HttpOperation;
+use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 use ApiScout\Tests\Behat\Core\Http\BaseContext;
 
+/**
+ * Swagger Ui service action test.
+ *
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
 final class SwaggerUiContext extends BaseContext
 {
     private const SWAGGER_UI_PATH = '/api/docs';
@@ -26,7 +31,7 @@ final class SwaggerUiContext extends BaseContext
     public function when(): void
     {
         $this->request(
-            HttpOperation::METHOD_GET,
+            HttpRequest::METHOD_GET,
             self::SWAGGER_UI_PATH
         );
     }

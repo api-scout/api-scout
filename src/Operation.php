@@ -17,20 +17,25 @@ use ApiScout\Attribute\ApiProperty;
 use ApiScout\Exception\FiltersShouldBeAnArrayOfApiPropertyException;
 use ApiScout\Exception\ResourceClassNotFoundException;
 use ApiScout\Exception\UriVariablesShouldBeAnArrayOfApiPropertyException;
-use LogicException;
-use RuntimeException;
+use ApiScout\OpenApi\Model\Operation as OpenApiOperation;
+use Symfony\Component\Routing\Annotation\Route;
+use Throwable;
 
-abstract class Operation
+/**
+ * Attribute to build the Operation.
+ *
+ * Inspired by ApiPlatform\Metadata\Operation
+ *
+ * @author Antoine Bluchet <soyuka@gmail.com>
+ * @author Marvin Courcier <marvincourcier.dev@gmail.com>
+ */
+abstract class Operation extends Route
 {
-    private ?string $controller = null;
-    private ?string $controllerMethod = null;
-
     /**
      * @param class-string|null  $input
      * @param class-string|null  $output
      * @param array<ApiProperty> $filters
      */
-    /** @phpstan-ignore-next-line It's okay to have some unused parameters */
     public function __construct(
         protected readonly string $path,
         protected string|null $name,
@@ -40,7 +45,8 @@ abstract class Operation
         protected readonly int $statusCode,
         protected string $resource,
         protected array $filters,
-        protected readonly bool $openApi,
+        protected readonly bool|OpenApiOperation|null $openapi,
+        protected readonly ?array $exceptionToStatus,
         protected array $formats,
         protected array $inputFormats,
         protected array $outputFormats,
@@ -60,36 +66,27 @@ abstract class Operation
         ?int $priority,
         ?string $locale,
         ?string $format,
-        ?bool $stateless,
+        ?bool $utf8 = null,
+        ?bool $stateless = null,
+        ?string $env = null
     ) {
-    }
-
-    public function getControllerMethod(): string
-    {
-        if ($this->controllerMethod === null) {
-            throw new LogicException('Controller method should always be set once the inherited class has been instantiated.');
-        }
-
-        return $this->controllerMethod;
-    }
-
-    public function setControllerMethod(string $controllerMethod): void
-    {
-        $this->controllerMethod = $controllerMethod;
-    }
-
-    public function getController(): string
-    {
-        if ($this->controller === null) {
-            throw new LogicException('Controller should always be set once the inherited class has been instantiated.');
-        }
-
-        return $this->controller;
-    }
-
-    public function setController(string $controller): void
-    {
-        $this->controller = $controller;
+        parent::__construct(
+            path: $path,
+            name: $name,
+            requirements: $requirements,
+            options: $options,
+            defaults: $defaults,
+            host: $host,
+            methods: [$method],
+            schemes: $schemes,
+            condition: $condition,
+            priority: $priority,
+            locale: $locale,
+            format: $format,
+            utf8: $utf8,
+            stateless: $stateless,
+            env: $env,
+        );
     }
 
     public function getPath(): string
@@ -131,12 +128,11 @@ abstract class Operation
         return $this->output;
     }
 
-    public function setOutput(string $output): void
+    /**
+     * @param class-string|null $output
+     */
+    public function setOutput(?string $output): void
     {
-        if (!class_exists($output)) {
-            throw new RuntimeException('Given output should be a valid object.');
-        }
-
         $this->output = $output;
     }
 
@@ -156,6 +152,11 @@ abstract class Operation
     public function getFilters(): array
     {
         foreach ($this->filters as $filter) {
+            /**
+             * @phpstan-ignore-next-line since we can build this property through
+             * the constructor this value must be checked.
+             * Idealistically this check should be done in the constructor
+             */
             if (!$filter instanceof ApiProperty) {
                 throw new FiltersShouldBeAnArrayOfApiPropertyException($filter);
             }
@@ -175,12 +176,35 @@ abstract class Operation
             }
         }
 
+        /** @phpstan-ignore-next-line phpstan does not understand that once here, this is and array of ApiProperty */
         $this->filters = $filters;
     }
 
-    public function getOpenApi(): bool
+    public function getOpenapi(): bool|OpenApiOperation|null
     {
-        return $this->openApi;
+        return $this->openapi;
+    }
+
+    public function getExceptionToStatus(): ?array
+    {
+        return $this->exceptionToStatus;
+    }
+
+    /**
+     * @param array<class-string<Throwable>, int> $exceptionToStatus
+     */
+    public function getExceptionToStatusClassStatusCode(
+        array $exceptionToStatus,
+        object $classException,
+        int $defaultStatusCode = 400
+    ): int {
+        $exceptionToStatuses = $this->formatExceptionToStatusWithConfiguration($exceptionToStatus);
+
+        if (isset($exceptionToStatuses[$classException::class])) {
+            return $exceptionToStatuses[$classException::class];
+        }
+
+        return $defaultStatusCode;
     }
 
     public function getFormats(): array
@@ -201,6 +225,11 @@ abstract class Operation
     public function isPaginationEnabled(): bool
     {
         return $this->paginationEnabled;
+    }
+
+    public function setIsPaginationEnabled(bool $isPaginationEnabled): void
+    {
+        $this->paginationEnabled = $isPaginationEnabled;
     }
 
     public function getPaginationItemsPerPage(): ?int
@@ -245,8 +274,26 @@ abstract class Operation
         return $this->denormalizationContext;
     }
 
+    public function setDenormalizationContext(array $denormalizationContext): void
+    {
+        $this->denormalizationContext = $denormalizationContext;
+    }
+
     public function getDeprecationReason(): ?string
     {
         return $this->deprecationReason;
+    }
+
+    /**
+     * @param array<class-string<Throwable>, int> $exceptionToStatus
+     *
+     * @return array<class-string<Throwable>, int>
+     */
+    public function formatExceptionToStatusWithConfiguration(array $exceptionToStatus): array
+    {
+        return array_merge(
+            $exceptionToStatus,
+            $this->exceptionToStatus ?? [],
+        );
     }
 }
