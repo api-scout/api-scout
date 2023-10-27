@@ -116,6 +116,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader --ignore-platform-req=php
 
+      - name: Install PHP tools dependencies
+        run: composer bin all install --no-progress --prefer-dist --optimize-autoloader --ignore-platform-req=php
+
       - name: Lint templates
         run: php tests/Fixtures/app/bin/console lint:twig src/Bridge/Symfony/Bundle/templates
 

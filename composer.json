@@ -1,12 +1,20 @@
 {
     "name": "api-scout/api-scout",
-    "description": "A library with a few tools, to auto document your api",
+    "description": "A library with a few tools, to auto document your API",
+    "keywords": [
+        "symfony",
+        "api"
+    ],
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {
             "name": "Marvin Courcier",
             "email": "marvincourcier.dev@gmail.com"
+        },
+        {
+            "name": "Community",
+            "homepage": "https://github.com/api-scout/api-scout/contributors"
         }
     ],
     "minimum-stability": "dev",
@@ -77,20 +85,6 @@
     "autoload-dev": {
         "psr-4": {
             "ApiScout\\Tests\\": "tests/"
-        }
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "@composer bin all install --ansi"
-        ]
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "^6.3|^7.0"
         }
     }
 }
