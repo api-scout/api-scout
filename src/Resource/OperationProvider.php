@@ -295,6 +295,14 @@ final class OperationProvider implements OperationProviderInterface
      */
     private function buildOutput(string $output): ?string
     {
+        if (is_scalar($output)) {
+            return $output;
+        }
+
+//        if ($output === 'array' || $output === 'iterable') {
+//            return $output;
+//        }
+
         if (!class_exists($output)) {
             throw new ResourceClassNotFoundException($output);
         }

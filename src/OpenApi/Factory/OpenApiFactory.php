@@ -273,6 +273,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         );
 
         if ($operation->getOutput() !== null && class_exists($operation->getOutput())) {
+//        if ($operation->getOutput() !== null) {
             $operationOutputSchema = $this->schemaFactory->buildSchema(
                 $operation->getOutput(),
                 $operation->getResource(),
