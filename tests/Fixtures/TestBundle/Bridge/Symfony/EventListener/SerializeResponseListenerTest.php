@@ -31,10 +31,10 @@ final class SerializeResponseListenerTest extends TestCase
 {
     public function testDoNotHandleResponseWhenRequestHasNoOperation(): void
     {
-        $paginationProvider = $this->createStub(PaginationProviderInterface::class);
-        $responseSerializer = $this->createStub(ResponseSerializerInterface::class);
-        $responseGenerator = $this->createStub(ResponseGeneratorInterface::class);
-        $normalizer = $this->createStub(NormalizerInterface::class);
+        $paginationProvider = self::createStub(PaginationProviderInterface::class);
+        $responseSerializer = self::createStub(ResponseSerializerInterface::class);
+        $responseGenerator = self::createStub(ResponseGeneratorInterface::class);
+        $normalizer = self::createStub(NormalizerInterface::class);
 
         $listener = new SerializeResponseListener(
             $paginationProvider,
@@ -44,7 +44,7 @@ final class SerializeResponseListenerTest extends TestCase
         );
 
         $event = new ViewEvent(
-            $this->createStub(HttpKernelInterface::class),
+            self::createStub(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             null,
