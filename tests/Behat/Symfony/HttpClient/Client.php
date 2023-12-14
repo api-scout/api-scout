@@ -67,12 +67,12 @@ final class Client implements HttpClientInterface
      */
     public function __construct(
         KernelBrowser $kernelBrowser,
-        array $defaultOptions = []
+        array $defaultOptions = [],
     ) {
         $this->kernelBrowser = $kernelBrowser;
         $kernelBrowser->followRedirects(false);
 
-        if ($defaultOptions !== []) {
+        if ([] !== $defaultOptions) {
             $this->setDefaultOptions($defaultOptions);
         }
     }
@@ -123,15 +123,15 @@ final class Client implements HttpClientInterface
             'error' => null,
             'user_data' => $options['user_data'] ?? null,
             'url' => $resolvedUrl,
-            'primary_port' => $url['scheme'] === 'http:' ? 80 : 443,
+            'primary_port' => 'http:' === $url['scheme'] ? 80 : 443,
         ];
 
-        if (isset($_SERVER['TESTS_HTTP_CLIENT_DEBUG']) && (bool) $_SERVER['TESTS_HTTP_CLIENT_DEBUG'] === true) {
+        if (isset($_SERVER['TESTS_HTTP_CLIENT_DEBUG']) && true === (bool) $_SERVER['TESTS_HTTP_CLIENT_DEBUG']) {
             foreach ($server as $serverHeaderField => $serverHeaderFieldValue) {
                 echo sprintf(
                     '%s: %s',
                     $serverHeaderField,
-                    $serverHeaderFieldValue
+                    $serverHeaderFieldValue,
                 );
                 echo "\n";
             }
@@ -140,7 +140,7 @@ final class Client implements HttpClientInterface
                 "%s %s \n%s",
                 $method,
                 $resolvedUrl,
-                $options['body'] ? json_encode(json_decode($options['body']), \JSON_PRETTY_PRINT) : ''
+                $options['body'] ? json_encode(json_decode($options['body']), \JSON_PRETTY_PRINT) : '',
             );
         }
 
@@ -150,32 +150,32 @@ final class Client implements HttpClientInterface
             $options['extra']['parameters'] ?? [],
             $options['extra']['files'] ?? [],
             $server,
-            $options['body'] ?? null
+            $options['body'] ?? null,
         );
 
         $this->response = new Response(
             $this->kernelBrowser->getResponse(),
             $this->kernelBrowser->getInternalResponse(),
-            $info
+            $info,
         );
 
-        if (isset($_SERVER['TESTS_HTTP_CLIENT_DEBUG']) && (bool) $_SERVER['TESTS_HTTP_CLIENT_DEBUG'] === true) {
+        if (isset($_SERVER['TESTS_HTTP_CLIENT_DEBUG']) && true === (bool) $_SERVER['TESTS_HTTP_CLIENT_DEBUG']) {
             foreach ($this->response->getHeaders(false) as $responseHeaderField => $responseHeaderFieldValue) {
                 echo sprintf(
                     '%s: %s',
                     $responseHeaderField,
-                    implode(',', $responseHeaderFieldValue)
+                    implode(',', $responseHeaderFieldValue),
                 );
                 echo "\n";
             }
             echo "\n";
 
-            if ($this->response->getContent(false) !== '') {
+            if ('' !== $this->response->getContent(false)) {
                 echo sprintf(
                     "\n%s %s\n%s",
                     $this->response->getStatusCode(),
                     SymfonyResponse::$statusTexts[$this->response->getStatusCode()],
-                    json_encode($this->response->toArray(false), \JSON_PRETTY_PRINT)
+                    json_encode($this->response->toArray(false), \JSON_PRETTY_PRINT),
                 );
             }
         }

@@ -40,7 +40,7 @@ final class GetCollectionDummyContext extends BaseContext
                     'name' => $name,
                     'page' => $page,
                 ],
-            ]
+            ],
         );
     }
 
@@ -53,7 +53,7 @@ final class GetCollectionDummyContext extends BaseContext
 
         Assert::assertSame(
             $content,
-            $this->getResponse()->toArray()
+            $this->getResponse()->toArray(),
         );
     }
 }

@@ -28,13 +28,13 @@ final class PaginationMetadata implements PaginationMetadataInterface
 {
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
     ) {
     }
 
     public function getMetadata(
         PaginationInterface $pagination,
-        Operation $operation
+        Operation $operation,
     ): array {
         $metadata = $pagination->getMetadata();
         /**
@@ -57,7 +57,7 @@ final class PaginationMetadata implements PaginationMetadataInterface
     {
         $request = $this->requestStack->getMainRequest();
 
-        if ($request === null) {
+        if (null === $request) {
             throw new LogicException('Could not generate Url because the request is null');
         }
 
@@ -67,14 +67,14 @@ final class PaginationMetadata implements PaginationMetadataInterface
                 $request->query->all(),
                 [
                     'page' => $page,
-                ]
+                ],
             ),
         );
     }
 
     private function shouldGenerateNextPageUrl(PaginationInterface $pagination): bool
     {
-        if ($pagination->getTotalItems() === null) {
+        if (null === $pagination->getTotalItems()) {
             return true;
         }
 

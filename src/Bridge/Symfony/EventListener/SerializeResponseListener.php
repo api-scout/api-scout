@@ -64,7 +64,7 @@ final class SerializeResponseListener
             $data = $this->paginationProvider->provide(
                 $data,
                 $operation,
-                $this->getPaginationQueryInput($event)
+                $this->getPaginationQueryInput($event),
             );
         }
 
@@ -74,17 +74,17 @@ final class SerializeResponseListener
             new JsonResponse(
                 data: $this->responseSerializer->serialize(
                     data: $this->responseGenerator->generate($data, $operation),
-                    context: $operation->getNormalizationContext()
+                    context: $operation->getNormalizationContext(),
                 ),
                 status: $operation->getStatusCode(),
-                json: true
+                json: true,
             ),
         );
     }
 
     private function getPaginationQueryInput(ViewEvent $event): PaginationQueryInputInterface
     {
-        if ($event->controllerArgumentsEvent === null) {
+        if (null === $event->controllerArgumentsEvent) {
             throw new RuntimeException('Pagination cannot be enabled without implementing PaginationQueryInputInterface.');
         }
 

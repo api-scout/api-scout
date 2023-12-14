@@ -25,6 +25,10 @@ lint-container: ## Lints containers
 phpcs: ## PHP_CodeSniffer (https://github.com/squizlabs/PHP_CodeSniffer)
 	$(PHP) vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
 
+.PHONY: phpcs-tests
+phpcs-tests: ## PHP_CodeSniffer (https://github.com/squizlabs/PHP_CodeSniffer)
+	$(PHP) vendor/bin/phpcs -p -n --colors --standard=.phpcs-tests.xml
+
 .PHONY: php-cs-fixer
 php-cs-fixer: ## PhpCsFixer (https://cs.symfony.com/)
 	$(PHP) vendor/bin/php-cs-fixer fix --using-cache=no --verbose --diff --dry-run

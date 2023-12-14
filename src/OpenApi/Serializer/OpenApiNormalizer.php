@@ -36,7 +36,7 @@ final class OpenApiNormalizer implements NormalizerInterface
     private const EXTENSION_PROPERTIES_KEY = 'extensionProperties';
 
     public function __construct(
-        private readonly NormalizerInterface $decorated
+        private readonly NormalizerInterface $decorated,
     ) {
     }
 
@@ -54,7 +54,7 @@ final class OpenApiNormalizer implements NormalizerInterface
 
         return $this->recursiveClean(
             /** @phpstan-ignore-next-line $object is mixed */
-            $this->decorated->normalize($object, $format, $context)
+            $this->decorated->normalize($object, $format, $context),
         );
     }
 
@@ -76,7 +76,7 @@ final class OpenApiNormalizer implements NormalizerInterface
     private function recursiveClean(array $data): array
     {
         foreach ($data as $key => $value) {
-            if ($key === self::EXTENSION_PROPERTIES_KEY) {
+            if (self::EXTENSION_PROPERTIES_KEY === $key) {
                 foreach ($data[self::EXTENSION_PROPERTIES_KEY] as $extensionPropertyKey => $extensionPropertyValue) {
                     $data[$extensionPropertyKey] = $extensionPropertyValue;
                 }

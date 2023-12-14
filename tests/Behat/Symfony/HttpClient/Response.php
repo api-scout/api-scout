@@ -63,7 +63,7 @@ final class Response implements ResponseInterface
 
     public function getInfo(?string $type = null): mixed
     {
-        if ($type !== null) {
+        if (null !== $type) {
             return $this->info[$type] ?? null;
         }
 
@@ -117,7 +117,7 @@ final class Response implements ResponseInterface
 
         $contentType = $this->headers['content-type'][0] ?? 'application/json';
 
-        if (preg_match('/\bjson\b/i', $contentType) === false) {
+        if (false === preg_match('/\bjson\b/i', $contentType)) {
             throw new JsonException(sprintf('Response content-type is "%s" while a JSON-compatible one was expected.', $contentType));
         }
 

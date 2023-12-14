@@ -36,7 +36,7 @@ final class PostDummyAttributeContext extends BaseContext
             self::POST_DUMMY_ATTRIBUTE_PATH,
             [
                 'json' => $this->json($content->getRaw()),
-            ]
+            ],
         );
     }
 }

@@ -41,7 +41,7 @@ final class OpenApi
         private array $tags = [],
         private ?array $externalDocs = null,
         private ?string $jsonSchemaDialect = null,
-        private readonly ?ArrayObject $webhooks = null
+        private readonly ?ArrayObject $webhooks = null,
     ) {
     }
 

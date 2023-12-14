@@ -21,7 +21,7 @@ final class Response
         private string $description = '',
         private ?ArrayObject $content = null,
         private ?ArrayObject $headers = null,
-        private ?ArrayObject $links = null
+        private ?ArrayObject $links = null,
     ) {
     }
 

@@ -32,7 +32,7 @@ final class Operation
         private ?bool $deprecated = null,
         private ?array $security = null,
         private ?array $servers = null,
-        private array $extensionProperties = []
+        private array $extensionProperties = [],
     ) {
     }
 
@@ -130,9 +130,11 @@ final class Operation
     public function withResponse(int|string $status, Response $response): self
     {
         $clone = clone $this;
+
         if (!is_array($clone->responses)) {
             $clone->responses = [];
         }
+
         $clone->responses[(string) $status] = $response;
 
         return $clone;
@@ -173,9 +175,11 @@ final class Operation
     public function withParameter(Parameter $parameter): self
     {
         $clone = clone $this;
+
         if (!is_array($clone->parameters)) {
             $clone->parameters = [];
         }
+
         $clone->parameters[] = $parameter;
 
         return $clone;

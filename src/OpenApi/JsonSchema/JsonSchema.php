@@ -89,7 +89,7 @@ final class JsonSchema extends ArrayObject
      */
     public function setDefinitions(ArrayObject $definitions): void
     {
-        if ($this->version === self::VERSION_OPENAPI) {
+        if (self::VERSION_OPENAPI === $this->version) {
             /** @phpstan-ignore-next-line this component will always be an array */
             $this['components']['schemas'] = $definitions;
 
@@ -124,7 +124,8 @@ final class JsonSchema extends ArrayObject
     {
         /** @phpstan-ignore-next-line this items will always be an array */
         $ref = $this['items']['$ref'] ?? null;
-        if ($ref === null) {
+
+        if (null === $ref) {
             return null;
         }
 
@@ -147,7 +148,7 @@ final class JsonSchema extends ArrayObject
     {
         // strlen('#/definitions/') = 14
         // strlen('#/components/schemas/') = 21
-        $prefix = $this->version === self::VERSION_OPENAPI ? 21 : 14;
+        $prefix = self::VERSION_OPENAPI === $this->version ? 21 : 14;
 
         return substr($definitionKey, $prefix);
     }

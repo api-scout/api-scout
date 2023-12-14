@@ -36,7 +36,7 @@ final class PutDummyAttributeContext extends BaseContext
             self::PATCH_DUMMY_PATH,
             [
                 'json' => $this->json($content->getRaw()),
-            ]
+            ],
         );
     }
 }

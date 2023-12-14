@@ -27,7 +27,7 @@ final class FiltersShouldBeAnArrayOfApiPropertyException extends Exception imple
     public function __construct(mixed $filter)
     {
         parent::__construct(
-            sprintf('filters should be an array of ApiProperty, "%s" given.', gettype($filter))
+            sprintf('filters should be an array of ApiProperty, "%s" given.', gettype($filter)),
         );
     }
 }

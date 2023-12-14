@@ -40,7 +40,7 @@ final class Options
         private readonly ?string $contactEmail = null,
         private readonly ?string $termsOfService = null,
         private readonly ?string $licenseName = null,
-        private readonly ?string $licenseUrl = null
+        private readonly ?string $licenseUrl = null,
     ) {
     }
 

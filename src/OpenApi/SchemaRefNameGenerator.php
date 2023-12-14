@@ -19,7 +19,7 @@ final class SchemaRefNameGenerator
 {
     public static function generate(string $className, string $entityName, array $groups = []): string
     {
-        if ($groups !== [] && array_key_exists('groups', $groups)) {
+        if ([] !== $groups && array_key_exists('groups', $groups)) {
             return self::buildDefinitionName(self::buildPrefixName($groups['groups']), $entityName);
         }
 
@@ -39,7 +39,7 @@ final class SchemaRefNameGenerator
         $prefixName = '';
 
         foreach ($names as $explodedName) {
-            if ($explodedName !== '') {
+            if ('' !== $explodedName) {
                 $prefixName .= ucwords($explodedName);
             }
         }

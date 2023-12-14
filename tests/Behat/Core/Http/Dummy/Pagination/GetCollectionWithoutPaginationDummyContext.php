@@ -47,7 +47,7 @@ final class GetCollectionWithoutPaginationDummyContext extends BaseContext
 
         Assert::assertSame(
             $content,
-            $this->getResponse()->toArray()
+            $this->getResponse()->toArray(),
         );
     }
 }

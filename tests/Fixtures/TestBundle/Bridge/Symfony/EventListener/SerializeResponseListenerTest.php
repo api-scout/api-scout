@@ -40,14 +40,14 @@ final class SerializeResponseListenerTest extends TestCase
             $paginationProvider,
             $responseSerializer,
             $responseGenerator,
-            $normalizer
+            $normalizer,
         );
 
         $event = new ViewEvent(
             $this->createStub(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MAIN_REQUEST,
-            null
+            null,
         );
 
         $listener->onKernelView($event);

@@ -32,7 +32,7 @@ final class SwaggerUiContext extends BaseContext
     {
         $this->request(
             HttpRequest::METHOD_GET,
-            self::SWAGGER_UI_PATH
+            self::SWAGGER_UI_PATH,
         );
     }
 }

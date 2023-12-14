@@ -75,7 +75,7 @@ final class ContextsClassFinder
         foreach ($files as $file) {
             $className = $this->getFileClassName($file->getContents());
 
-            if ($className === null) {
+            if (null === $className) {
                 continue;
             }
 

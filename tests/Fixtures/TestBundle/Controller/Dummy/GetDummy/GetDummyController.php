@@ -38,8 +38,8 @@ final class GetDummyController extends AbstractController
                 '127 avenue of the street',
                 '13100',
                 'California',
-                'US'
-            )
+                'US',
+            ),
         );
     }
 }

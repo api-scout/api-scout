@@ -25,7 +25,7 @@ final class ResourceClassNotFoundException extends Exception implements DomainEx
     public function __construct(string $class)
     {
         parent::__construct(
-            sprintf('Resource class "%s" not found.', $class)
+            sprintf('Resource class "%s" not found.', $class),
         );
     }
 }

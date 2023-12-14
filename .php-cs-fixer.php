@@ -54,6 +54,7 @@ $rules = [
     'static_lambda' => false,
     'strict_comparison' => true,
     'strict_param' => true,
+    'trailing_comma_in_multiline' => ['elements' => ['arrays', 'match', 'parameters']],
     'no_extra_blank_lines' => [
         'tokens' => [
             'break',
@@ -81,7 +82,7 @@ $rules = [
     ],
     'phpdoc_no_empty_return' => true,
     'single_blank_line_at_eof' => true,
-    'yoda_style' => false,
+    'yoda_style' => true,
     'nullable_type_declaration_for_default_null_value' => true,
 ];
 

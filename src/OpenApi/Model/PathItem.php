@@ -44,7 +44,7 @@ final class PathItem
         private ?Operation $patch = null,
         private ?Operation $trace = null,
         private ?array $servers = null,
-        private array $parameters = []
+        private array $parameters = [],
     ) {
     }
 

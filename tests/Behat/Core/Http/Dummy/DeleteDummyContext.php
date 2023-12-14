@@ -39,7 +39,7 @@ final class DeleteDummyContext extends BaseContext
 
         $this->request(
             HttpRequest::METHOD_DELETE,
-            self::DELETE_DUMMY_PATH.'/'.$inputs['name']
+            self::DELETE_DUMMY_PATH.'/'.$inputs['name'],
         );
     }
 

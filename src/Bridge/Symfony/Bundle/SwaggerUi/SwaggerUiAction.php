@@ -50,7 +50,7 @@ final readonly class SwaggerUiAction
         private ?string $oauthClientSecret,
         private bool $oauthPkce = false,
     ) {
-        if ($twig === null) {
+        if (null === $twig) {
             throw new RuntimeException('The documentation cannot be displayed since the Twig bundle is not installed. Try running "composer require symfony/twig-bundle".');
         }
     }
@@ -67,9 +67,9 @@ final readonly class SwaggerUiAction
             ['base_url' => $request->getBaseUrl() ?: '/'],
         );
 
-        if ($request->getRequestFormat() === 'json') {
+        if ('json' === $request->getRequestFormat()) {
             return new JsonResponse(
-                $this->apiNormalizer->normalize($openApi, 'json')
+                $this->apiNormalizer->normalize($openApi, 'json'),
             );
         }
 
@@ -90,8 +90,8 @@ final readonly class SwaggerUiAction
             /** @phpstan-ignore-next-line the check for twig is nullable has already been made here */
             $this->twig->render(
                 '@ApiScout/SwaggerUi/index.html.twig',
-                $swaggerContext + ['swagger_data' => $swaggerData]
-            )
+                $swaggerContext + ['swagger_data' => $swaggerData],
+            ),
         );
     }
 
@@ -100,7 +100,7 @@ final readonly class SwaggerUiAction
      */
     private function getPathAndMethod(array $swaggerData): array
     {
-        if ($swaggerData['spec']['paths'] === []) {
+        if ([] === $swaggerData['spec']['paths']) {
             return ['', ''];
         }
 

@@ -29,11 +29,11 @@ final class GetDoctrinePaginatedCollectionDummyController
     #[GetCollection(
         '/doctrine_paginated_dummies',
         name: 'app_get_dummy_doctrine_paginated_collection',
-        resource: Dummy::class
+        resource: Dummy::class,
     )]
     public function __invoke(
         #[MapQueryString] DummyQueryInput $query,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Paginator {
         $bookRepository = $entityManager
             ->createQueryBuilder()

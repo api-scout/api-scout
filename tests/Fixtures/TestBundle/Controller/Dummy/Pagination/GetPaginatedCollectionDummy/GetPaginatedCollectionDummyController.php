@@ -49,22 +49,22 @@ final class GetPaginatedCollectionDummyController extends AbstractController
                         '127 avenue of the street',
                         '13100',
                         'California',
-                        'US'
-                    )
+                        'US',
+                    ),
                 );
         }
 
         $slicedPinkFloydCollection = array_slice(
             $pinkFloydCollection,
             ($query->getPage() - 1) * $query->getItemsPerPage(),
-            $query->getItemsPerPage()
+            $query->getItemsPerPage(),
         );
 
         return new Pagination(
             $slicedPinkFloydCollection,
             $query->getPage(),
             $query->getItemsPerPage(),
-            count($pinkFloydCollection)
+            count($pinkFloydCollection),
         );
     }
 }

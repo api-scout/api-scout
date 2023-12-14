@@ -18,7 +18,7 @@ final class License
     public function __construct(
         private string $name,
         private ?string $url = null,
-        private ?string $identifier = null
+        private ?string $identifier = null,
     ) {
     }
 

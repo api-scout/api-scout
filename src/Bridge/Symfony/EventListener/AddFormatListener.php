@@ -71,7 +71,7 @@ final class AddFormatListener
 
         /** @var string|null $accept */
         $accept = $request->headers->get('Accept');
-        if ($accept !== null) {
+        if (null !== $accept) {
             if (null === $mediaType = $this->negotiator->getBest($accept, $mimeTypes)) {
                 throw $this->getNotAcceptableHttpException($accept, $flattenedMimeTypes);
             }
@@ -85,10 +85,10 @@ final class AddFormatListener
 
         // Then use the Symfony request format if available and applicable
         $requestFormat = $request->getRequestFormat('') ?: null;
-        if ($requestFormat !== null) {
+        if (null !== $requestFormat) {
             $mimeType = $request->getMimeType($requestFormat);
 
-            if ($mimeType === null) {
+            if (null === $mimeType) {
                 return;
             }
 
@@ -142,7 +142,7 @@ final class AddFormatListener
         return new NotAcceptableHttpException(sprintf(
             'Requested format "%s" is not supported. Supported MIME types are "%s".',
             $accept,
-            implode('", "', array_keys($mimeTypes))
+            implode('", "', array_keys($mimeTypes)),
         ));
     }
 }

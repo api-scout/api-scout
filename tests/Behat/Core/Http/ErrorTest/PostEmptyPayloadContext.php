@@ -47,7 +47,7 @@ final class PostEmptyPayloadContext extends BaseContext
 
         Assert::assertSame(
             $content,
-            $this->getResponse()->toArray(false)
+            $this->getResponse()->toArray(false),
         );
     }
 }

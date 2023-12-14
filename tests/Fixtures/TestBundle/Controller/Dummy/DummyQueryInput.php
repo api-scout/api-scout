@@ -27,7 +27,7 @@ final class DummyQueryInput extends PaginationQueryInput
         /** @var string|null $city The name of the city */
         public readonly ?string $city = '',
         int $page = 1,
-        int $itemsPerPage = 10
+        int $itemsPerPage = 10,
     ) {
         parent::__construct($page, $itemsPerPage);
     }

@@ -30,12 +30,12 @@ final class Parameter
         private bool $allowReserved = false,
         private mixed $example = null,
         private ?ArrayObject $examples = null,
-        private ?ArrayObject $content = null
+        private ?ArrayObject $content = null,
     ) {
-        if ($style === null) {
-            if ($in === 'query' || $in === 'cookie') {
+        if (null === $style) {
+            if ('query' === $in || 'cookie' === $in) {
                 $this->style = 'form';
-            } elseif ($in === 'path' || $in === 'header') {
+            } elseif ('path' === $in || 'header' === $in) {
                 $this->style = 'simple';
             }
         }
