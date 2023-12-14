@@ -2,7 +2,7 @@
 <ruleset name="Project">
     <config name="installed_paths" value="vendor-bin/php-codesniffer/vendor/slevomat/coding-standard"/>
 
-    <file>src</file>
+    <file>tests</file>
 <!--    <file>tests</file>-->
 
     <exclude-pattern>tests/Fixtures/app/var/*</exclude-pattern>
@@ -60,18 +60,16 @@
 
     <rule ref="Generic.Metrics.CyclomaticComplexity">
         <properties>
-            <property name="absoluteComplexity" value="8"></property>
+            <property name="absoluteComplexity" value="8"/>
         </properties>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Functions.FunctionLength">
         <properties>
-            <property name="maxLinesLength" value="35"></property>
+            <property name="maxLinesLength" value="35"/>
         </properties>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable">
-    </rule>
-
+    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
     <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
 </ruleset>

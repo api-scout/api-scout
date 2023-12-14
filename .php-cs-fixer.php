@@ -82,7 +82,7 @@ $rules = [
     ],
     'phpdoc_no_empty_return' => true,
     'single_blank_line_at_eof' => true,
-    'yoda_style' => true,
+    'yoda_style' => false,
     'nullable_type_declaration_for_default_null_value' => true,
 ];
 
