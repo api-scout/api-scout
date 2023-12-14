@@ -42,7 +42,7 @@
         "friends-of-behat/mink-browserkit-driver": "^1.6",
         "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.4",
-        "phpunit/phpunit": "^9.3",
+        "phpunit/phpunit": "^10",
         "ramsey/uuid": "^4.7",
         "symfony/asset": "^6.3|^7.0",
         "symfony/console": "^6.3|^7.0",

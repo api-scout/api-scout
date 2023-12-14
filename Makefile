@@ -60,12 +60,10 @@ tests: phpunit behat
 
 .PHONY: phpunit
 phpunit: ## Run unit tests
-	# Needs database container to be running (run "make start" if needed)
-	$(PHP) ./vendor/bin/simple-phpunit --coverage-html coverage -vvv
+	$(PHP) ./vendor/bin/phpunit
 
 .PHONY: behat
 behat: ## Run functional tests
-	# Needs database container to be running (run "make start" if needed)
 	$(PHP) ./vendor/bin/behat
 
 ##

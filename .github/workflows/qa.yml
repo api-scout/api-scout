@@ -177,7 +177,7 @@ jobs:
         run: php tests/Fixtures/app/bin/console assets:install --symlink --relative
 
       - name: Execute unit tests
-        run: php vendor/bin/simple-phpunit --coverage-html coverage -vvv --stop-on-failure
+        run: php vendor/bin/phpunit
 
       - name: Execute behat tests
         run: php vendor/bin/behat -f progress
