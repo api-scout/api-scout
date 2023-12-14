@@ -52,7 +52,7 @@ final class JsonSchema extends ArrayObject
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param bool $includeDefinitions if set to false, definitions will not be included in the resulting array
      */

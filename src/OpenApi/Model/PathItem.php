@@ -17,10 +17,7 @@ use ApiScout\OpenApi\Http\Abstract\HttpRequest;
 
 final class PathItem
 {
-    /**
-     * @var array<int, string>
-     */
-    public static array $methods = [
+    public const METHODS = [
         HttpRequest::METHOD_GET,
         HttpRequest::METHOD_PUT,
         HttpRequest::METHOD_POST,

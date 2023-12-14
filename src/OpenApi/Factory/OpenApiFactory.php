@@ -122,7 +122,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $resourceShortName = $this->normalizeClassName($operation->getResource());
             $method = $operation->getMethod();
 
-            if (!in_array($method, Model\PathItem::$methods, true)) {
+            if (!in_array($method, Model\PathItem::METHODS, true)) {
                 continue;
             }
 

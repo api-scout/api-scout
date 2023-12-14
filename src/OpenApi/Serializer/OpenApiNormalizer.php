@@ -41,7 +41,7 @@ final class OpenApiNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
@@ -59,7 +59,7 @@ final class OpenApiNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
@@ -80,6 +80,7 @@ final class OpenApiNormalizer implements NormalizerInterface
                 foreach ($data[self::EXTENSION_PROPERTIES_KEY] as $extensionPropertyKey => $extensionPropertyValue) {
                     $data[$extensionPropertyKey] = $extensionPropertyValue;
                 }
+
                 continue;
             }
 

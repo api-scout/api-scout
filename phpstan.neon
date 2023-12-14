@@ -16,5 +16,6 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/tests/Fixtures/app/var
         - %currentWorkingDirectory%/src/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php
+        - %currentWorkingDirectory%/src/OpenApi/Factory/OpenApiFactory.php
     ignoreErrors:
         - '#Short ternary operator is not allowed. Use null coalesce operator if applicable or consider using long ternary.#'

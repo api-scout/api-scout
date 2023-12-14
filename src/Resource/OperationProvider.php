@@ -111,11 +111,7 @@ final class OperationProvider implements OperationProviderInterface
 
     private function isOperationResource(ReflectionMethod $reflection): bool
     {
-        if ([] !== $reflection->getAttributes(Operation::class, ReflectionAttribute::IS_INSTANCEOF)) {
-            return true;
-        }
-
-        return false;
+        return [] !== $reflection->getAttributes(Operation::class, ReflectionAttribute::IS_INSTANCEOF);
     }
 
     private function buildOperationFromMethod(ReflectionMethod $method): Operation
@@ -350,10 +346,6 @@ final class OperationProvider implements OperationProviderInterface
             return false;
         }
 
-        if (0 === strcmp($parameter->getName(), str_replace(['{', '}'], '', $query))) {
-            return true;
-        }
-
-        return false;
+        return 0 === strcmp($parameter->getName(), str_replace(['{', '}'], '', $query));
     }
 }

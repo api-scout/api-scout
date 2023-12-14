@@ -25,6 +25,7 @@ use RuntimeException;
 final class FilterFactory implements FilterFactoryInterface
 {
     use PropertyTypeBuilderTrait;
+
     public const PATH = 'path';
     public const QUERY = 'query';
 
@@ -64,8 +65,8 @@ final class FilterFactory implements FilterFactoryInterface
 
         if (null !== $type && class_exists($type)) {
             return [
-                'type' => 'string',
                 'format' => $this->buildTypeFormatName($type),
+                'type' => 'string',
             ];
         }
 
@@ -76,7 +77,8 @@ final class FilterFactory implements FilterFactoryInterface
     {
         /** @phpstan-ignore-next-line up to this point getParameters should be iterable */
         foreach ($operation->getParameters() as $existingParameter) {
-            if ($existingParameter->getName() === $parameter->getName() && $existingParameter->getIn() === $parameter->getIn()) {
+            if ($existingParameter->getName() === $parameter->getName()
+                && $existingParameter->getIn() === $parameter->getIn()) {
                 return true;
             }
         }

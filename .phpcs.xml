@@ -5,8 +5,11 @@
     <file>src</file>
 <!--    <file>tests</file>-->
 
+    <!--   The Attribute directory causes an internal error -->
+    <exclude-pattern>src/Attribute/*</exclude-pattern>
     <exclude-pattern>src/Bridge/Symfony/Bundle/Resources/public/*</exclude-pattern>
     <exclude-pattern>src/Bridge/Symfony/Bundle/templates/*</exclude-pattern>
+    <exclude-pattern>src/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php</exclude-pattern>
 
     <!-- Files to clean and refactor -->
     <exclude-pattern>src/OpenApi/Factory/OpenApiFactory.php</exclude-pattern>
@@ -20,6 +23,12 @@
 
     <!-- Doctrine Event Constants are not uppercase -->
     <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="absoluteComplexity" value="8"/>
+        </properties>
+    </rule>
 
     <rule ref="Generic.PHP.LowerCaseConstant"/>
     <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
@@ -61,53 +70,99 @@
     </rule>
     <rule ref="Generic.WhiteSpace.ScopeIndent"/>
 
-<!--    <rule ref="SlevomatCodingStandard">-->
-<!--        <exclude name="SlevomatCodingStandard.Functions.DisallowNamedArguments" />-->
-<!--        <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix" />-->
-<!--        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException" />-->
-<!--        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions.NonFullyQualified" />-->
-<!--        <exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces.NonFullyQualified" />-->
-<!--        <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix" />-->
-<!--        <exclude name="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix" />-->
-<!--        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName" />-->
-<!--        <exclude name="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion.DisallowedConstructorPropertyPromotion" />-->
-<!--        <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall.DisallowedTrailingComma" />-->
-<!--        <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration.DisallowedTrailingComma" />-->
-<!--        <exclude name="SlevomatCodingStandard.Classes.RequireSingleLineMethodSignature.RequiredSingleLineSignature" />-->
-<!--        <exclude name="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison.DisallowedYodaComparison" />-->
-<!--        <exclude name="SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment" />-->
-<!--        <exclude name="SlevomatCodingStandard.Functions.DisallowArrowFunction.DisallowedArrowFunction" />-->
-<!--        <exclude name="SlevomatCodingStandard.Whitespaces.DuplicateSpaces" />-->
-<!--        <exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses" />-->
-<!--        <exclude name="SlevomatCodingStandard.Exceptions.DisallowNonCapturingCatch.DisallowedNonCapturingCatch" />-->
+    <rule ref="SlevomatCodingStandard">
+        <exclude name="SlevomatCodingStandard.Arrays.AlphabeticallySortedByKeys.IncorrectKeyOrder" />
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix" />
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix" />
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix" />
+        <exclude name="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion.DisallowedConstructorPropertyPromotion" />
+        <exclude name="SlevomatCodingStandard.Classes.RequireSingleLineMethodSignature.RequiredSingleLineSignature" />
+        <exclude name="SlevomatCodingStandard.Classes.ClassStructure.IncorrectGroupOrder" />
+        <exclude name="SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment" />
+        <exclude name="SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment" />
+        <exclude name="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator.DisallowedNullSafeObjectOperator" />
+        <exclude name="SlevomatCodingStandard.ControlStructures.DisallowShortTernaryOperator.DisallowedShortTernaryOperator" />
+        <exclude name="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison.DisallowedYodaComparison" />
+        <exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses" />
+        <exclude name="SlevomatCodingStandard.ControlStructures.RequireNullSafeObjectOperator.RequiredNullSafeObjectOperator" />
+        <exclude name="SlevomatCodingStandard.Exceptions.DisallowNonCapturingCatch.DisallowedNonCapturingCatch" />
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException" />
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions.NonFullyQualified" />
+        <exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces.NonFullyQualified" />
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName" />
+        <exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators.DisallowedPostIncrementOperator" />
+        <exclude name="SlevomatCodingStandard.Operators.RequireOnlyStandaloneIncrementAndDecrementOperators.PostIncrementOperatorNotUsedStandalone" />
+        <exclude name="SlevomatCodingStandard.PHP.DisallowDirectMagicInvokeCall.DisallowDirectMagicInvokeCall" />
+        <exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength" />
+        <exclude name="SlevomatCodingStandard.Functions.DisallowNamedArguments" />
+        <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInCall.DisallowedTrailingComma" />
+        <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration.DisallowedTrailingComma" />
+        <exclude name="SlevomatCodingStandard.Functions.DisallowArrowFunction.DisallowedArrowFunction" />
+        <exclude name="SlevomatCodingStandard.Whitespaces.DuplicateSpaces" />
 
-<!--        &lt;!&ndash;        To remove      &ndash;&gt;-->
-<!--        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint" />-->
-<!--        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />-->
-<!--        <exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint" />-->
-<!--        <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion" />-->
-<!--    </rule>-->
-
-<!--    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"></rule>-->
-
-<!--    https://github.com/slevomat/coding-standard/blob/master/doc/control-structures.md#slevomatcodingstandardcontrolstructuresearlyexit- -->
-    <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit">
-        <properties>
-            <property name="ignoreStandaloneIfInScope" value="true"/>
-        </properties>
-
-        <exclude-pattern>src/Bridge/Symfony/EventListener/*</exclude-pattern>
-        <exclude-pattern>src/Resource/OperationProvider.php</exclude-pattern>
-        <exclude-pattern>src/OpenApi/Serializer/OpenApiNormalizer.php</exclude-pattern>
+        <!--        Ruleset to fix instead of ignoring      -->
+        <exclude name="SlevomatCodingStandard.ControlStructures.RequireMultiLineTernaryOperator.MultiLineTernaryOperatorNotUsed" />
+        <exclude name="SlevomatCodingStandard.Functions.RequireMultiLineCall.RequiredMultiLineCall" />
+        <exclude name="SlevomatCodingStandard.Files.LineLength.LineTooLong" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint" />
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint" />
+        <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion" />
+        <exclude name="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic" />
+        <!--        Ruleset to fix instead of ignoring      -->
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Functions.FunctionLength">
+    <rule ref="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces">
         <properties>
-            <property name="maxLinesLength" value="35"/>
+            <property name="linesCountAfterOpeningBrace" value="0"/>
+            <property name="linesCountBeforeClosingBrace" value="0"/>
         </properties>
+    </rule>
 
-        <exclude-pattern>src/Bridge/Symfony/Bundle/DependencyInjection/Configuration.php</exclude-pattern>
+    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
+
+    <rule ref="SlevomatCodingStandard.Classes.RequireAbstractOrFinal">
+        <exclude-pattern>src/Response/Pagination/QueryInput/PaginationQueryInput.php</exclude-pattern>
+        <exclude-pattern>src/Response/Pagination/Pagination.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion">
+        <!--        To see if this should not be refactored      -->
+        <exclude-pattern>src/OpenApi/Model/Components.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.TraitUseSpacing">
+        <properties>
+            <property name="linesCountBeforeFirstUse" value="0"/>
+            <property name="linesCountAfterLastUse" value="1"/>
+            <property name="linesCountAfterLastUseWhenLastInClass" value="1"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.DisallowCommentAfterCode.DisallowedCommentAfterCode">
+        <exclude-pattern>src/OpenApi/Http/Abstract/HttpResponse.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing">
+        <properties>
+            <property name="linesCountBetweenDifferentAnnotationsTypes" value="1"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration">
+        <properties>
+            <property name="allowDocCommentAboveReturn" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Complexity.Cognitive">
+        <properties>
+            <property name="warningThreshold" value="9"/>
+            <property name="errorThreshold" value="9"/>
+        </properties>
         <exclude-pattern>src/Resource/OperationProvider.php</exclude-pattern>
+        <exclude-pattern>src/OpenApi/JsonSchema/Factory/SchemaFactory.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing">
@@ -120,10 +175,14 @@
         </properties>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing">
+    <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit">
         <properties>
-            <property name="linesCountBetweenDifferentAnnotationsTypes" value="1"/>
+            <property name="ignoreStandaloneIfInScope" value="true"/>
         </properties>
+
+        <exclude-pattern>src/Bridge/Symfony/EventListener/*</exclude-pattern>
+        <exclude-pattern>src/Resource/OperationProvider.php</exclude-pattern>
+        <exclude-pattern>src/OpenApi/Serializer/OpenApiNormalizer.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
@@ -143,22 +202,17 @@
         </properties>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+    <rule ref="SlevomatCodingStandard.Functions.FunctionLength">
         <properties>
-            <property name="spacesCountAroundEqualsSign" value="0"/>
+            <property name="maxLinesLength" value="35"/>
         </properties>
+
+        <exclude-pattern>src/Resource/OperationProvider.php</exclude-pattern>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing">
+    <rule ref="SlevomatCodingStandard.Functions.RequireMultiLineCall">
         <properties>
-            <property name="linesCountBetweenUseTypes" value="1"/>
-        </properties>
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces">
-        <properties>
-            <property name="linesCountAfterOpeningBrace" value="0"/>
-            <property name="linesCountBeforeClosingBrace" value="0"/>
+            <property name="minLineLength" value="125"/>
         </properties>
     </rule>
 
@@ -175,33 +229,17 @@
         <exclude-pattern>src/Response/Pagination/PaginationProvider.php</exclude-pattern>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Classes.RequireAbstractOrFinal">
-        <exclude-pattern>src/Response/Pagination/QueryInput/PaginationQueryInput.php</exclude-pattern>
-        <exclude-pattern>src/Response/Pagination/Pagination.php</exclude-pattern>
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.Complexity.Cognitive">
+    <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing">
         <properties>
-            <property name="warningThreshold" value="9"/>
-            <property name="errorThreshold" value="9"/>
-        </properties>
-        <exclude-pattern>src/Resource/OperationProvider.php</exclude-pattern>
-        <exclude-pattern>src/OpenApi/JsonSchema/Factory/SchemaFactory.php</exclude-pattern>
-    </rule>
-
-    <rule ref="Generic.Metrics.CyclomaticComplexity">
-        <properties>
-            <property name="absoluteComplexity" value="8"/>
+            <property name="linesCountBetweenUseTypes" value="1"/>
         </properties>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable">
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
     </rule>
 
-    <rule ref="SlevomatCodingStandard.Commenting.DisallowCommentAfterCode.DisallowedCommentAfterCode">
-        <exclude-pattern>src/OpenApi/Http/Abstract/HttpResponse.php</exclude-pattern>
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
-
+    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
 </ruleset>

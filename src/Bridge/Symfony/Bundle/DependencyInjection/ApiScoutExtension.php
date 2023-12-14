@@ -69,6 +69,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
 
     public function prepend(ContainerBuilder $container): void
     {
+        // Prepend manipulation is not needed here
     }
 
     private function registerCommonConfiguration(
