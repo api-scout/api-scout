@@ -38,7 +38,7 @@ final class DeleteDummyAttributeContext extends BaseContext
 
         $this->request(
             HttpRequest::METHOD_DELETE,
-            self::DELETE_DUMMY_ATTRIBUTE_PATH.'/'.(int) $inputs['id']
+            self::DELETE_DUMMY_ATTRIBUTE_PATH.'/'.(int) $inputs['id'],
         );
     }
 }

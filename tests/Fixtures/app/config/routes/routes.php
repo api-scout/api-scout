@@ -19,7 +19,7 @@ return function (RoutingConfigurator $routes): void {
             'path' => __DIR__.'/../../../TestBundle/Controller/',
             'namespace' => 'ApiScout\Tests\Fixtures\TestBundle\Controller',
         ],
-        type: 'attribute'
+        type: 'attribute',
     );
 
     $routes

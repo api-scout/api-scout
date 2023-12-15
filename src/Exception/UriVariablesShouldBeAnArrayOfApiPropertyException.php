@@ -27,7 +27,7 @@ final class UriVariablesShouldBeAnArrayOfApiPropertyException extends Exception 
     public function __construct(mixed $uriVariable)
     {
         parent::__construct(
-            sprintf('uriVariables should be an array of ApiProperty, "%s" given.', gettype($uriVariable))
+            sprintf('uriVariables should be an array of ApiProperty, "%s" given.', gettype($uriVariable)),
         );
     }
 }

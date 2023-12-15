@@ -73,10 +73,10 @@ final class OperationProvider implements OperationProviderInterface
                 $operationCacheKey = self::getOperationCacheKey(self::getControllerName($method));
                 $operation = $this->cache->get(
                     $operationCacheKey,
-                    fn () => $this->buildOperationFromMethod($method)
+                    fn () => $this->buildOperationFromMethod($method),
                 );
 
-                if ($operation->getName() === null) {
+                if (null === $operation->getName()) {
                     throw new LogicException('Operation name should have been initialized before hand.');
                 }
 
@@ -91,13 +91,13 @@ final class OperationProvider implements OperationProviderInterface
     {
         return $this->cache->get(
             self::getOperationCacheKey($controllerName),
-            static fn () => null
+            static fn () => null,
         );
     }
 
     private static function getControllerName(ReflectionMethod $method): string
     {
-        if ($method->name === '__invoke') {
+        if ('__invoke' === $method->name) {
             return sprintf('%s', $method->class);
         }
 
@@ -111,32 +111,28 @@ final class OperationProvider implements OperationProviderInterface
 
     private function isOperationResource(ReflectionMethod $reflection): bool
     {
-        if ($reflection->getAttributes(Operation::class, ReflectionAttribute::IS_INSTANCEOF) !== []) {
-            return true;
-        }
-
-        return false;
+        return [] !== $reflection->getAttributes(Operation::class, ReflectionAttribute::IS_INSTANCEOF);
     }
 
     private function buildOperationFromMethod(ReflectionMethod $method): Operation
     {
         $operation = $this->buildMethodOperation($method);
 
-        if ($operation->getName() === null) {
+        if (null === $operation->getName()) {
             $operation->setName(
-                $this->getDefaultRouteName($method->getDeclaringClass()->name, $method->name)
+                $this->getDefaultRouteName($method->getDeclaringClass()->name, $method->name),
             );
         }
 
         $payloadResource = $this->isPayloadResource($method->getParameters());
 
-        if ($payloadResource !== null) {
-            if ($operation->getFilters() === []) {
+        if (null !== $payloadResource) {
+            if ([] === $operation->getFilters()) {
                 $operation->setFilters(
-                    $this->buildParameterFilters($payloadResource)
+                    $this->buildParameterFilters($payloadResource),
                 );
 
-                if ($payloadResource->getType() === null) {
+                if (null === $payloadResource->getType()) {
                     throw new ParamShouldBeTypedException($payloadResource->name);
                 }
 
@@ -144,29 +140,29 @@ final class OperationProvider implements OperationProviderInterface
                 $inputTypeClassname = $payloadResource->getType()->getName();
 
                 $operation->setIsPaginationEnabled(
-                    $this->buildIsPaginationActivated($inputTypeClassname)
+                    $this->buildIsPaginationActivated($inputTypeClassname),
                 );
 
                 $operation->setInput($inputTypeClassname);
             }
 
-            if ($operation->getDenormalizationContext() === []) {
+            if ([] === $operation->getDenormalizationContext()) {
                 $operation->setDenormalizationContext(
-                    $this->buildDenormalizationContext($payloadResource)
+                    $this->buildDenormalizationContext($payloadResource),
                 );
             }
         }
 
-        if ($method->getReturnType() !== null && $operation->getOutput() === null) {
+        if (null !== $method->getReturnType() && null === $operation->getOutput()) {
             $operation->setOutput(
                 /** @phpstan-ignore-next-line getName is an existing method */
-                $this->buildOutput($method->getReturnType()->getName())
+                $this->buildOutput($method->getReturnType()->getName()),
             );
         }
 
-        if ($operation->getUriVariables() === []) {
+        if ([] === $operation->getUriVariables()) {
             $operation->setUriVariables(
-                $this->buildUriVariables($method->getParameters(), $operation->getPath())
+                $this->buildUriVariables($method->getParameters(), $operation->getPath()),
             );
         }
 
@@ -174,21 +170,22 @@ final class OperationProvider implements OperationProviderInterface
     }
 
     /**
-     * @param  class-string        $className
+     * @param class-string $className
+     *
      * @throws ReflectionException
      */
     private function buildIsPaginationActivated(string $className): bool
     {
         return array_key_exists(
             PaginationQueryInputInterface::class,
-            (new ReflectionClass($className))->getInterfaces()
+            (new ReflectionClass($className))->getInterfaces(),
         );
     }
 
     private function buildDenormalizationContext(ReflectionParameter $payload): array
     {
         foreach ($payload->getAttributes() as $attribute) {
-            if ($attribute->getName() === MapRequestPayload::class || $attribute->getName() === MapQueryString::class) {
+            if (MapRequestPayload::class === $attribute->getName() || MapQueryString::class === $attribute->getName()) {
                 /**
                  * @var MapRequestPayload|MapQueryString $mapRequestOrQuery
                  */
@@ -218,7 +215,7 @@ final class OperationProvider implements OperationProviderInterface
 
         foreach ($queryClass->getProperties() as $property) {
             $apiProperties[$property->getName()] = $this->buildApiProperty(
-                $property
+                $property,
             );
         }
 
@@ -242,11 +239,11 @@ final class OperationProvider implements OperationProviderInterface
     private function isPayloadResource(array $reflectionParameters): ?ReflectionParameter
     {
         foreach ($reflectionParameters as $reflectionParameter) {
-            if ($reflectionParameter->getAttributes(MapQueryString::class, ReflectionAttribute::IS_INSTANCEOF) !== []) {
+            if ([] !== $reflectionParameter->getAttributes(MapQueryString::class, ReflectionAttribute::IS_INSTANCEOF)) {
                 return $reflectionParameter;
             }
 
-            if ($reflectionParameter->getAttributes(MapRequestPayload::class, ReflectionAttribute::IS_INSTANCEOF) !== []) {
+            if ([] !== $reflectionParameter->getAttributes(MapRequestPayload::class, ReflectionAttribute::IS_INSTANCEOF)) {
                 return $reflectionParameter;
             }
         }
@@ -268,7 +265,7 @@ final class OperationProvider implements OperationProviderInterface
         $apiProperty = new ApiProperty();
 
         foreach ($property->getAttributes() as $attribute) {
-            if ($attribute->getName() === ApiProperty::class) {
+            if (ApiProperty::class === $attribute->getName()) {
                 /**
                  * @var ApiProperty $apiProperty
                  */
@@ -277,16 +274,16 @@ final class OperationProvider implements OperationProviderInterface
         }
 
         return new ApiProperty(
-            name: $apiProperty->getName() !== null ? $apiProperty->getName() : $property->getName(),
-            type: $apiProperty->getType() !== null
+            name: null !== $apiProperty->getName() ? $apiProperty->getName() : $property->getName(),
+            type: null !== $apiProperty->getType()
                 ? $apiProperty->getType()
                 /** @phpstan-ignore-next-line getName will exist if getType is a ReflectionNamedType */
                 : (!$property->getType() instanceof ReflectionNamedType ? $property->getType()->getName() : 'string'),
-            required: $apiProperty->isRequired() !== null
+            required: null !== $apiProperty->isRequired()
                 ? $apiProperty->isRequired()
-                : ($property->getType() !== null && !$property->getType()->allowsNull()),
+                : (null !== $property->getType() && !$property->getType()->allowsNull()),
             description: $apiProperty->getDescription(),
-            deprecated: $apiProperty->isDeprecated()
+            deprecated: $apiProperty->isDeprecated(),
         );
     }
 
@@ -307,11 +304,11 @@ final class OperationProvider implements OperationProviderInterface
             throw new ResourceClassNotFoundException($output);
         }
 
-        if ($output === Response::class || $output === JsonResponse::class) {
+        if (Response::class === $output || JsonResponse::class === $output) {
             return null;
         }
 
-        if (class_exists(DoctrinePagination::class) && $output === DoctrinePagination::class) {
+        if (class_exists(DoctrinePagination::class) && DoctrinePagination::class === $output) {
             return Pagination::class;
         }
 
@@ -336,11 +333,11 @@ final class OperationProvider implements OperationProviderInterface
 
         foreach ($parameters as $parameter) {
             foreach ($parsedPathQuery as $query) {
-                if ($this->isQueryResource($parameter, $query) === true) {
+                if (true === $this->isQueryResource($parameter, $query)) {
                     $uriVariables[$parameter->getName()] = new ApiProperty(
                         name: $parameter->getName(),
                         /** @phpstan-ignore-next-line getName is an existing method */
-                        type: $parameter->getType() !== null ? $parameter->getType()->getName() : 'string',
+                        type: null !== $parameter->getType() ? $parameter->getType()->getName() : 'string',
                         required: !$parameter->isOptional(),
                         description: 'Uri parameter',
                     );
@@ -353,14 +350,10 @@ final class OperationProvider implements OperationProviderInterface
 
     private function isQueryResource(ReflectionParameter $parameter, string $query): bool
     {
-        if ($this->isPayloadResource([$parameter]) !== null) {
+        if (null !== $this->isPayloadResource([$parameter])) {
             return false;
         }
 
-        if (strcmp($parameter->getName(), str_replace(['{', '}'], '', $query)) === 0) {
-            return true;
-        }
-
-        return false;
+        return 0 === strcmp($parameter->getName(), str_replace(['{', '}'], '', $query));
     }
 }

@@ -67,7 +67,7 @@ final class GetCollection extends Operation implements CollectionOperationInterf
         ?string $format = null,
         ?bool $utf8 = null,
         ?bool $stateless = null,
-        ?string $env = null
+        ?string $env = null,
     ) {
         parent::__construct(
             path: $path,

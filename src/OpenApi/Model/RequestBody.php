@@ -21,7 +21,7 @@ final class RequestBody
     public function __construct(
         private string $description = '',
         private ?ArrayObject $content = null,
-        private bool $required = false
+        private bool $required = false,
     ) {
     }
 
@@ -32,7 +32,7 @@ final class RequestBody
 
     public function getContent(): ArrayObject
     {
-        if ($this->content === null) {
+        if (null === $this->content) {
             throw new LogicException('RequestBody content should not be null');
         }
 

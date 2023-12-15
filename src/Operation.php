@@ -68,7 +68,7 @@ abstract class Operation extends Route
         ?string $format,
         ?bool $utf8 = null,
         ?bool $stateless = null,
-        ?string $env = null
+        ?string $env = null,
     ) {
         parent::__construct(
             path: $path,
@@ -196,7 +196,7 @@ abstract class Operation extends Route
     public function getExceptionToStatusClassStatusCode(
         array $exceptionToStatus,
         object $classException,
-        int $defaultStatusCode = 400
+        int $defaultStatusCode = 400,
     ): int {
         $exceptionToStatuses = $this->formatExceptionToStatusWithConfiguration($exceptionToStatus);
 

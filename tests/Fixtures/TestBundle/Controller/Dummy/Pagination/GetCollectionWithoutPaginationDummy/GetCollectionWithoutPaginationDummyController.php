@@ -35,9 +35,9 @@ final class GetCollectionWithoutPaginationDummyController extends AbstractContro
         resource: Dummy::class,
         openapi: new Model\Operation(
             summary: 'Retrieve the Collection of a Dummy resource without pagination',
-            description: 'Retrieve the Collection of a Dummy resource without pagination'
+            description: 'Retrieve the Collection of a Dummy resource without pagination',
         ),
-        paginationEnabled: false
+        paginationEnabled: false,
     )]
     public function __invoke(
         #[MapQueryString] ?DummyQueryWithoutPaginationInput $query,
@@ -57,15 +57,15 @@ final class GetCollectionWithoutPaginationDummyController extends AbstractContro
                         '127 avenue of the street',
                         '13100',
                         'California',
-                        'US'
-                    )
+                        'US',
+                    ),
                 );
         }
 
         return new ArrayObject(array_slice(
             $pinkFloydCollection,
             0,
-            10
+            10,
         ));
     }
 }

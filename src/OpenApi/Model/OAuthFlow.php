@@ -21,7 +21,7 @@ final class OAuthFlow
         private ?string $authorizationUrl = null,
         private ?string $tokenUrl = null,
         private ?string $refreshUrl = null,
-        private ?ArrayObject $scopes = null
+        private ?ArrayObject $scopes = null,
     ) {
     }
 
@@ -42,7 +42,7 @@ final class OAuthFlow
 
     public function getScopes(): ArrayObject
     {
-        if ($this->scopes === null) {
+        if (null === $this->scopes) {
             $this->scopes = new ArrayObject();
         }
 

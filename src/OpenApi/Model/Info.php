@@ -22,7 +22,7 @@ final class Info
         private ?string $termsOfService = null,
         private ?Contact $contact = null,
         private ?License $license = null,
-        private ?string $summary = null
+        private ?string $summary = null,
     ) {
     }
 

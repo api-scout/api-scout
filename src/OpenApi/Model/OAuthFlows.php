@@ -15,8 +15,12 @@ namespace ApiScout\OpenApi\Model;
 
 final class OAuthFlows
 {
-    public function __construct(private ?OAuthFlow $implicit = null, private ?OAuthFlow $password = null, private ?OAuthFlow $clientCredentials = null, private ?OAuthFlow $authorizationCode = null)
-    {
+    public function __construct(
+        private ?OAuthFlow $implicit = null,
+        private ?OAuthFlow $password = null,
+        private ?OAuthFlow $clientCredentials = null,
+        private ?OAuthFlow $authorizationCode = null,
+    ) {
     }
 
     public function getImplicit(): ?OAuthFlow

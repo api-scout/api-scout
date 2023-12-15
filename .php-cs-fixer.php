@@ -54,6 +54,7 @@ $rules = [
     'static_lambda' => false,
     'strict_comparison' => true,
     'strict_param' => true,
+    'trailing_comma_in_multiline' => ['elements' => ['arrays', 'match', 'parameters']],
     'no_extra_blank_lines' => [
         'tokens' => [
             'break',

@@ -80,7 +80,7 @@ final class FileContext extends BaseContext
     {
         $files = scandir($path);
 
-        if ($files === false) {
+        if (false === $files) {
             throw new LogicException('Directory not found at path: '.$path);
         }
 

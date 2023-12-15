@@ -22,7 +22,7 @@ final class GetBookController
     {
         return new BookOutput(
             'PHPStan',
-            'There is only one level with PHPStan. The level max.'
+            'There is only one level with PHPStan. The level max.',
         );
     }
 }

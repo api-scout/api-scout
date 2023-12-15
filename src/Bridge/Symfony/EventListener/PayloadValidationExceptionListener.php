@@ -62,7 +62,7 @@ final class PayloadValidationExceptionListener
             default => null,
         };
 
-        if ($jsonResponse === null) {
+        if (null === $jsonResponse) {
             return;
         }
 
@@ -71,12 +71,12 @@ final class PayloadValidationExceptionListener
             status: $operation->getExceptionToStatusClassStatusCode(
                 $this->exceptionsToStatuses,
                 $exception->getPrevious() instanceof ValidationFailedException ? $exception->getPrevious() : $exception,
-                Response::HTTP_BAD_REQUEST
+                Response::HTTP_BAD_REQUEST,
             ),
             headers: [
                 'X-Content-Type-Options' => 'nosniff',
                 'X-Frame-Options' => 'deny',
-            ]
+            ],
         ));
     }
 
@@ -134,8 +134,8 @@ final class PayloadValidationExceptionListener
     private function isEmptyPayload(Throwable $exception): bool
     {
         return $exception instanceof HttpException
-            && $exception->getPrevious() === null
-            && $exception->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY;
+            && null === $exception->getPrevious()
+            && Response::HTTP_UNPROCESSABLE_ENTITY === $exception->getStatusCode();
     }
 
     /**

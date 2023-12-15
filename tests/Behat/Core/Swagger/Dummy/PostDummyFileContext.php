@@ -41,7 +41,7 @@ final class PostDummyFileContext extends BaseContext
         Assert::assertArrayHasKey(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $dummyFileEndpoint['responses']);
         Assert::assertSame(
             'Validation Failed',
-            $dummyFileEndpoint['responses'][Response::HTTP_UNSUPPORTED_MEDIA_TYPE]['description']
+            $dummyFileEndpoint['responses'][Response::HTTP_UNSUPPORTED_MEDIA_TYPE]['description'],
         );
 
         Assert::assertNotEmpty($response['components']['schemas']['Dummy.DummyFileOutput']);

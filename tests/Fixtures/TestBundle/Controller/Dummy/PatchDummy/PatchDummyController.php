@@ -42,7 +42,7 @@ final class PatchDummyController extends AbstractController
                 $dummyPayloadInput->address->zipCode,
                 $dummyPayloadInput->address->city,
                 $dummyPayloadInput->address->country,
-            )
+            ),
         );
     }
 }

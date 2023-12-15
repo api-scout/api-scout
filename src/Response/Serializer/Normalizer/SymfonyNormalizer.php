@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormal
 final class SymfonyNormalizer implements NormalizerInterface
 {
     public function __construct(
-        private readonly SymfonyNormalizerInterface $normalizer
+        private readonly SymfonyNormalizerInterface $normalizer,
     ) {
     }
 

@@ -59,7 +59,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         private readonly SchemaFactoryInterface $schemaFactory,
         private readonly FilterFactoryInterface $filterFactory,
         private readonly array $exceptionsToStatuses,
-        ?Options $openApiOptions = null
+        ?Options $openApiOptions = null,
     ) {
         $this->openApiOptions = $openApiOptions ?: new Options('OpenApi Documentation');
     }
@@ -69,17 +69,17 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         $collections = $this->resourceCollection->getCollection();
 
         $baseUrl = $context[self::BASE_URL] ?? '/';
-        $contact = $this->openApiOptions->getContactUrl() === null || $this->openApiOptions->getContactEmail() === null ? null : new Model\Contact($this->openApiOptions->getContactName(), $this->openApiOptions->getContactUrl(), $this->openApiOptions->getContactEmail());
-        $license = $this->openApiOptions->getLicenseName() === null ? null : new Model\License($this->openApiOptions->getLicenseName(), $this->openApiOptions->getLicenseUrl());
+        $contact = null === $this->openApiOptions->getContactUrl() || null === $this->openApiOptions->getContactEmail() ? null : new Model\Contact($this->openApiOptions->getContactName(), $this->openApiOptions->getContactUrl(), $this->openApiOptions->getContactEmail());
+        $license = null === $this->openApiOptions->getLicenseName() ? null : new Model\License($this->openApiOptions->getLicenseName(), $this->openApiOptions->getLicenseUrl());
         $info = new Model\Info($this->openApiOptions->getTitle(), $this->openApiOptions->getVersion(), trim($this->openApiOptions->getDescription()), $this->openApiOptions->getTermsOfService(), $contact, $license);
-        $servers = $baseUrl === '/' || $baseUrl === '' ? [new Model\Server('/')] : [new Model\Server($baseUrl)];
+        $servers = '/' === $baseUrl || '' === $baseUrl ? [new Model\Server('/')] : [new Model\Server($baseUrl)];
         $paths = new Model\Paths();
         $schemas = new ArrayObject();
 
         $this->collectPaths(
             $collections,
             $paths,
-            $schemas
+            $schemas,
         );
 
         $securitySchemes = $this->getSecuritySchemes();
@@ -100,29 +100,29 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 new ArrayObject(),
                 new ArrayObject(),
                 new ArrayObject(),
-                new ArrayObject($securitySchemes)
+                new ArrayObject($securitySchemes),
             ),
-            $securityRequirements
+            $securityRequirements,
         );
     }
 
     private function collectPaths(
         Operations $resource,
         Model\Paths $paths,
-        ArrayObject $schemas
+        ArrayObject $schemas,
     ): void {
         foreach ($resource->getOperations() as $operationName => $operation) {
             $openapiOperation = $operation->getOpenapi();
 
             // Operation ignored from OpenApi
-            if ($openapiOperation === false) {
+            if (false === $openapiOperation) {
                 continue;
             }
 
             $resourceShortName = $this->normalizeClassName($operation->getResource());
             $method = $operation->getMethod();
 
-            if (!in_array($method, Model\PathItem::$methods, true)) {
+            if (!in_array($method, Model\PathItem::METHODS, true)) {
                 continue;
             }
 
@@ -132,18 +132,18 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
             // Complete with defaults
             $openapiOperation = new Model\Operation(
-                operationId: $openapiOperation->getOperationId() !== null ? $openapiOperation->getOperationId() : $this->normalizeOperationName($operationName),
-                tags: $openapiOperation->getTags() !== null ? $openapiOperation->getTags() : [$resourceShortName],
-                responses: $openapiOperation->getResponses() !== null ? $openapiOperation->getResponses() : [],
-                summary: $openapiOperation->getSummary() !== null ? $openapiOperation->getSummary() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
-                description: $openapiOperation->getDescription() !== null ? $openapiOperation->getDescription() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
+                operationId: null !== $openapiOperation->getOperationId() ? $openapiOperation->getOperationId() : $this->normalizeOperationName($operationName),
+                tags: null !== $openapiOperation->getTags() ? $openapiOperation->getTags() : [$resourceShortName],
+                responses: null !== $openapiOperation->getResponses() ? $openapiOperation->getResponses() : [],
+                summary: null !== $openapiOperation->getSummary() ? $openapiOperation->getSummary() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
+                description: null !== $openapiOperation->getDescription() ? $openapiOperation->getDescription() : $this->getPathDescription($resourceShortName, $method, $operation instanceof CollectionOperationInterface),
                 externalDocs: $openapiOperation->getExternalDocs(),
-                parameters: $openapiOperation->getParameters() !== null ? $openapiOperation->getParameters() : [],
+                parameters: null !== $openapiOperation->getParameters() ? $openapiOperation->getParameters() : [],
                 requestBody: $openapiOperation->getRequestBody(),
                 callbacks: $openapiOperation->getCallbacks(),
-                deprecated: $openapiOperation->getDeprecated() !== null ? $openapiOperation->getDeprecated() : (bool) $operation->getDeprecationReason(),
-                security: $openapiOperation->getSecurity() !== null ? $openapiOperation->getSecurity() : null,
-                servers: $openapiOperation->getServers() !== null ? $openapiOperation->getServers() : null,
+                deprecated: null !== $openapiOperation->getDeprecated() ? $openapiOperation->getDeprecated() : (bool) $operation->getDeprecationReason(),
+                security: null !== $openapiOperation->getSecurity() ? $openapiOperation->getSecurity() : null,
+                servers: null !== $openapiOperation->getServers() ? $openapiOperation->getServers() : null,
                 extensionProperties: $openapiOperation->getExtensionProperties(),
             );
 
@@ -153,11 +153,11 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $schema = new JsonSchema('openapi');
             $schema->setDefinitions($schemas);
 
-            if ($operation->getUriVariables() !== []) {
+            if ([] !== $operation->getUriVariables()) {
                 $openapiOperation = $this->filterFactory->buildUriParams(
                     FilterFactory::PATH,
                     $operation->getUriVariables(),
-                    $openapiOperation
+                    $openapiOperation,
                 );
             }
 
@@ -165,35 +165,35 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 $openapiOperation = $this->filterFactory->buildUriParams(
                     FilterFactory::QUERY,
                     $operation->getFilters(),
-                    $openapiOperation
+                    $openapiOperation,
                 );
             }
 
             $openapiOperation = $this->buildOpenApiResponse($openapiOperation, $operation, $schemas);
 
-            if ($openapiOperation->getRequestBody() === null
-                && $operation->getInput() !== null
+            if (null === $openapiOperation->getRequestBody()
+                && null !== $operation->getInput()
                 && in_array(
                     $method,
                     [HttpRequest::METHOD_PATCH, HttpRequest::METHOD_PUT, HttpRequest::METHOD_POST],
-                    true
+                    true,
                 )) {
                 $operationInputSchema = $this->schemaFactory->buildSchema(
                     /** @phpstan-ignore-next-line up to this point if input is set then it has a class-string */
                     $operation->getInput(),
                     $operation->getResource(),
-                    $operation->getDenormalizationContext()
+                    $operation->getDenormalizationContext(),
                 );
                 $this->appendSchemaDefinitions($schemas, $operationInputSchema);
 
                 $openapiOperation = $openapiOperation->withRequestBody(
                     new Model\RequestBody(
-                        sprintf('The %s %s resource', $method === HttpRequest::METHOD_POST ? 'new' : 'updated', $resourceShortName),
+                        sprintf('The %s %s resource', HttpRequest::METHOD_POST === $method ? 'new' : 'updated', $resourceShortName),
                         $this->buildContent(
-                            $operation
+                            $operation,
                         ),
-                        true
-                    )
+                        true,
+                    ),
                 );
             }
 
@@ -205,7 +205,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     private function buildOpenApiResponse(
         Model\Operation $openapiOperation,
         Operation $operation,
-        ArrayObject $schemas
+        ArrayObject $schemas,
     ): Model\Operation {
         $existingResponses = $openapiOperation->getResponses() ?: [];
         $resourceShortName = $this->normalizeClassName($operation->getResource());
@@ -218,10 +218,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     sprintf(
                         '%s %s',
                         $resourceShortName,
-                        $operation instanceof CollectionOperationInterface ? 'collection' : 'resource'
+                        $operation instanceof CollectionOperationInterface ? 'collection' : 'resource',
                     ),
                     $operation,
-                    $openapiOperation
+                    $openapiOperation,
                 );
                 break;
             case HttpRequest::METHOD_POST:
@@ -229,14 +229,14 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     $operation->getStatusCode(),
                     sprintf('%s resource created', $resourceShortName),
                     $operation,
-                    $openapiOperation
+                    $openapiOperation,
                 );
 
                 $openapiOperation = $this->buildResponseContent(
                     HttpResponse::HTTP_BAD_REQUEST,
                     'Invalid input',
                     null,
-                    $openapiOperation
+                    $openapiOperation,
                 );
 
                 break;
@@ -246,14 +246,14 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     $operation->getStatusCode(),
                     sprintf('%s resource updated', $resourceShortName),
                     $operation,
-                    $openapiOperation
+                    $openapiOperation,
                 );
 
                 $openapiOperation = $this->buildResponseContent(
                     HttpResponse::HTTP_BAD_REQUEST,
                     'Invalid input',
                     null,
-                    $openapiOperation
+                    $openapiOperation,
                 );
                 break;
             case HttpRequest::METHOD_DELETE:
@@ -261,7 +261,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                     $operation->getStatusCode(),
                     sprintf('%s resource deleted', $resourceShortName),
                     $operation,
-                    $openapiOperation
+                    $openapiOperation,
                 );
 
                 break;
@@ -283,19 +283,19 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $this->appendSchemaDefinitions($schemas, $operationOutputSchema);
         }
 
-        if (!$operation instanceof CollectionOperationInterface && $operation->getMethod() !== HttpRequest::METHOD_POST) {
+        if (!$operation instanceof CollectionOperationInterface && HttpRequest::METHOD_POST !== $operation->getMethod()) {
             if (!isset($existingResponses[404])) {
                 $openapiOperation = $openapiOperation->withResponse(
                     404,
-                    new Model\Response('Resource not found')
+                    new Model\Response('Resource not found'),
                 );
             }
         }
 
-        if ($openapiOperation->getResponses() === null) {
+        if (null === $openapiOperation->getResponses()) {
             $openapiOperation = $openapiOperation->withResponse(
                 'default',
-                new Model\Response('Unexpected error')
+                new Model\Response('Unexpected error'),
             );
         }
 
@@ -315,7 +315,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                         $status,
                         $this->exceptionClassnameToMessageError($exception),
                         null,
-                        $openapiOperation
+                        $openapiOperation,
                     );
                 }
                 if ($status >= 200 && $status < 500 && $this->isWriteOperation($operation)) {
@@ -323,7 +323,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                         $status,
                         $this->exceptionClassnameToMessageError($exception),
                         null,
-                        $openapiOperation
+                        $openapiOperation,
                     );
                 }
             }
@@ -334,15 +334,15 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
     private function isReadOperation(Operation $operation): bool
     {
-        return $operation->getMethod() === HttpRequest::METHOD_GET;
+        return HttpRequest::METHOD_GET === $operation->getMethod();
     }
 
     private function isWriteOperation(Operation $operation): bool
     {
-        return $operation->getMethod() === HttpRequest::METHOD_POST
-            || $operation->getMethod() === HttpRequest::METHOD_PUT
-            || $operation->getMethod() === HttpRequest::METHOD_PATCH
-            || $operation->getMethod() === HttpRequest::METHOD_DELETE;
+        return HttpRequest::METHOD_POST === $operation->getMethod()
+            || HttpRequest::METHOD_PUT === $operation->getMethod()
+            || HttpRequest::METHOD_PATCH === $operation->getMethod()
+            || HttpRequest::METHOD_DELETE === $operation->getMethod();
     }
 
     /**
@@ -356,7 +356,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
 
         $formatedMessageErrorException = preg_replace('/[A-Z]/', ' $0', $messageErrorException);
 
-        if ($formatedMessageErrorException === null) {
+        if (null === $formatedMessageErrorException) {
             throw new LogicException('Misformated error message exception.');
         }
 
@@ -377,10 +377,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $status,
             new Model\Response(
                 $description,
-                $operation !== null ? $this->buildResponseSchema($operation) : null,
+                null !== $operation ? $this->buildResponseSchema($operation) : null,
                 null,
                 //                $responseLinks
-            )
+            ),
         );
     }
 
@@ -394,7 +394,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         /** @var ArrayObject<Model\MediaType> $content */
         $content = new ArrayObject();
         foreach ($requestMimeTypes as $mimeType => $type) {
-            if ($operation->getInput() === null) {
+            if (null === $operation->getInput()) {
                 continue;
             }
 
@@ -404,10 +404,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                         '$ref' => '#/components/schemas/'.SchemaRefNameGenerator::generate(
                             $operation->getResource(),
                             $operation->getInput(),
-                            $operation->getDenormalizationContext()
+                            $operation->getDenormalizationContext(),
                         ),
-                    ]
-                )
+                    ],
+                ),
             );
         }
 
@@ -421,7 +421,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         /** @var ArrayObject<Model\MediaType> $content */
         $content = new ArrayObject();
         foreach ($responseMimeTypes as $mimeType => $type) {
-            if ($operation->getOutput() === null) {
+            if (null === $operation->getOutput()) {
                 continue;
             }
 
@@ -431,10 +431,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                         '$ref' => '#/components/schemas/'.SchemaRefNameGenerator::generate(
                             $operation->getResource(),
                             $operation->getOutput(),
-                            $operation->getNormalizationContext()
+                            $operation->getNormalizationContext(),
                         ),
-                    ]
-                )
+                    ],
+                ),
             );
         }
 
@@ -513,7 +513,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
             $this->openApiOptions->getOAuthAuthorizationUrl(),
             $this->openApiOptions->getOAuthTokenUrl() ?: null,
             $this->openApiOptions->getOAuthRefreshUrl() ?: null,
-            new ArrayObject($this->openApiOptions->getOAuthScopes())
+            new ArrayObject($this->openApiOptions->getOAuthScopes()),
         );
 
         $description = sprintf(
@@ -522,9 +522,9 @@ final class OpenApiFactory implements OpenApiFactoryInterface
                 preg_replace(
                     '/[A-Z]/',
                     ' \\0',
-                    lcfirst($this->openApiOptions->getOAuthFlow() ?? '')
-                ) ?? ''
-            )
+                    lcfirst($this->openApiOptions->getOAuthFlow() ?? ''),
+                ) ?? '',
+            ),
         );
         $implicit = $password = $clientCredentials = $authorizationCode = null;
 
@@ -582,10 +582,10 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         $normalizedOperationName = preg_replace(
             '/^_/',
             '',
-            str_replace(['/', '{._format}', '{', '}'], ['', '', '_', ''], $operationName)
+            str_replace(['/', '{._format}', '{', '}'], ['', '', '_', ''], $operationName),
         );
 
-        if ($normalizedOperationName === null) {
+        if (null === $normalizedOperationName) {
             throw new LogicException(sprintf('Could not normalize "%s" into operation name.', $operationName));
         }
 

@@ -33,7 +33,7 @@ final class DummyEntityController
             serializationContext: [
                 AbstractNormalizer::GROUPS => ['dummy::write'],
                 AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
-            ]
+            ],
         )] DummyEntity $dummyEntityInput,
     ): DummyEntity {
         return new DummyEntity(

@@ -67,7 +67,7 @@ final class Delete extends Operation
         ?string $format = null,
         ?bool $utf8 = null,
         ?bool $stateless = null,
-        ?string $env = null
+        ?string $env = null,
     ) {
         parent::__construct(
             path: $path,

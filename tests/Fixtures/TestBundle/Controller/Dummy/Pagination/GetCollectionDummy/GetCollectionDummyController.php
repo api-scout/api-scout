@@ -48,15 +48,15 @@ final class GetCollectionDummyController extends AbstractController
                         '127 avenue of the street',
                         '13100',
                         'California',
-                        'US'
-                    )
+                        'US',
+                    ),
                 );
         }
 
         return new ArrayObject(array_slice(
             $pinkFloydCollection,
             ($query->getPage() - 1) * $query->getItemsPerPage(),
-            $query->getItemsPerPage()
+            $query->getItemsPerPage(),
         ));
     }
 }

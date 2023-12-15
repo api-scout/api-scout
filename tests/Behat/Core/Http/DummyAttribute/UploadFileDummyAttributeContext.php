@@ -41,7 +41,7 @@ final class UploadFileDummyAttributeContext extends BaseContext
                         'file' => new UploadedFile($this->getFilePath($fileName), $fileName),
                     ],
                 ],
-            ]
+            ],
         );
     }
 }

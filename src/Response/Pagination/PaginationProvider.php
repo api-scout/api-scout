@@ -36,7 +36,7 @@ final class PaginationProvider implements PaginationProviderInterface
     public function provide(
         mixed $data,
         Operation $operation,
-        PaginationQueryInputInterface $paginationQueryInput
+        PaginationQueryInputInterface $paginationQueryInput,
     ): array {
         $pagination = $this->getPagination($data, $operation, $paginationQueryInput);
 
@@ -52,7 +52,7 @@ final class PaginationProvider implements PaginationProviderInterface
     private function getPagination(
         mixed $data,
         Operation $operation,
-        PaginationQueryInputInterface $paginationQueryInput
+        PaginationQueryInputInterface $paginationQueryInput,
     ): PaginationInterface {
         if ($data instanceof PaginationInterface) {
             return $data;
@@ -70,20 +70,20 @@ final class PaginationProvider implements PaginationProviderInterface
             $data,
             $paginationQueryInput->getPage(),
             $paginationQueryInput->getItemsPerPage(),
-            null
+            null,
         );
     }
 
     private function getDoctrinePagination(
         DoctrinePagination $data,
         Operation $operation,
-        PaginationQueryInputInterface $paginationQueryInput
+        PaginationQueryInputInterface $paginationQueryInput,
     ): PaginationInterface {
         return new Pagination(
             $data->getIterator(),
             $paginationQueryInput->getPage(),
             $paginationQueryInput->getItemsPerPage(),
-            $data->count()
+            $data->count(),
         );
     }
 }

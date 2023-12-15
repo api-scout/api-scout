@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ApiScout\Exception;
 
-final class RuntimeException extends \RuntimeException implements DomainExceptionInterface
+use RuntimeException as NativeRuntimeException;
+
+final class RuntimeException extends NativeRuntimeException implements DomainExceptionInterface
 {
 }

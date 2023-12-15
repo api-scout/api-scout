@@ -23,7 +23,7 @@ final class SecurityScheme
         private ?string $scheme = null,
         private ?string $bearerFormat = null,
         private ?OAuthFlows $flows = null,
-        private ?string $openIdConnectUrl = null
+        private ?string $openIdConnectUrl = null,
     ) {
     }
 

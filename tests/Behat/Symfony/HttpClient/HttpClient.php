@@ -24,7 +24,7 @@ final class HttpClient
 
     public static function httpClient(?Client $httpClient = null): Client
     {
-        if ($httpClient !== null) {
+        if (null !== $httpClient) {
             self::$httpClient = $httpClient;
         }
 

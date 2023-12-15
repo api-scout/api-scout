@@ -35,13 +35,13 @@ final class PostDummyEntityContext extends BaseContext
 
         Assert::assertArrayHasKey('requestBody', $postDummyEntityOperation);
         $componentsSchemasKeyInput = $this->getSchemaRefKey(
-            $postDummyEntityOperation['requestBody']['content']['application/json']['schema']['$ref']
+            $postDummyEntityOperation['requestBody']['content']['application/json']['schema']['$ref'],
         );
         Assert::assertArrayHasKey($componentsSchemasKeyInput, $response['components']['schemas']);
 
         Assert::assertArrayHasKey('responses', $postDummyEntityOperation);
         $componentsSchemasKeyOutput = $this->getSchemaRefKey(
-            $postDummyEntityOperation['responses']['201']['content']['application/json']['schema']['$ref']
+            $postDummyEntityOperation['responses']['201']['content']['application/json']['schema']['$ref'],
         );
         Assert::assertArrayHasKey($componentsSchemasKeyOutput, $response['components']['schemas']);
         Assert::assertCount(2, $postDummyEntityOperation['responses']);

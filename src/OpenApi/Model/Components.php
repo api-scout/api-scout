@@ -29,7 +29,7 @@ final class Components
         private ?ArrayObject $securitySchemes = null,
         private ?ArrayObject $links = null,
         private ?ArrayObject $callbacks = null,
-        private ?ArrayObject $pathItems = null
+        private ?ArrayObject $pathItems = null,
     ) {
         $schemas?->ksort();
 

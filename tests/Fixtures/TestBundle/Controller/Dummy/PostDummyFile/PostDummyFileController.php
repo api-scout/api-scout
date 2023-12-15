@@ -27,7 +27,7 @@ final class PostDummyFileController
         '/dummies/file',
         name: 'app_add_dummy_file',
         resource: Dummy::class,
-        exceptionToStatus: [ValidationFailedException::class => 415]
+        exceptionToStatus: [ValidationFailedException::class => 415],
     )]
     public function __invoke(
         #[MapRequestPayload] DummyPayloadFileInput $dummyPayloadInput,

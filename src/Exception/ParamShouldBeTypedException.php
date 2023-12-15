@@ -25,7 +25,7 @@ final class ParamShouldBeTypedException extends Exception implements DomainExcep
     public function __construct(string $param)
     {
         parent::__construct(
-            sprintf('param "%s" should be typed.', $param)
+            sprintf('param "%s" should be typed.', $param),
         );
     }
 }
