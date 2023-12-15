@@ -42,7 +42,7 @@ final class SchemaFactory implements SchemaFactoryInterface
     private array $groups;
 
     public function __construct(
-        private readonly ClassMetadataFactoryInterface $metadata
+        private readonly ClassMetadataFactoryInterface $metadata,
     ) {
         $this->groups = [];
     }
@@ -65,7 +65,7 @@ final class SchemaFactory implements SchemaFactoryInterface
             [
                 ...self::BASE_TEMPLATE,
                 ...$this->buildOpenApiPropertiesFromClass($className),
-            ]
+            ],
         );
 
         return $schema;
@@ -83,12 +83,12 @@ final class SchemaFactory implements SchemaFactoryInterface
         $schemaProperties = [];
 
         foreach ($properties as $property) {
-            if ($this->groups !== []
-                && array_diff($this->groups, $attributesMetadata[$property->getName()]->getGroups()) !== []) {
+            if ([] !== $this->groups
+                && [] !== array_diff($this->groups, $attributesMetadata[$property->getName()]->getGroups())) {
                 continue;
             }
 
-            if ($property->getType() === null) {
+            if (null === $property->getType()) {
                 continue;
             }
 
@@ -105,8 +105,9 @@ final class SchemaFactory implements SchemaFactoryInterface
             $schemaProperties['properties'][$property->getName()] = [
                 ...$schemaProperty,
                 ...$this->buildPropertyType(
-                    $property->getType()->getName(), /** @phpstan-ignore-line getName method exists */
-                    $property->getType()->allowsNull()
+                    /** @phpstan-ignore-next-line getName method exists */
+                    $property->getType()->getName(),
+                    $property->getType()->allowsNull(),
                 ),
             ];
         }
@@ -130,11 +131,11 @@ final class SchemaFactory implements SchemaFactoryInterface
     {
         $openApiType = $this->getBasicClassType($type, $isNullable);
 
-        if ($openApiType !== []) {
+        if ([] !== $openApiType) {
             return $openApiType;
         }
 
-        if ($type !== null && class_exists($type)) {
+        if (null !== $type && class_exists($type)) {
             return $this->buildOpenApiPropertiesFromClass($type);
         }
 

@@ -44,8 +44,8 @@ final class LoaderExceptionListener
                 [
                     'error' => $previousException->getMessage(),
                 ],
-                Response::HTTP_BAD_REQUEST
-            )
+                Response::HTTP_BAD_REQUEST,
+            ),
         );
     }
 }

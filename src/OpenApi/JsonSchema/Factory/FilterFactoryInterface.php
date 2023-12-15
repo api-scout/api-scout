@@ -29,6 +29,6 @@ interface FilterFactoryInterface
     public function buildUriParams(
         string $type,
         array $uriParams,
-        Operation $openapiOperation
+        Operation $openapiOperation,
     ): Operation;
 }

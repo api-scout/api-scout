@@ -62,12 +62,12 @@ abstract class BaseContext implements Context
     public function request(
         string $method,
         string $url,
-        array $options = []
+        array $options = [],
     ): ResponseInterface {
         return $this->getHttpClient()->request(
             $method,
             $url,
-            $options
+            $options,
         );
     }
 

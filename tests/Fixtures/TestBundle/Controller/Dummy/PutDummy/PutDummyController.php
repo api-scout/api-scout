@@ -42,7 +42,7 @@ final class PutDummyController extends AbstractController
                 $dummyPayloadInput->address->zipCode,
                 $dummyPayloadInput->address->city,
                 $dummyPayloadInput->address->country,
-            )
+            ),
         );
     }
 }

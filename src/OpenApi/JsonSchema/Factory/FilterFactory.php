@@ -25,13 +25,14 @@ use RuntimeException;
 final class FilterFactory implements FilterFactoryInterface
 {
     use PropertyTypeBuilderTrait;
+
     public const PATH = 'path';
     public const QUERY = 'query';
 
     public function buildUriParams(
         string $type,
         array $uriParams,
-        Model\Operation $openapiOperation
+        Model\Operation $openapiOperation,
     ): Model\Operation {
         foreach ($uriParams as $uriParam) {
             $parameter = new Model\Parameter(
@@ -41,7 +42,7 @@ final class FilterFactory implements FilterFactoryInterface
                 $uriParam->isRequired() ?? true,
                 $uriParam->isDeprecated(),
                 false,
-                $this->getClassType($uriParam->getType() ?? 'string')
+                $this->getClassType($uriParam->getType() ?? 'string'),
             );
 
             if ($this->hasParameter($openapiOperation, $parameter)) {
@@ -58,14 +59,14 @@ final class FilterFactory implements FilterFactoryInterface
     {
         $openApiType = $this->buildPropertyType($type);
 
-        if ($openApiType !== []) {
+        if ([] !== $openApiType) {
             return $openApiType;
         }
 
-        if ($type !== null && class_exists($type)) {
+        if (null !== $type && class_exists($type)) {
             return [
-                'type' => 'string',
                 'format' => $this->buildTypeFormatName($type),
+                'type' => 'string',
             ];
         }
 
@@ -76,7 +77,8 @@ final class FilterFactory implements FilterFactoryInterface
     {
         /** @phpstan-ignore-next-line up to this point getParameters should be iterable */
         foreach ($operation->getParameters() as $existingParameter) {
-            if ($existingParameter->getName() === $parameter->getName() && $existingParameter->getIn() === $parameter->getIn()) {
+            if ($existingParameter->getName() === $parameter->getName()
+                && $existingParameter->getIn() === $parameter->getIn()) {
                 return true;
             }
         }
@@ -89,7 +91,7 @@ final class FilterFactory implements FilterFactoryInterface
         $typeExploded = explode('\\', $type);
         $upperClassName = end($typeExploded);
 
-        if ((bool) $upperClassName === false) {
+        if (false === (bool) $upperClassName) {
             throw new RuntimeException('Could not buildTypeFormatName with '.$type);
         }
 

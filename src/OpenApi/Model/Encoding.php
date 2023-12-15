@@ -17,8 +17,13 @@ use ArrayObject;
 
 final class Encoding
 {
-    public function __construct(private string $contentType = '', private ?ArrayObject $headers = null, private string $style = '', private bool $explode = false, private bool $allowReserved = false)
-    {
+    public function __construct(
+        private string $contentType = '',
+        private ?ArrayObject $headers = null,
+        private string $style = '',
+        private bool $explode = false,
+        private bool $allowReserved = false,
+    ) {
     }
 
     public function getContentType(): string

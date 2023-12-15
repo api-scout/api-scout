@@ -136,8 +136,8 @@ final class ResultContext extends BaseContext
                 sprintf(
                     'Array "%s" did not contain the value "%s".',
                     json_encode(array_keys($response)),
-                    json_encode($expectedResponseKey)
-                )
+                    json_encode($expectedResponseKey),
+                ),
             );
         }
 

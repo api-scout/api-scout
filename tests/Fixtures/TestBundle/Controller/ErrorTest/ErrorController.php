@@ -26,7 +26,7 @@ final class ErrorController extends AbstractController
         '/empty/payload',
         name: 'app_test_when_empty_payload_should_not_be_empty',
         resource: 'Error',
-        openapi: false
+        openapi: false,
     )]
     public function whenEmptyPayloadShouldNotBeEmptyTest(
         #[MapRequestPayload] NotEmptyInput $dummyPayloadInput,

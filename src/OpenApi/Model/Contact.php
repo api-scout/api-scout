@@ -18,7 +18,7 @@ final class Contact
     public function __construct(
         private ?string $name = null,
         private ?string $url = null,
-        private ?string $email = null
+        private ?string $email = null,
     ) {
     }
 

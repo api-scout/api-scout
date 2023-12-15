@@ -37,7 +37,7 @@ final class PostDummyFileContext extends BaseContext
             self::POST_DUMMY_PATH,
             [
                 'json' => $this->json($content->getRaw()),
-            ]
+            ],
         );
     }
 
@@ -50,7 +50,7 @@ final class PostDummyFileContext extends BaseContext
 
         Assert::assertSame(
             $content,
-            $this->getResponse()->toArray()
+            $this->getResponse()->toArray(),
         );
     }
 }

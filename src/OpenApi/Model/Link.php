@@ -22,7 +22,7 @@ final class Link
         private ?ArrayObject $parameters = null,
         private ?string $requestBody = null,
         private string $description = '',
-        private ?Server $server = null
+        private ?Server $server = null,
     ) {
     }
 
@@ -33,7 +33,7 @@ final class Link
 
     public function getParameters(): ArrayObject
     {
-        if ($this->parameters === null) {
+        if (null === $this->parameters) {
             $this->parameters = new ArrayObject();
         }
 

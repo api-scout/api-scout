@@ -28,7 +28,7 @@ final class GenericSuiteGenerator implements SuiteGenerator
 {
     public function __construct(
         private readonly SuiteGenerator $suiteGenerator,
-        private readonly ContextsClassFinder $contextClassFinder
+        private readonly ContextsClassFinder $contextClassFinder,
     ) {
     }
 

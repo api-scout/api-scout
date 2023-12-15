@@ -33,7 +33,7 @@ final class SwaggerJsonContext extends BaseContext
     {
         $this->request(
             HttpRequest::METHOD_GET,
-            self::SWAGGER_JSON_PATH
+            self::SWAGGER_JSON_PATH,
         );
     }
 

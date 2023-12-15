@@ -38,7 +38,7 @@ final class SymfonyResponseSerializer implements ResponseSerializerInterface
         return $this->serializer->serialize(
             data: $data,
             format: 'json',
-            context: $context
+            context: $context,
         );
     }
 }

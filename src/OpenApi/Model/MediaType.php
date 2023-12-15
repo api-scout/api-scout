@@ -21,7 +21,7 @@ final class MediaType
         private ArrayObject $schema,
         private ?ArrayObject $example = null,
         private ?ArrayObject $examples = null,
-        private ?Encoding $encoding = null
+        private ?Encoding $encoding = null,
     ) {
     }
 

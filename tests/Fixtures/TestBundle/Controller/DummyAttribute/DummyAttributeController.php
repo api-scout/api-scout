@@ -39,7 +39,7 @@ final class DummyAttributeController extends AbstractController
         filters: [
             new ApiProperty(name: 'name', type: 'string', required: false, description: 'The name of the champion'),
             new ApiProperty(name: 'page', type: 'integer', required: true, description: 'The page my mate'),
-        ]
+        ],
     )]
     public function getDummyAttributeCollection(): Response
     {
@@ -53,7 +53,7 @@ final class DummyAttributeController extends AbstractController
         resource: DummyAttribute::class,
         uriVariables: [
             new ApiProperty('id', 'string'),
-        ]
+        ],
     )]
     public function getDummyAttribute(): Response
     {
@@ -65,7 +65,7 @@ final class DummyAttributeController extends AbstractController
         name: 'app_post_dummy_attribute',
         input: DummyAttributePayloadInput::class,
         output: DummyAttributeOutput::class,
-        resource: DummyAttribute::class
+        resource: DummyAttribute::class,
     )]
     public function postDummyAttribute(): Response
     {
@@ -90,8 +90,8 @@ final class DummyAttributeController extends AbstractController
                             ],
                         ],
                     ],
-                ])
-            )
+                ]),
+            ),
         ),
     )]
     public function uploadFileDummyAttribute(): Response
@@ -104,7 +104,7 @@ final class DummyAttributeController extends AbstractController
         name: 'app_update_patch_dummy_attribute',
         input: DummyAttributePayloadInput::class,
         output: DummyAttributeOutput::class,
-        resource: DummyAttribute::class
+        resource: DummyAttribute::class,
     )]
     public function patchDummyAttribute(
     ): Response {
@@ -116,7 +116,7 @@ final class DummyAttributeController extends AbstractController
         name: 'app_update_put_dummy_attribute',
         input: DummyAttributePayloadInput::class,
         output: DummyAttributeOutput::class,
-        resource: DummyAttribute::class
+        resource: DummyAttribute::class,
     )]
     public function putDummyAttribute(
     ): Response {
@@ -128,7 +128,7 @@ final class DummyAttributeController extends AbstractController
         resource: DummyAttribute::class,
         uriVariables: [
             new ApiProperty('id', 'int'),
-        ]
+        ],
     )]
     public function deleteDummyAttribute(
     ): Response {

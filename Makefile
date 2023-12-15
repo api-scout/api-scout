@@ -25,6 +25,10 @@ lint-container: ## Lints containers
 phpcs: ## PHP_CodeSniffer (https://github.com/squizlabs/PHP_CodeSniffer)
 	$(PHP) vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
 
+.PHONY: phpcs-tests
+phpcs-tests: ## PHP_CodeSniffer (https://github.com/squizlabs/PHP_CodeSniffer)
+	$(PHP) vendor/bin/phpcs -p -n --colors --standard=.phpcs-tests.xml
+
 .PHONY: php-cs-fixer
 php-cs-fixer: ## PhpCsFixer (https://cs.symfony.com/)
 	$(PHP) vendor/bin/php-cs-fixer fix --using-cache=no --verbose --diff --dry-run
@@ -56,12 +60,10 @@ tests: phpunit behat
 
 .PHONY: phpunit
 phpunit: ## Run unit tests
-	# Needs database container to be running (run "make start" if needed)
-	$(PHP) ./vendor/bin/simple-phpunit --coverage-html coverage -vvv
+	$(PHP) ./vendor/bin/phpunit
 
 .PHONY: behat
 behat: ## Run functional tests
-	# Needs database container to be running (run "make start" if needed)
 	$(PHP) ./vendor/bin/behat
 
 ##

@@ -125,8 +125,11 @@ jobs:
       - name: Lint container
         run: php tests/Fixtures/app/bin/console lint:container
 
-      - name: PHP code sniffer
+      - name: PHP code sniffer src files
         run: php vendor/bin/phpcs -p -n --colors --standard=.phpcs.xml
+
+      - name: PHP code sniffer tests files
+        run: php vendor/bin/phpcs -p -n --colors --standard=.phpcs-tests.xml
 
       - name: PHPCsFixer
         run: PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --diff
@@ -174,7 +177,7 @@ jobs:
         run: php tests/Fixtures/app/bin/console assets:install --symlink --relative
 
       - name: Execute unit tests
-        run: php vendor/bin/simple-phpunit --coverage-html coverage -vvv --stop-on-failure
+        run: php vendor/bin/phpunit
 
       - name: Execute behat tests
         run: php vendor/bin/behat -f progress

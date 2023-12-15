@@ -53,7 +53,8 @@ final class FormatMatcher
     {
         $canonicalMimeType = null;
         $pos = strpos($mimeType, ';');
-        if ($pos !== false) {
+
+        if (false !== $pos) {
             $canonicalMimeType = trim(substr($mimeType, 0, $pos));
         }
 
@@ -61,7 +62,8 @@ final class FormatMatcher
             if (in_array($mimeType, $mimeTypes, true)) {
                 return $format;
             }
-            if ($canonicalMimeType !== null && in_array($canonicalMimeType, $mimeTypes, true)) {
+
+            if (null !== $canonicalMimeType && in_array($canonicalMimeType, $mimeTypes, true)) {
                 return $format;
             }
         }

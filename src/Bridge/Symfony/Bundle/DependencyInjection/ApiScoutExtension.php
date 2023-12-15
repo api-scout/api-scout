@@ -56,7 +56,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
         $loader = new PhpFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config'),
-            $env
+            $env,
         );
 
         $loader->load('api.php');
@@ -69,11 +69,12 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
 
     public function prepend(ContainerBuilder $container): void
     {
+        // Prepend manipulation is not needed here
     }
 
     private function registerCommonConfiguration(
         array $configs,
-        ContainerBuilder $container
+        ContainerBuilder $container,
     ): void {
         $container->setParameter('api_scout.title', $configs['title']);
         $container->setParameter('api_scout.description', $configs['description']);
@@ -137,7 +138,7 @@ final class ApiScoutExtension extends Extension implements PrependExtensionInter
                     $operationMethodsMap->addMethodCall('append', [
                         sprintf('%s::%s', $reflector->getDeclaringClass()->name, $reflector->name),
                     ]);
-                }
+                },
             );
         }
     }

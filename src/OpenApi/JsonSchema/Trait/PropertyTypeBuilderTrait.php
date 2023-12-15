@@ -46,7 +46,7 @@ trait PropertyTypeBuilderTrait
 
     private function getBasicClassType(?string $type, bool $isNullable = false): array
     {
-        if ($type === null) {
+        if (null === $type) {
             return [];
         }
 

@@ -37,7 +37,7 @@ final class PatchDummyContext extends BaseContext
             self::PATCH_DUMMY_PATH,
             [
                 'json' => $this->json($content->getRaw()),
-            ]
+            ],
         );
     }
 
@@ -50,7 +50,7 @@ final class PatchDummyContext extends BaseContext
 
         Assert::assertSame(
             $content,
-            $this->getResponse()->toArray()
+            $this->getResponse()->toArray(),
         );
     }
 }

@@ -25,7 +25,7 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$httpTestClient', service(Client::class))
         ->bind(
             '$workingDir',
-            sys_get_temp_dir().\DIRECTORY_SEPARATOR.'behat'.\DIRECTORY_SEPARATOR.md5(microtime().random_int(0, 10000))
+            sys_get_temp_dir().\DIRECTORY_SEPARATOR.'behat'.\DIRECTORY_SEPARATOR.md5(microtime().random_int(0, 10000)),
         )
     ;
 
@@ -46,7 +46,7 @@ return static function (ContainerConfigurator $container): void {
         ->synthetic()
         ->load(
             'ApiScout\\Tests\\Fixtures\\TestBundle\\Controller\\',
-            __DIR__.'/../../TestBundle/Controller/**/*Controller.php'
+            __DIR__.'/../../TestBundle/Controller/**/*Controller.php',
         )
         ->tag('controller.service_arguments')
     ;
