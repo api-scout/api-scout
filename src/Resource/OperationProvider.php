@@ -288,19 +288,11 @@ final class OperationProvider implements OperationProviderInterface
     }
 
     /**
-     * @param class-string $output
+     * @param string $output
      */
     private function buildOutput(string $output): ?string
     {
-        if (is_scalar($output)) {
-            return $output;
-        }
-
-//        if ($output === 'array' || $output === 'iterable') {
-//            return $output;
-//        }
-
-        if (!class_exists($output)) {
+        if (!class_exists($output) && !is_scalar($output)) {
             throw new ResourceClassNotFoundException($output);
         }
 
@@ -310,6 +302,10 @@ final class OperationProvider implements OperationProviderInterface
 
         if (class_exists(DoctrinePagination::class) && DoctrinePagination::class === $output) {
             return Pagination::class;
+        }
+
+        if (is_scalar($output) && !class_exists($output)) {
+            return $output;
         }
 
         $outputClass = new ReflectionClass($output);

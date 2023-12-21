@@ -30,8 +30,8 @@ final class GetDummyIterableController extends AbstractController
         name: 'app_get_dummy_iterable',
         resource: Dummy::class,
         openapi: new Model\Operation(
-            summary: 'Retrieve a Dummy Iterable',
-            description: 'Retrieve a Dummy Iterable'
+            summary: 'Retrieve a Dummy iterable',
+            description: 'Retrieve a Dummy iterable'
         ),
         paginationEnabled: false
     )]
