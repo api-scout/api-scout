@@ -38,6 +38,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 use function array_key_exists;
 use function function_exists;
 use function is_int;
+use function is_scalar;
 
 /**
  * Build the Operations.
@@ -287,12 +288,10 @@ final class OperationProvider implements OperationProviderInterface
         );
     }
 
-    /**
-     * @param class-string $output
-     */
     private function buildOutput(string $output): ?string
     {
-        if (!class_exists($output)) {
+        /** @phpstan-ignore-next-line will not always evaluate to false as $output might not be a scalar */
+        if (!class_exists($output) && !is_scalar($output)) {
             throw new ResourceClassNotFoundException($output);
         }
 
@@ -302,6 +301,11 @@ final class OperationProvider implements OperationProviderInterface
 
         if (class_exists(DoctrinePagination::class) && DoctrinePagination::class === $output) {
             return Pagination::class;
+        }
+
+        /** @phpstan-ignore-next-line is_scalar will not always evaluate to true */
+        if (is_scalar($output) && !class_exists($output)) {
+            return $output;
         }
 
         $outputClass = new ReflectionClass($output);
